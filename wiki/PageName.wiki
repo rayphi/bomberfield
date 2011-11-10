@@ -1,0 +1,34 @@
+Issue Bearbeitung
+
+== Introduction ==
+
+An dieser Stelle möchte ich kurz auf das Abarbeiten eines Issues eingehen.
+
+
+== Details ==
+=== Einen Issue Bearbeiten===
+ # Ein Issue startet mit dem Status 'New' <br>
+ # Man sucht sich ein Issue aus ('New')
+  * Status auf 'Started'
+  * Owner auf deine UserID
+ # Man bearbeitet den Issue <br>
+ # Man testet die Änderungen <br>
+ # Nach der Bearbeitung
+  * Status auf 'For Review'
+  * Owner leer machen
+ # Neues Issue wählen
+
+=== Einen Issue Reviewn ===
+ # Issue startet mit dem Status 'For Review' <br>
+ # Man sucht sich ein Issue au ('For Review') 
+  * Status auf 'Review'
+  * Owner auf deine UserID
+ # Man schaut sich an, was der Bearbeiter gemacht hat und ob es irgendwo Fehler bzw nicht behandelten content gibt.<br>
+ # Nach dem Review:
+  * Review OK
+   * Status auf 'Fixed'
+   * Owner lassen
+  * Review nicht OK
+   * Status auf ''
+   * Owner auf den, der es Bearbeitet hat
+ # Neues Issue wählen
