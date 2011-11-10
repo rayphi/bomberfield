@@ -71,7 +71,7 @@ $(document).ready(function() {
 
 			// pr�fen, ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle leeren Zellen aufgedeckt wurden
 			if(checkVictoryClick()) {
-				time.Stop()
+				time.Stop();
 				alive = false;
 				alert("Sie haben gewonnen! Benötigte Zeit: " + index + " Sekunden");
 			}
@@ -104,7 +104,7 @@ $(document).ready(function() {
 			
 			// Ermitteln ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle Minen markiert wurden
 			if(checkVictoryMark()) {
-				time.Stop()
+				time.Stop();
 				alive = false;
 				alert("Sie haben gewonnen! Benötigte Zeit: " + index + " Sekunden");
 			}
