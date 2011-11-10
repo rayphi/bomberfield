@@ -29,6 +29,6 @@ An dieser Stelle möchte ich kurz auf das Abarbeiten eines Issues eingehen.
    * Status auf 'Fixed'
    * Owner lassen
   * Review nicht OK
-   * Status auf ''
+   * Status auf 'Assigned'
    * Owner auf den, der es Bearbeitet hat
  # Neues Issue wählen
