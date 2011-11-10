@@ -45,7 +45,7 @@ $(document).ready(function() {
 	$('#canvas').click(function(e){
 		
 		// Wenn der Timer noch nicht gestartet ist wird er gestartet
-		if(time.Enable == false ){
+		if(time.Enable == false && alive){
 			time.Start();
 		}
 		
@@ -136,9 +136,9 @@ function newGame() {
 	
 	if(time.Enable == true){
 		time.Stop();
-		index = 0;
-		$('div#timer').html(index);
 	}
+	index = 0;
+	$('div#timer').html(index);
 	
 	alive = true;
 	arrayBuild();

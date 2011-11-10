@@ -17,7 +17,7 @@ var Timer = function()
         thisObject = this;
         if (thisObject.Enable)
         {
-            thisObject.timerId = setInterval(
+            timerId = setInterval(
             function()
             {
                 thisObject.Tick(); 
@@ -28,7 +28,7 @@ var Timer = function()
     this.Stop = function()
     {            
         thisObject.Enable = new Boolean(false);
-        clearInterval(thisObject.timerId);
+        clearInterval(timerId);
     };
 
 };
