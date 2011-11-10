@@ -1,34 +1,57 @@
 /**
  * TODO Doku
  */
+
+/**
+ * TODO Timer initialisierung an dieser stelle sinvoll?
+ */
+var time = new Timer();
+//Die Startzeit wird festgelegt
+var index = 0;
+/* die function die zur definierten frequenz (default: 1000ms) 
+ * aufgerufen wird wird festgelegt
+ */ 
+time.Tick = timer_tick;
+
+//Hier wird der timer um eins erhÃ¶ht und die aktuelle Zeit wird Ausgegeben
+function timer_tick() {
+	index  = index + 1;
+	$('div#timer').html(index);
+}
+
 $(document).ready(function() {
-	// Hier wird das Image für die Flaggen geladen
+	// Hier wird das Image fï¿½r die Flaggen geladen
 	imageFlag = new Image();
 	imageFlag.src = "images/flag.png";
 
-	// Hier wird das Image für die Minen geladen
+	// Hier wird das Image fï¿½r die Minen geladen
 	imageMine = new Image();
 	imageMine.src = "images/mine.png";
 
-	// Hier wird der CSS Style für das canvas angepasst
+	// Hier wird der CSS Style fï¿½r das canvas angepasst
 	$('#canvas').css('width', canvasWidth + 'px');
 	$('#canvas').css('height', canvasHeight + 'px');
 
 	// Hier wird der Backgroundbuffer des canvas angepasst
 	$('#canvas').attr('height', canvasHeight);
 	$('#canvas').attr('width', canvasWidth);
-
+	
 	// Hier wird der New Game Button konfiguriert
 	$('#newGame').click(function(e){
 		newGame();
 	});
-
+	
 	// linksklick am canvas registrieren
 	$('#canvas').click(function(e){
 		
+		// Wenn der Timer noch nicht gestartet ist wird er gestartet
+		if(time.Enable == false ){
+			time.Start();
+		}
+		
 		// Nur wenn man noch lebt
 		if(alive) {
-			// Hier werden die Koordinaten des Klick in für das Spiel verwertbare Koordinaten umgewandelt
+			// Hier werden die Koordinaten des Klick in fï¿½r das Spiel verwertbare Koordinaten umgewandelt
 			clickVector = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop).sub(offsetVector);
 
 			// Hier wird die geklickte Zelle ermittelt und letztenendes wirklich geklickt
@@ -46,10 +69,11 @@ $(document).ready(function() {
 			// Das Spielfeld neu zeichnen
 			repaint();
 
-			// prüfen, ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle leeren Zellen aufgedeckt wurden
+			// prï¿½fen, ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle leeren Zellen aufgedeckt wurden
 			if(checkVictoryClick()) {
+				time.Stop()
 				alive = false;
-				alert("Sie haben gewonnen!");
+				alert("Sie haben gewonnen! BenÃ¶tigte Zeit: " + index + " Sekunden");
 			}
 		}
 
@@ -60,7 +84,7 @@ $(document).ready(function() {
 		
 		// Nur wenn man noch lebt
 		if(alive) {
-			// Hier werden die Koordinaten des Klick in für das Spiel verwertbare Koordinaten umgewandelt
+			// Hier werden die Koordinaten des Klick in fï¿½r das Spiel verwertbare Koordinaten umgewandelt
 			clickVector = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop).sub(offsetVector);
 
 			// Hier wird die gerechtsklickte Zelle ermittelt und markiert
@@ -80,11 +104,12 @@ $(document).ready(function() {
 			
 			// Ermitteln ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle Minen markiert wurden
 			if(checkVictoryMark()) {
+				time.Stop()
 				alive = false;
-				alert("Sie haben gewonnen!");
+				alert("Sie haben gewonnen! BenÃ¶tigte Zeit: " + index + " Sekunden");
 			}
 		}
-
+		
 		return false;
 	});
 
@@ -108,7 +133,13 @@ function newGame() {
 	// Das Spielfeld leeren
 	ctx.fillStyle = fsBackground;
 	ctx.fillRect(0,0,canvasWidth, canvasHeight);
-
+	
+	if(time.Enable == true){
+		time.Stop();
+		index = 0;
+		$('div#timer').html(index);
+	}
+	
 	alive = true;
 	arrayBuild();
 	repaint();
@@ -123,12 +154,12 @@ function newGame() {
  * Globale Variablen
  * ************************************************/
 /**
- * Hier wird das image für die Flagge gespeichert
+ * Hier wird das image fï¿½r die Flagge gespeichert
  */
 var imageFlag;
 
 /**
- * Hier wird das Image für die Mine gespeichert
+ * Hier wird das Image fï¿½r die Mine gespeichert
  */
 var imageMine;
 
@@ -142,7 +173,7 @@ var offsetVector = new Vector(0,0);
  */
 var cellWidth = 50;
 /**
- * Die Hšhe des Rechtecks in das die Zelle gezeichnet werden soll
+ * Die Hï¿½he des Rechtecks in das die Zelle gezeichnet werden soll
  */
 var cellHeight = 50;
 
@@ -162,7 +193,7 @@ var columnVector = new Vector(cellWidth/2, (cellHeight * 3) / 4);
  */
 var canvasWidth = 800;
 /**
- * canvasHeight gibt die Hšhe des canvas vor
+ * canvasHeight gibt die Hï¿½he des canvas vor
  */
 var canvasHeight = 425;
 
@@ -238,8 +269,8 @@ function arrayBuild(){
 
 
 	// In diesem Block finden die Berechnungen statt, welche die Dimension des Spielfeldes berechnen sollen.
-	// In der ersten Version des SPiels soll sich das Spielfeld aus der Grš§e des Canvas ableiten.
-	// In spŠteren Versionen soll das Spielfeld auch grš§er gewŠhlt werden kšnnen.
+	// In der ersten Version des SPiels soll sich das Spielfeld aus der Grï¿½ï¿½e des Canvas ableiten.
+	// In spï¿½teren Versionen soll das Spielfeld auch grï¿½ï¿½er gewï¿½hlt werden kï¿½nnen.
 	{
 		// Hier wird berechnet, wieviele Hexatiles in die erste Zeile des canvas passen
 		cellsInLine = canvasWidth  / cellWidth;
@@ -247,8 +278,8 @@ function arrayBuild(){
 		// Hier wird berechnet, wieviele Hexatiles vertikal auf das canvas passen
 		var allCellHeight = 0;
 
-		// Dazu wird jeweils abwechselnd der Durchmesser und die SeitenkantenlŠnge auf eine Variable
-		// (allCellHeight) addiert, bis die Hšhe des Canvas erreicht wurde.
+		// Dazu wird jeweils abwechselnd der Durchmesser und die Seitenkantenlï¿½nge auf eine Variable
+		// (allCellHeight) addiert, bis die Hï¿½he des Canvas erreicht wurde.
 		while(canvasHeight > allCellHeight){
 			if(cellNumber%2 == 1){
 				allCellHeight = allCellHeight + (cellHeight / 2);
@@ -270,22 +301,22 @@ function arrayBuild(){
 		arrayColumns = arrayDimensionColumn;
 	}
 
-	// An dieser Stelle wird das Spielfeld als ein Array mit der berechneten Grš§e definiert
+	// An dieser Stelle wird das Spielfeld als ein Array mit der berechneten Grï¿½ï¿½e definiert
 	gameField = new Array(arrayRows);
 	// Dann wird jedes Feld des Arrays durchlaufen
 	for(var i = 0; i < arrayRows; i++ ){
-		// und ebenfalls als Array der berechneten Grš§e definiert
+		// und ebenfalls als Array der berechneten Grï¿½ï¿½e definiert
 		gameField[i] = new Array(arrayColumns);
-		// Anschlie§end werden also alle Spalten der eben erzeugten Zeile durchlaufen 
+		// Anschlieï¿½end werden also alle Spalten der eben erzeugten Zeile durchlaufen 
 		for(var j = 0; j < arrayColumns; j++){
-			// Und geprŸft, ob die entsprechenden Zelle mit einem Hexatile versehen werden muss.
+			// Und geprï¿½ft, ob die entsprechenden Zelle mit einem Hexatile versehen werden muss.
 			if(hexatileOnMap(i,j)) {
 				// Wenn ja, dann wird ein Hexatile an der entsprechenden Zelle erzeugt und mit 
 				// Koordinaten versehen, welche sich von den Original Koordinaten unterscheiden,
 				// jedoch notwendig sind, damit dich die hexatiles resourcenschonend selbst 
-				// zeichnen und verwalten kšnnen.
+				// zeichnen und verwalten kï¿½nnen.
 				gameField[i][j] = new Hexatile(i - (cellsInLine - 1),j);
-				// In diesem Schritt wird anhand der vorher definierten Schwierigkeit zufŠllig ermittelt,
+				// In diesem Schritt wird anhand der vorher definierten Schwierigkeit zufï¿½llig ermittelt,
 				// ob es sich bei diesem Hexatile um eine Mine handeln soll, oder nicht.
 				gameField[i][j].isMine = ((Math.random() * 101) < difficulty);
 			}
@@ -300,7 +331,7 @@ function arrayBuild(){
 
 
 /**
- * Diese Funktion durchlŠuft das gesamte Array und stš§t das Neuzeichnen jeder einuzelnen Zelle an,
+ * Diese Funktion durchlï¿½uft das gesamte Array und stï¿½ï¿½t das Neuzeichnen jeder einuzelnen Zelle an,
  * wenn sie vorhanden ist.
  */
 function repaint(){
@@ -319,7 +350,7 @@ function repaint(){
 
 
 /**
- * Diese Funktion überprüft, ob ein Sieg besteht
+ * Diese Funktion ï¿½berprï¿½ft, ob ein Sieg besteht
  */
 function checkVictoryClick() {
 	for(var i = 0; i < arrayDimensionLine; i++) {
@@ -339,7 +370,7 @@ function checkVictoryClick() {
 
 
 /**
- * Diese Funktion überprüft, ob alle Minen markiert wurden
+ * Diese Funktion ï¿½berprï¿½ft, ob alle Minen markiert wurden
  */
 function checkVictoryMark() {
 	for(var i = 0; i < arrayDimensionLine; i++) {
@@ -359,9 +390,9 @@ function checkVictoryMark() {
 
 
 /**
- * Diese Funktion fŸhrt den Klick auf allen Zellen in der unmitelbaren Umgebung der †bergebenen Koordinaten
+ * Diese Funktion fï¿½hrt den Klick auf allen Zellen in der unmitelbaren Umgebung der ï¿½bergebenen Koordinaten
  * aus. Dabei handelt es sich um die Hexatileeigenen Koordinaten, welche innerhalb dieser Funktion auf
- * die Matrixkoordinaten zurŸckgerechnet werden mŸssen.
+ * die Matrixkoordinaten zurï¿½ckgerechnet werden mï¿½ssen.
  */
 function clickSurroundingMines(line, column){
 	// Da sich die Hexatile-Koordinaten und die Matrix-Koordinaten nur in der Zeile unterscheiden, muss nur diese
@@ -393,12 +424,12 @@ function clickSurroundingMines(line, column){
 
 
 /**
- * In dieser Funktion werden alle Minen im direkten Umfeld gezŠhlt relativ zu den †bergebenen Hexatile-Koordinaten.
- * Da sich die Hexatile-Koordinaten von den Matrix-Koordinaten unterscheiden, mŸssen dann erst die Hexatile-Koordinaten
- * in die Matrix-Koordinaten zurŸckgerechnet werden.
+ * In dieser Funktion werden alle Minen im direkten Umfeld gezï¿½hlt relativ zu den ï¿½bergebenen Hexatile-Koordinaten.
+ * Da sich die Hexatile-Koordinaten von den Matrix-Koordinaten unterscheiden, mï¿½ssen dann erst die Hexatile-Koordinaten
+ * in die Matrix-Koordinaten zurï¿½ckgerechnet werden.
  */
 function countSurroundingMines(line, column) {
-	// Hier wird gezŠhlt, wieviele Minen es im direkten Umfeld gibt
+	// Hier wird gezï¿½hlt, wieviele Minen es im direkten Umfeld gibt
 	var mineCounter = 0;
 
 	// Da sich die Hexatile-Koordinaten und die Matrix-Koordinaten nur in der Zeile unterscheiden, muss nur diese
@@ -423,7 +454,7 @@ function countSurroundingMines(line, column) {
 	if(hexatileOnMap(matLine + 1, column) && gameField[matLine + 1][column].isMine)
 		mineCounter++;
 
-	// Hier wird die Anzahl der gezŠhlten Minen zurŸck gegeben
+	// Hier wird die Anzahl der gezï¿½hlten Minen zurï¿½ck gegeben
 	return mineCounter;
 }
 
@@ -433,9 +464,9 @@ function countSurroundingMines(line, column) {
 
 
 /**
- * Diese Methode berechnet, ob ein Hexatile Ÿberhaupt auf der Map ist.
+ * Diese Methode berechnet, ob ein Hexatile ï¿½berhaupt auf der Map ist.
  * 
- * In der ersten Version bedeutet dies, ob ein Hexatile vollstŠndig auf dem Canvas ist.
+ * In der ersten Version bedeutet dies, ob ein Hexatile vollstï¿½ndig auf dem Canvas ist.
  */
 function hexatileOnMap(line, column) {
 	// Wenn die Koordinaten nichtmal in dem Array liegen, dann liegt das Hexatile eh nicht auf der Map
@@ -468,7 +499,7 @@ function hexatileOnMap(line, column) {
 
 
 /**
- * †berprŸft, ob die Koordinaten im Array Range sind.
+ * ï¿½berprï¿½ft, ob die Koordinaten im Array Range sind.
  */
 function coordinatesInArrayRange(line, column) {
 	if(line >=0 && line < arrayDimensionLine && column >= 0 && column < arrayDimensionColumn)
@@ -484,7 +515,7 @@ function coordinatesInArrayRange(line, column) {
 
 
 /**
- * In dieser Funktion wird ŸberprŸft, ob der Punkt vp in dem durch vt1, vt2 und vt3 beschriebenen Dreieck befindet
+ * In dieser Funktion wird ï¿½berprï¿½ft, ob der Punkt vp in dem durch vt1, vt2 und vt3 beschriebenen Dreieck befindet
  */
 function pointCollidesWithTriangle(vp, vt1, vt2, vt3) {
 	//  calculate vector vt1->vt2 (AB)
