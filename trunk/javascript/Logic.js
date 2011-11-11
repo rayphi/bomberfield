@@ -13,6 +13,10 @@ $(document).ready(function() {
 		time.Tick = timerTick;
 	}
 	
+	{ // Die Statistics initialisieren
+		statistics = new Statistics();
+	}
+	
 	// Hier wird das Image fï¿½r die Flaggen geladen
 	imageFlag = new Image();
 	imageFlag.src = "images/flag.png";
@@ -31,6 +35,9 @@ $(document).ready(function() {
 	
 	// Hier wird der New Game Button konfiguriert
 	$('#newGame').click(function(e){
+		if(alive) {
+			discard();
+		}
 		newGame();
 	});
 	
@@ -39,7 +46,7 @@ $(document).ready(function() {
 		
 		// Wenn der Timer noch nicht gestartet ist wird er gestartet
 		if(time.Enable == false && alive){
-			time.Start();
+			start();
 		}
 		
 		// Nur wenn man noch lebt
@@ -64,9 +71,7 @@ $(document).ready(function() {
 
 			// prï¿½fen, ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle leeren Zellen aufgedeckt wurden
 			if(checkVictoryClick()) {
-				time.Stop();
-				alive = false;
-				alert("Sie haben gewonnen! BenÃ¶tigte Zeit: " + seconds + " Sekunden");
+				win();
 			}
 		}
 
@@ -74,6 +79,11 @@ $(document).ready(function() {
 
 	// rechtsklick am canvas registrieren
 	$('#canvas').bind("contextmenu", function(e) {
+		
+		// Wenn der Timer noch nicht gestartet ist wird er gestartet
+		if(time.Enable == false && alive){
+			start();
+		}
 		
 		// Nur wenn man noch lebt
 		if(alive) {
@@ -97,9 +107,7 @@ $(document).ready(function() {
 			
 			// Ermitteln ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle Minen markiert wurden
 			if(checkVictoryMark()) {
-				time.Stop();
-				alive = false;
-				alert("Sie haben gewonnen! BenÃ¶tigte Zeit: " + seconds + " Sekunden");
+				win();
 			}
 		}
 		
@@ -231,6 +239,11 @@ var time;
  */ 
 var seconds;
 
+/**
+ * Das Statistics-Objekt
+ */
+var statistics;
+
 
 
 
@@ -244,6 +257,7 @@ function newGame() {
 	ctx.fillStyle = fsBackground;
 	ctx.fillRect(0,0,canvasWidth, canvasHeight);
 	
+	// Wenn der Timer widererwarten noch laufen sollte, dann muss er angehalten werden
 	if(time.Enable == true){
 		time.Stop();
 	}
@@ -253,6 +267,102 @@ function newGame() {
 	alive = true;
 	arrayBuild();
 	repaint();
+}
+
+
+
+
+
+
+/**
+ * Diese Funktion muss aufgerufen werden, wenn das Spiel gestartet wird.
+ * Achtung: Das Spiel startet erst, wenn der Spieler seine erste auf das Spielfeld bezogene
+ * Aktion tŠtigt.
+ */
+function start() {
+	time.Start();
+	statistics.addGame(difficulty, statistics.state.start);
+}
+
+
+
+
+
+
+/**
+ * Diese Funktion wird aufgerufen, wenn das Spiel gewonnen wurde.
+ */
+function win() {
+	time.Stop();
+	alive = false;
+	
+	statistics.addGame(difficulty, statistics.state.win);
+	statistics.addSeconds(difficulty, statistics.state.win, seconds);
+	statistics.addDiscovered(difficulty, statistics.state.win, calculateDiscoveredPercent());
+	
+	alert("Sie haben gewonnen! Benoetigte Zeit: " + seconds + " Sekunden");
+}
+
+
+
+
+
+
+/**
+ * Diese Funktion wird aufgerufen, wenn das Spiel verloren wurde.
+ */
+function lose() {
+	time.Stop();
+	alive = false;
+	
+	statistics.addGame(difficulty, statistics.state.lose);
+	statistics.addSeconds(difficulty, statistics.state.lose, seconds);
+	statistics.addDiscovered(difficulty, statistics.state.lose, calculateDiscoveredPercent());
+	
+	alert('Sie haben verloren! (' + seconds + 'sec)');
+}
+
+
+
+
+
+
+/**
+ * Diese Funktion wird aufgerufen, wenn das Spiel abgebrochen wurde.
+ */
+function discard() {
+	time.Stop();
+	
+	statistics.addSeconds(difficulty, statistics.state.discard, seconds);
+	statistics.addDiscovered(difficulty, statistics.state.discard, calculateDiscoveredPercent());
+}
+
+
+
+
+
+
+/**
+ * Diese Funktion berechnet die % der aktuell aufgedeckten leeren Zellen
+ */
+function calculateDiscoveredPercent() {
+	var cellCount = 0;
+	var openCells = 0;
+	
+	for(var i = 0; i < arrayDimensionLine; i++) {
+		for(var j = 0; j < arrayDimensionColumn; j++) {
+			if(hexatileOnMap(i, j)) {
+				if(!gameField[i][j].isMine) {
+					cellCount++;
+				}
+				if(gameField[i][j].isOpen) {
+					openCells++;
+				}
+			}
+		}
+	}
+	
+	return (cellCount * 100) / openCells;
 }
 
 
@@ -371,17 +481,22 @@ function repaint(){
 
 
 /**
- * Diese Funktion ï¿½berprï¿½ft, ob ein Sieg besteht
+ * Diese Funktion Ueberprueft, ob ein Sieg besteht
  */
 function checkVictoryClick() {
+	// Dazu muss die gesamte Matrix durchlaufen werden
 	for(var i = 0; i < arrayDimensionLine; i++) {
 		for(var j = 0; j < arrayDimensionColumn; j++) {
+			// Und fuer jede Zelle muss geprueft werden, ob sie auf der Map ist
 			if(hexatileOnMap(i,j))
+				// Dann wird geprueft, ob diese Zelle noch verdeckt und keine Mine ist
 				if(!gameField[i][j].isOpen && !gameField[i][j].isMine)
-						return false;
+					// in diesem Fall hat man noch nicht durch audecken aller leeren Felder gewonnen
+					return false;
 		}
 	}
 
+	// An dieser Stelle ist klar, dass alle leeren Felder aufgedeckt wurden 
 	return true;
 }
 
@@ -391,17 +506,22 @@ function checkVictoryClick() {
 
 
 /**
- * Diese Funktion ï¿½berprï¿½ft, ob alle Minen markiert wurden
+ * Diese Funktion Ueberprueft, ob alle Minen markiert wurden
  */
 function checkVictoryMark() {
+	// Dazu muss Ÿber die gesamte Matrix iteriert werden
 	for(var i = 0; i < arrayDimensionLine; i++) {
 		for(var j = 0; j < arrayDimensionColumn; j++) {
+			// Und fuer jede Zelle muss geprueft werden, ob sie auf der Map ist
 			if(hexatileOnMap(i,j))
+				// Dann wird geprueft, ob diese Zelle eine Mine und unmarkiert ist
 				if(gameField[i][j].isMine && !gameField[i][j].isMarked)
+					// dies wuerde bedeuten, das man nicht durch markieren gewonnen hat
 					return false;
 		}
 	}
 	
+	// Hier angekommen ist klar, das der Spieler durch markieren gewonnen hat
 	return true;
 }
 
