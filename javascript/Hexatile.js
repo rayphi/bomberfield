@@ -151,7 +151,7 @@ Hexatile.prototype.clicked = function() {
 		alive = false;
 		repaint();
 		time.Stop();
-		alert('Sie haben verloren!');
+		alert('Sie haben verloren! (' + seconds + 'sec)');
 		return;
 	} 
 

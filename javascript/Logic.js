@@ -1,25 +1,18 @@
 /**
  * TODO Doku
  */
-
-/**
- * TODO Timer initialisierung an dieser stelle sinvoll?
- */
-var time = new Timer();
-//Die Startzeit wird festgelegt
-var index = 0;
-/* die function die zur definierten frequenz (default: 1000ms) 
- * aufgerufen wird wird festgelegt
- */ 
-time.Tick = timer_tick;
-
-//Hier wird der timer um eins erhöht und die aktuelle Zeit wird Ausgegeben
-function timer_tick() {
-	index  = index + 1;
-	$('div#timer').html(index);
-}
-
 $(document).ready(function() {
+	
+	{ // Timer initialisieren
+		// Einen neuen Timer erzeugen
+		time = new Timer();
+	
+		/* die function die zur definierten frequenz (default: 1000ms) 
+		 * aufgerufen wird wird festgelegt
+		 */ 
+		time.Tick = timerTick;
+	}
+	
 	// Hier wird das Image f�r die Flaggen geladen
 	imageFlag = new Image();
 	imageFlag.src = "images/flag.png";
@@ -73,7 +66,7 @@ $(document).ready(function() {
 			if(checkVictoryClick()) {
 				time.Stop();
 				alive = false;
-				alert("Sie haben gewonnen! Benötigte Zeit: " + index + " Sekunden");
+				alert("Sie haben gewonnen! Benötigte Zeit: " + seconds + " Sekunden");
 			}
 		}
 
@@ -106,7 +99,7 @@ $(document).ready(function() {
 			if(checkVictoryMark()) {
 				time.Stop();
 				alive = false;
-				alert("Sie haben gewonnen! Benötigte Zeit: " + index + " Sekunden");
+				alert("Sie haben gewonnen! Benötigte Zeit: " + seconds + " Sekunden");
 			}
 		}
 		
@@ -120,30 +113,6 @@ $(document).ready(function() {
 	// Ein neues Spiel starten
 	newGame();
 });
-
-
-
-
-
-
-/**
- * Diese Funktion startet ein neues Spiel
- */
-function newGame() {
-	// Das Spielfeld leeren
-	ctx.fillStyle = fsBackground;
-	ctx.fillRect(0,0,canvasWidth, canvasHeight);
-	
-	if(time.Enable == true){
-		time.Stop();
-	}
-	index = 0;
-	$('div#timer').html(index);
-	
-	alive = true;
-	arrayBuild();
-	repaint();
-}
 
 
 
@@ -248,6 +217,53 @@ var fsClosed = "rgb(50, 50, 255)";
 var fsExplode = "rgb(255,0,0)";
 var fsBackground = "rgb(255,255,255)";
 
+/**
+ * Der Timer
+ */
+var time;
+/**
+ * Hier werden die bisher f�r die aktuelle Runde ben�tigten Sekunden abgelegt
+ */ 
+var seconds;
+
+
+
+
+
+
+/**
+ * Diese Funktion startet ein neues Spiel
+ */
+function newGame() {
+	// Das Spielfeld leeren
+	ctx.fillStyle = fsBackground;
+	ctx.fillRect(0,0,canvasWidth, canvasHeight);
+	
+	if(time.Enable == true){
+		time.Stop();
+	}
+	seconds = 0;
+	$('div#timer').html(seconds);
+	
+	alive = true;
+	arrayBuild();
+	repaint();
+}
+
+
+
+
+
+
+/**
+ * Diese Funktion soll vom Timer verwendet werden, um die Zeit zu tracken
+ * Hier wird der timer um eins erhöht und die aktuelle Zeit wird Ausgegeben
+ */ 
+function timerTick() {
+	seconds  = seconds + 1;
+	$('div#timer').html(seconds);
+}
+
 
 
 
@@ -270,7 +286,7 @@ function arrayBuild(){
 
 	// In diesem Block finden die Berechnungen statt, welche die Dimension des Spielfeldes berechnen sollen.
 	// In der ersten Version des SPiels soll sich das Spielfeld aus der Gr��e des Canvas ableiten.
-	// In sp�teren Versionen soll das Spielfeld auch gr��er gew�hlt werden k�nnen.
+	// In spaeteren Versionen soll das Spielfeld auch groesser gew�hlt werden k�nnen.
 	{
 		// Hier wird berechnet, wieviele Hexatiles in die erste Zeile des canvas passen
 		cellsInLine = canvasWidth  / cellWidth;
