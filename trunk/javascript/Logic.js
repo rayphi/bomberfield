@@ -187,9 +187,14 @@ var arrayDimensionColumn;
 var gameField;
 
 /**
+ * Hier werden alle möglichen Schwierigkeitsgrade als enum gespeichert
+ */
+var difficulties = {"easy" : 10, "medium" : 20, "hard" : 30};
+
+/**
  * Der Schwierigkeitsgrad
  */
-var difficulty = 10;
+var difficulty = difficulties.easy;
 
 /**
  * Der canvas kontext
