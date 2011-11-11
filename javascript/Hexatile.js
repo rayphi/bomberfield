@@ -148,10 +148,10 @@ Hexatile.prototype.clicked = function() {
 		// ... wird diese jetzt explodieren
 		// TODO explodierende Mine? verlust sihchtbar darstellen 
 
-		alive = false;
 		repaint();
-		time.Stop();
-		alert('Sie haben verloren! (' + seconds + 'sec)');
+		
+		lose();
+		
 		return;
 	} 
 
