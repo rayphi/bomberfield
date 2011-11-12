@@ -26,7 +26,7 @@ $(document).ready(function() {
 	imageMine.src = "images/mine.png";
 
 	// Hier wird der CSS Style fï¿½r das canvas angepasst
-	$('#canvas').css('width', canvasWidth + 'px');
+	$('#canvas, #wrapper').css('width', canvasWidth + 'px');
 	$('#canvas').css('height', canvasHeight + 'px');
 
 	// Hier wird der Backgroundbuffer des canvas angepasst
@@ -195,7 +195,7 @@ var arrayDimensionColumn;
 var gameField;
 
 /**
- * Hier werden alle möglichen Schwierigkeitsgrade als enum gespeichert
+ * Hier werden alle mï¿½glichen Schwierigkeitsgrade als enum gespeichert
  */
 var difficulties = {"easy" : 10, "medium" : 20, "hard" : 30};
 
@@ -235,7 +235,7 @@ var fsBackground = "rgb(255,255,255)";
  */
 var time;
 /**
- * Hier werden die bisher für die aktuelle Runde benötigten Sekunden abgelegt
+ * Hier werden die bisher fï¿½r die aktuelle Runde benï¿½tigten Sekunden abgelegt
  */ 
 var seconds;
 
@@ -277,7 +277,7 @@ function newGame() {
 /**
  * Diese Funktion muss aufgerufen werden, wenn das Spiel gestartet wird.
  * Achtung: Das Spiel startet erst, wenn der Spieler seine erste auf das Spielfeld bezogene
- * Aktion tŠtigt.
+ * Aktion tï¿½tigt.
  */
 function start() {
 	time.Start();
@@ -376,7 +376,7 @@ function calculateDiscoveredPercent() {
  */ 
 function timerTick() {
 	seconds  = seconds + 1;
-	$('div#timer').html(seconds);
+	$('#timer').html(seconds);
 }
 
 
@@ -509,7 +509,7 @@ function checkVictoryClick() {
  * Diese Funktion Ueberprueft, ob alle Minen markiert wurden
  */
 function checkVictoryMark() {
-	// Dazu muss Ÿber die gesamte Matrix iteriert werden
+	// Dazu muss ï¿½ber die gesamte Matrix iteriert werden
 	for(var i = 0; i < arrayDimensionLine; i++) {
 		for(var j = 0; j < arrayDimensionColumn; j++) {
 			// Und fuer jede Zelle muss geprueft werden, ob sie auf der Map ist
