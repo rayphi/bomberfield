@@ -364,7 +364,7 @@ function Statistics() {
 		
 		case this.state.win: {
 			if(!discoveredPercentWon[difficulty]) {
-				didiscoveredPercentWon[difficulty] = 0;
+				discoveredPercentWon[difficulty] = 0;
 			}
 			discoveredPercentWon[difficulty] = (discoveredPercentWon[difficulty] + discoveredPercent) / 2;
 		}
