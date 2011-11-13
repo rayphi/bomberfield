@@ -12,7 +12,7 @@ function Vector(x, y) {
 
 
 /**
- * Addiert zwei Vectoren miteinander und gibt den resultierenden Vector zur웒k
+ * Addiert zwei Vectoren miteinander und gibt den resultierenden Vector zur체ck
  */ 
 Vector.prototype.add = function(v) {
 	return new Vector(this.x + v.x, this.y + v.y);
@@ -21,7 +21,7 @@ Vector.prototype.add = function(v) {
 
 
 /**
- * Subrahiert einen Vector von einem anderen und gibt den resultierenden Vector zur웒k
+ * Subrahiert einen Vector von einem anderen und gibt den resultierenden Vector zur체ck
  */
 Vector.prototype.sub = function (v) {
 	return new Vector(this.x - v.x, this.y - v.y);
@@ -30,7 +30,7 @@ Vector.prototype.sub = function (v) {
 
 
 /**
- * Multipliziert den Vector mit einem Faktor und gibt den resultierenden Vektor zur웒k
+ * Multipliziert den Vector mit einem Faktor und gibt den resultierenden Vektor zur체ck
  */
 Vector.prototype.mult = function (factor) {
 	return new Vector(this.x * factor, this.y * factor);
@@ -39,7 +39,7 @@ Vector.prototype.mult = function (factor) {
 
 
 /**
- * Dividiert den Vector durch einen factor und gibt den resultierenden Vektor zur웒k
+ * Dividiert den Vector durch einen factor und gibt den resultierenden Vektor zur체ck
  */
 Vector.prototype.div = function(factor) {
 	return new Vector(this.x / factor, this.y / factor);
@@ -48,7 +48,7 @@ Vector.prototype.div = function(factor) {
 
 
 /**
- * Multipiziert diese Vector mit dem 웑ergebenen Vector und gibt das Ergebnis zur웒k
+ * Multipiziert diese Vector mit dem 체bergebenen Vector und gibt das Ergebnis zur체ck
  */
 Vector.prototype.vectorMult = function(v) {
 	return new Vector(this.x * v.x, this.y * v.y);
@@ -57,7 +57,7 @@ Vector.prototype.vectorMult = function(v) {
 
 
 /**
- * Diese Funktion berechnet den Einheitsvektor und gibt diesen zur웒k
+ * Diese Funktion berechnet den Einheitsvektor und gibt diesen zur체ck
  */
 Vector.prototype.unitVector = function() {
 	return this.div(this.absolute());
@@ -66,7 +66,7 @@ Vector.prototype.unitVector = function() {
 
 
 /**
- * Berechnet die L둵ge des Vektors und gibt sie zur웒k
+ * Berechnet die L채nge des Vektors und gibt sie zur체ck
  */
 Vector.prototype.absolute = function() {
 	return Math.sqrt((this.x * this.x) + (this.y * this.y));
@@ -75,7 +75,7 @@ Vector.prototype.absolute = function() {
 
 
 /**
- * Gibt den Vector als String zur웒k
+ * Gibt den Vector als String zur체ck
  */
 Vector.prototype.toString = function () {
 	return x+","+y;

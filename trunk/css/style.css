@@ -12,6 +12,7 @@
 
 #HUD {
 	margin: 15px 0 0 0;
+	float: left;
 }
 
 #canvas{
@@ -26,4 +27,13 @@
 #newGame {
 	float: left;
 	margin: 0 10px 0 0;
+}
+
+#difficulty {
+	float: left;
+	margin: 0 10px 0 0;
+}
+#debug-information {
+	float: left;
+	margin: 5px 0 10px 0;
 }

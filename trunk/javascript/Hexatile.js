@@ -69,7 +69,7 @@ Hexatile.prototype.draw = function(ctx) {
 
 	} else if(this.isOpen == true && this.isMine == false) {
 
-		// In diesen Zeilen wird abh�ngig von der Anzahl der Nachbarminen die Hintergrundfarbe des Hexagon gesetzt
+		// In diesen Zeilen wird abhängig von der Anzahl der Nachbarminen die Hintergrundfarbe des Hexagon gesetzt
 		if(this.surroundingMines == 0)
 			ctx.fillStyle = fs0Mines;
 		if(this.surroundingMines == 1)
@@ -119,7 +119,7 @@ Hexatile.prototype.draw = function(ctx) {
 	// Hier wird das Hexatile mit einer Zahl versehen, sollte es aufgedeckt sein, keine 
 	// Mine enthalten und mindestens eine Mine als Nachbarn habn.
 	else if(this.isOpen && (!this.isMine) && this.surroundingMines > 0) {
-		// TODO sch�ner machen
+		// TODO schöner machen
 		ctx.fillStyle = fsText;
 		ctx.fillText(this.surroundingMines, cellVector.x + (cellWidth/2), cellVector.y+(cellHeight/2));
 	}
@@ -129,7 +129,7 @@ Hexatile.prototype.draw = function(ctx) {
 
 
 /**
- * Wird ausgef�hrt, wenn auf die Zelle geklickt wurde
+ * Wird ausgeführt, wenn auf die Zelle geklickt wurde
  */
 Hexatile.prototype.clicked = function() {
 	// Wenn die Zelle bereits angeklickt wurde, dann muss nichts gemacht werden
@@ -158,7 +158,7 @@ Hexatile.prototype.clicked = function() {
 	// Wenn die Zelle keine Mine ist, dann ...
 	this.surroundingMines = countSurroundingMines(this.line, this.column);
 
-	// Wenn es keine Nachbarminen gibt, m�ssen ale Nachbarzellen geklickt werden
+	// Wenn es keine Nachbarminen gibt, müssen ale Nachbarzellen geklickt werden
 	if (this.surroundingMines == 0) {
 		clickSurroundingMines(this.line, this.column);
 	}
@@ -168,7 +168,7 @@ Hexatile.prototype.clicked = function() {
 
 
 /**
- * Gibt einen String zur�ck, welcher die Daten der Zelle textuell wiedergibt
+ * Gibt einen String zurück, welcher die Daten der Zelle textuell wiedergibt
  */
 Hexatile.prototype.toString = function() {
 	//TODO generate and return nice string
@@ -182,12 +182,12 @@ Hexatile.prototype.toString = function() {
 Hexatile.prototype.collides = function(vector) {
 	var cellVector = offsetVector.add(lineVector.mult(this.line).add(columnVector.mult(this.column)));
 
-	// Erst wird gepr�ft, ob der Klick innerhalb des Rechtecks stattfand, welches dieses Hexagon beschreibt
+	// Erst wird geprüft, ob der Klick innerhalb des Rechtecks stattfand, welches dieses Hexagon beschreibt
 	if(vector.x > cellVector.x && vector.x < (cellVector.x + cellWidth) &&
 			vector.y > cellVector.y && vector.y < (cellVector.y + cellHeight)) {
 
 		/**
-		 * Im folgenden wird �berpr�ft, ob der Klick in einem der vier au�erhalb des Hexagon liegenden
+		 * Im folgenden wird überprüft, ob der Klick in einem der vier außerhalb des Hexagon liegenden
 		 * Dreiecke gelandet ist. Wenn ja, dann wurde das Hexagon nicht getroffen.
 		 */
 		// oben links
