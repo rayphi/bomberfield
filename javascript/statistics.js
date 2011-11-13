@@ -1,6 +1,6 @@
 /**
- * Diese Klasse ist zur Erhebung von Statistiken gedacht. Hier können Informationen hinterlegt werden,
- * die statistische Relevanz für Bomberfield haben.
+ * Diese Klasse ist zur Erhebung von Statistiken gedacht. Hier k√∂nnen Informationen hinterlegt werden,
+ * die statistische Relevanz f√ºr Bomberfield haben.
  */
 function Statistics() {
 	/**
@@ -59,16 +59,16 @@ function Statistics() {
 	var discoveredPercentDiscarded = {};
 	
 	/**
-	 * Mit dieser Funktion kann man die Anzahl der Spiele des gewünschten Status und der gewünschten Schwierigkeit auslesen
+	 * Mit dieser Funktion kann man die Anzahl der Spiele des gew√ºnschten Status und der gew√ºnschten Schwierigkeit auslesen
 	 */
 	this.getGames = function(difficulty, state) {
 		
 		// Ueber den state switchen
 		switch(state) {
 		
-		// Es soll die Anzahl der insgesamt gestarteten Spiele zurückgegeben werden
+		// Es soll die Anzahl der insgesamt gestarteten Spiele zur√ºckgegeben werden
 		case this.state.start: {
-			// Prüfen ob für die gewünschte Schwierigkeit ein Wert gesetzt wurde
+			// Pr√ºfen ob f√ºr die gew√ºnschte Schwierigkeit ein Wert gesetzt wurde
 			if(gamesTotal[difficulty]) {
 				return gamesTotal[difficulty];
 			}
@@ -76,9 +76,9 @@ function Statistics() {
 		}
 		break;
 		
-		// Es soll die Anzahl der gewonnenen Spiele zurückgegeben werden		
+		// Es soll die Anzahl der gewonnenen Spiele zur√ºckgegeben werden		
 		case this.state.win: {
-			// Prüfen ob für die gewünschte Schwierigkeit ein Wert gesetzt wurde
+			// Pr√ºfen ob f√ºr die gew√ºnschte Schwierigkeit ein Wert gesetzt wurde
 			if(gamesWon[difficulty]) {				
 				return gamesWon[difficulty];
 			}
@@ -86,9 +86,9 @@ function Statistics() {
 		}
 		break;
 		
-		// Es soll die Anzahl der verlorenen Spiele zurückgegeben werden
+		// Es soll die Anzahl der verlorenen Spiele zur√ºckgegeben werden
 		case this.state.lose: {
-			// Prüfen ob für die gewünschte Schwierigkeit ein Wert gesetzt wurde
+			// Pr√ºfen ob f√ºr die gew√ºnschte Schwierigkeit ein Wert gesetzt wurde
 			if(gamesLost[difficulty]) {
 				return gamesLost[difficulty];
 			}
@@ -96,18 +96,18 @@ function Statistics() {
 		}
 		break;
 		
-		// Es soll die Anzahl der abgebrochenen Spiele zurückgegeben werden
+		// Es soll die Anzahl der abgebrochenen Spiele zur√ºckgegeben werden
 		case this.state.discard: {
 			var winPlusLost = 0;
-			// Prüfen ob für die gewünschte Schwierigkeit an den gewonnenen Spielen ein Wert gesetzt wurde
+			// Pr√ºfen ob f√ºr die gew√ºnschte Schwierigkeit an den gewonnenen Spielen ein Wert gesetzt wurde
 			if(gamesWon[difficulty]) {
 				winPlusLost = winPlusLost + gamesWon[difficulty]; 
 			}
-			// Prüfen ob für die gewünschte Schwierigkeit an den verlorenen Spielen ein Wert gesetzt wurde
+			// Pr√ºfen ob f√ºr die gew√ºnschte Schwierigkeit an den verlorenen Spielen ein Wert gesetzt wurde
 			if(gamesLost[difficulty]) {
 				winPlusLost = winPlusLost + gamesLost[difficulty];
 			}
-			// Prüfen ob für die gewünschte Schwierigkeit an den insgesamt gestarteten Spielen ein Wert gesetzt wurde
+			// Pr√ºfen ob f√ºr die gew√ºnschte Schwierigkeit an den insgesamt gestarteten Spielen ein Wert gesetzt wurde
 			if(gamesTotal[difficulty]) {
 				return gamesTotal[difficulty] - winPlusLost;
 			}
@@ -121,14 +121,14 @@ function Statistics() {
 	};
 
 	/**
-	 * Mit dieser Funktion kann man die gespielte Zeit des gewünschten Status und der gewünschten Schwierigkeit auslesen
+	 * Mit dieser Funktion kann man die gespielte Zeit des gew√ºnschten Status und der gew√ºnschten Schwierigkeit auslesen
 	 */
 	this.getSeconds = function(difficulty, state) {
 		
 		// Ueber die state switchen
 		switch(state) {
 		
-		// Die insgesamt gespielte Zeit in Sekunden der gewünschten Schwierigkeit zurückgeben
+		// Die insgesamt gespielte Zeit in Sekunden der gew√ºnschten Schwierigkeit zur√ºckgeben
 		case this.state.start: {
 			// Pruefen, ob Zeiten fuer die gewuenschte schwierigkeit gesetzt sind
 			if(secondsTotal[difficulty]) {
@@ -138,7 +138,7 @@ function Statistics() {
 		}
 		break;
 		
-		// Die gespielte Zeit aller gewonnenen Spiele der gewünschten Schwierigkeit zurückgeben
+		// Die gespielte Zeit aller gewonnenen Spiele der gew√ºnschten Schwierigkeit zur√ºckgeben
 		case this.state.win: {
 			// Pruefen, ob Zeiten fuer die gewuenschte schwierigkeit gesetzt sind
 			if(secondsWon[difficulty]) {
@@ -148,7 +148,7 @@ function Statistics() {
 		}
 		break;
 		
-		// Die gespielte Zeit aller verlorenen Spiele der gewünschten Schwierikeit zurückgeben
+		// Die gespielte Zeit aller verlorenen Spiele der gew√ºnschten Schwierikeit zur√ºckgeben
 		case this.state.lose: {
 			if(secondsLost[difficulty]) {
 				return secondsLost[difficulty];
@@ -157,18 +157,18 @@ function Statistics() {
 		}
 		break;
 		
-		// Die gespielte Zeit aller abgebrochenen Spiele der gewünschten Schwierigkeit zurückgeben
+		// Die gespielte Zeit aller abgebrochenen Spiele der gew√ºnschten Schwierigkeit zur√ºckgeben
 		case this.state.discard: {
 			var wonPlusLost = 0;
-			// Prüfen ob für die gewünschte Schwierigkeit an den gewonnenen Spielen ein Wert gesetzt wurde
+			// Pr√ºfen ob f√ºr die gew√ºnschte Schwierigkeit an den gewonnenen Spielen ein Wert gesetzt wurde
 			if(secondsWon[difficulty]) {
 				wonPlusLost = wonPlusLost + secondsWon[difficulty]; 
 			}
-			// Prüfen ob für die gewünschte Schwierigkeit an den verlorenen Spielen ein Wert gesetzt wurde
+			// Pr√ºfen ob f√ºr die gew√ºnschte Schwierigkeit an den verlorenen Spielen ein Wert gesetzt wurde
 			if(secondsLost[difficulty]) {
 				wonPlusLost = wonPlusLost + secondsLost[difficulty];
 			}
-			// Prüfen ob für die gewünschte Schwierigkeit an den insgesamt gestarteten Spielen ein Wert gesetzt wurde
+			// Pr√ºfen ob f√ºr die gew√ºnschte Schwierigkeit an den insgesamt gestarteten Spielen ein Wert gesetzt wurde
 			if(secondsTotal[difficulty]) {
 				return secondsTotal[difficulty] - wonPlusLost;
 			}
@@ -182,7 +182,7 @@ function Statistics() {
 	};
 	
 	/**
-	 * Diese Funktion gibt die Bestzeit der gewuenschten Schwierigkeit zurück
+	 * Diese Funktion gibt die Bestzeit der gewuenschten Schwierigkeit zur√ºck
 	 */
 	this.getBestSeconds = function(difficulty) {
 		if(secondsBest[difficulty]) {
@@ -192,14 +192,14 @@ function Statistics() {
 	};
 	
 	/**
-	 * Diese Funktion gibt die % der freigelegten Zellen der gewünschten Schwierigkeit und dem gewünschten Status zurück
+	 * Diese Funktion gibt die % der freigelegten Zellen der gew√ºnschten Schwierigkeit und dem gew√ºnschten Status zur√ºck
 	 */
 	this.getDiscoveredPercent = function(difficulty, state) {
 		
 		// Ueber den state switchen
 		switch(state) {
 		
-		// Gibt die % der aufgedeckten Zellen aller gespielten Spiele der gewünschten Schwierigkeit zurück
+		// Gibt die % der aufgedeckten Zellen aller gespielten Spiele der gew√ºnschten Schwierigkeit zur√ºck
 		case this.state.start: {
 			var games = 0;
 			var totalPercent = 0;
@@ -226,7 +226,7 @@ function Statistics() {
 		}
 		break;
 		
-		// Gibt die % der aufgedeckten Zellen aller gewonnenen Spiele der gewünschten Schwierigkeit zurück
+		// Gibt die % der aufgedeckten Zellen aller gewonnenen Spiele der gew√ºnschten Schwierigkeit zur√ºck
 		case this.state.win: {
 			if(discoveredPercentWon[difficulty]) {
 				return discoveredPercentWon[difficulty];
@@ -235,7 +235,7 @@ function Statistics() {
 		}
 		break;
 		
-		// Gibt die % der aufgedeckten Zellen aller verlorenen Spiele der gewünschten Schwierigkeit zurück
+		// Gibt die % der aufgedeckten Zellen aller verlorenen Spiele der gew√ºnschten Schwierigkeit zur√ºck
 		case this.state.lose: {
 			if(discoveredPercentLost[difficulty]) {
 				return discoveredPercentLost[difficulty];
@@ -244,7 +244,7 @@ function Statistics() {
 		}
 		break;
 		
-		// Gibt die % der aufgedeckten Zellen aller abgebrochenen Spiele der gewünschten Schwierigkeit zurück
+		// Gibt die % der aufgedeckten Zellen aller abgebrochenen Spiele der gew√ºnschten Schwierigkeit zur√ºck
 		case this.state.discard: {
 			if(discoveredPercentDiscarded[difficulty]) {
 				return discoveredPercentDiscarded[difficulty];
@@ -253,13 +253,13 @@ function Statistics() {
 		}
 		break;
 		
-		// Weitere Stati werden nicht unterstützt
+		// Weitere Stati werden nicht unterst√ºtzt
 		default: return -1;
 		}
 	};
 	
 	/**
-	 * Mit dieser Funktion fügt man der Statistik ein Spiel hinzu. Über die Stati state.win, state.lose, state.start und state.discard
+	 * Mit dieser Funktion f√ºgt man der Statistik ein Spiel hinzu. √ºber die Stati state.win, state.lose, state.start und state.discard
 	 * gib man an, welcher Art die Informtion ist.
 	 * 
 	 * state.win = ein gewonnenes Spiel
@@ -268,7 +268,7 @@ function Statistics() {
 	 * state.discard = ein abgebrochenes Spiel
 	 */
 	this.addGame = function(difficulty, state) {
-		// ‹ber den gew¸nschten Status switchen
+		// √ºber den gew√ºnschten Status switchen
 		switch(state) {
 		
 		// Handelt es sich um ein gewonnenes Spiel
@@ -303,7 +303,7 @@ function Statistics() {
 	};
 
 	/**
-	 * Diese Funktion fügt den Statistiken die Anzahl von benötigten Sekunden hinzu, geordnet nach
+	 * Diese Funktion f√ºgt den Statistiken die Anzahl von ben√∂tigten Sekunden hinzu, geordnet nach
 	 * Schwierigkeit.
 	 */
 	this.addSeconds = function(difficulty, state, seconds) {
@@ -319,13 +319,13 @@ function Statistics() {
 		
 		// Handelt es sich um ein gewonnenes Spiel muss geprueft werden, ob es sich um eine neue Bestzeit handelt
 		case this.state.win: {
-			// Die Sekunden der gewonnenen Spiele hinzufügen
+			// Die Sekunden der gewonnenen Spiele hinzuf√ºgen
 			if(!secondsWon[difficulty]) {
 				secondsWon[difficulty] = 0;
 			} 
 			secondsWon[difficulty] = secondsWon[difficulty] + seconds;
 		
-			// Auf neue Bestzeit prüfen
+			// Auf neue Bestzeit pr√ºfen
 			if(!secondsBest[difficulty]) {
 				secondsBest[difficulty] = seconds;
 			} else {
@@ -338,7 +338,7 @@ function Statistics() {
 		
 		// Wenn es sich um ein verlorenes Spiel handelt
 		case this.state.lose: {
-			// Die Sekunden den verlorenen Spielen hinzufügen
+			// Die Sekunden den verlorenen Spielen hinzuf√ºgen
 			if(!secondsLost[difficulty]) {
 				secondsLost[difficulty] = 0;
 			} 
@@ -346,15 +346,15 @@ function Statistics() {
 		}
 		break;
 		
-		// Die Zeiten für abgebrochene Spiele könen aktuell noch aus den gegebenen Statistiken abgeleitet werden
+		// Die Zeiten f√ºr abgebrochene Spiele k√∂nnen aktuell noch aus den gegebenen Statistiken abgeleitet werden
 		
 		default: break;
 		}
 	};
 	
 	/**
-	 * Hier koennen Informationen über die durchschnittliche % Menge der aufgedeckten Zellen je Spiel hinzugefuegt
-	 * werden. Für gewonnene Spiele muss nichts gepflet werden, da der insgesamte Durchschnitt aus den 
+	 * Hier koennen Informationen √ºber die durchschnittliche % Menge der aufgedeckten Zellen je Spiel hinzugefuegt
+	 * werden. F√ºr gewonnene Spiele muss nichts gepflet werden, da der insgesamte Durchschnitt aus den 
 	 * Statistiken abgeleitet werden kann
 	 */
 	this.addDiscovered = function(difficulty, state, discoveredPercent) {

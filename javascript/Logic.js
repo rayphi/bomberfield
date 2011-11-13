@@ -6,7 +6,7 @@ $(document).ready(function() {
 	{ // Timer initialisieren
 		// Einen neuen Timer erzeugen
 		time = new Timer();
-	
+		time.Enable = false;
 		/* die function die zur definierten frequenz (default: 1000ms) 
 		 * aufgerufen wird wird festgelegt
 		 */ 
@@ -17,15 +17,15 @@ $(document).ready(function() {
 		statistics = new Statistics();
 	}
 	
-	// Hier wird das Image f�r die Flaggen geladen
+	// Hier wird das Image für die Flaggen geladen
 	imageFlag = new Image();
 	imageFlag.src = "images/flag.png";
 
-	// Hier wird das Image f�r die Minen geladen
+	// Hier wird das Image für die Minen geladen
 	imageMine = new Image();
 	imageMine.src = "images/mine.png";
 
-	// Hier wird der CSS Style f�r das canvas angepasst
+	// Hier wird der CSS Style für das canvas angepasst
 	$('#canvas, #wrapper').css('width', canvasWidth + 'px');
 	$('#canvas').css('height', canvasHeight + 'px');
 
@@ -51,7 +51,7 @@ $(document).ready(function() {
 		
 		// Nur wenn man noch lebt
 		if(alive) {
-			// Hier werden die Koordinaten des Klick in f�r das Spiel verwertbare Koordinaten umgewandelt
+			// Hier werden die Koordinaten des Klick in für das Spiel verwertbare Koordinaten umgewandelt
 			clickVector = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop).sub(offsetVector);
 
 			// Hier wird die geklickte Zelle ermittelt und letztenendes wirklich geklickt
@@ -69,7 +69,7 @@ $(document).ready(function() {
 			// Das Spielfeld neu zeichnen
 			repaint();
 
-			// pr�fen, ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle leeren Zellen aufgedeckt wurden
+			// prüfen, ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle leeren Zellen aufgedeckt wurden
 			if(checkVictoryClick()) {
 				win();
 			}
@@ -87,7 +87,7 @@ $(document).ready(function() {
 		
 		// Nur wenn man noch lebt
 		if(alive) {
-			// Hier werden die Koordinaten des Klick in f�r das Spiel verwertbare Koordinaten umgewandelt
+			// Hier werden die Koordinaten des Klick in für das Spiel verwertbare Koordinaten umgewandelt
 			clickVector = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop).sub(offsetVector);
 
 			// Hier wird die gerechtsklickte Zelle ermittelt und markiert
@@ -131,12 +131,12 @@ $(document).ready(function() {
  * Globale Variablen
  * ************************************************/
 /**
- * Hier wird das image f�r die Flagge gespeichert
+ * Hier wird das image für die Flagge gespeichert
  */
 var imageFlag;
 
 /**
- * Hier wird das Image f�r die Mine gespeichert
+ * Hier wird das Image für die Mine gespeichert
  */
 var imageMine;
 
@@ -150,7 +150,7 @@ var offsetVector = new Vector(0,0);
  */
 var cellWidth = 50;
 /**
- * Die H�he des Rechtecks in das die Zelle gezeichnet werden soll
+ * Die Höhe des Rechtecks in das die Zelle gezeichnet werden soll
  */
 var cellHeight = 50;
 
@@ -170,7 +170,7 @@ var columnVector = new Vector(cellWidth/2, (cellHeight * 3) / 4);
  */
 var canvasWidth = 800;
 /**
- * canvasHeight gibt die H�he des canvas vor
+ * canvasHeight gibt die Höhe des canvas vor
  */
 var canvasHeight = 425;
 
@@ -195,9 +195,9 @@ var arrayDimensionColumn;
 var gameField;
 
 /**
- * Hier werden alle m�glichen Schwierigkeitsgrade als enum gespeichert
+ * Hier werden alle möglichen Schwierigkeitsgrade als enum gespeichert
  */
-var difficulties = {"easy" : 10, "medium" : 20, "hard" : 30};
+var difficulties = {"easy" : 10, "medium" : 20, "hard" : 30, "debug" : 2};
 
 /**
  * Der Schwierigkeitsgrad
@@ -235,7 +235,7 @@ var fsBackground = "rgb(255,255,255)";
  */
 var time;
 /**
- * Hier werden die bisher f�r die aktuelle Runde ben�tigten Sekunden abgelegt
+ * Hier werden die bisher für die aktuelle Runde benötigten Sekunden abgelegt
  */ 
 var seconds;
 
@@ -244,10 +244,26 @@ var seconds;
  */
 var statistics;
 
-
-
-
-
+/**
+ * Diese Funktion setzt den Schwierigkeitsgrad 
+ * der im Frontend ausgewählt werden kann
+ */
+function setDifficulty() {
+	switch($('#difficulty').attr('value')) {
+		case "0":
+			difficulty = difficulties.easy;
+			break;
+		case "1":
+			difficulty = difficulties.medium;
+			break;
+		case "2":
+			difficulty = difficulties.hard;
+			break;
+		case "3":
+			difficulty = difficulties.debug;
+			break;
+	}
+}
 
 /**
  * Diese Funktion startet ein neues Spiel
@@ -256,15 +272,16 @@ function newGame() {
 	// Das Spielfeld leeren
 	ctx.fillStyle = fsBackground;
 	ctx.fillRect(0,0,canvasWidth, canvasHeight);
-	
 	// Wenn der Timer widererwarten noch laufen sollte, dann muss er angehalten werden
-	if(time.Enable == true){
+	if(time.Enable){
 		time.Stop();
 	}
+		
 	seconds = 0;
 	$('div#timer').html(seconds);
 	
 	alive = true;
+	setDifficulty();
 	arrayBuild();
 	repaint();
 }
@@ -277,7 +294,7 @@ function newGame() {
 /**
  * Diese Funktion muss aufgerufen werden, wenn das Spiel gestartet wird.
  * Achtung: Das Spiel startet erst, wenn der Spieler seine erste auf das Spielfeld bezogene
- * Aktion t�tigt.
+ * Aktion tätigt.
  */
 function start() {
 	time.Start();
@@ -331,7 +348,9 @@ function lose() {
  * Diese Funktion wird aufgerufen, wenn das Spiel abgebrochen wurde.
  */
 function discard() {
-	time.Stop();
+	if(time.Enable) {
+		time.Stop();
+	}
 	
 	statistics.addSeconds(difficulty, statistics.state.discard, seconds);
 	statistics.addDiscovered(difficulty, statistics.state.discard, calculateDiscoveredPercent());
@@ -400,8 +419,8 @@ function arrayBuild(){
 
 
 	// In diesem Block finden die Berechnungen statt, welche die Dimension des Spielfeldes berechnen sollen.
-	// In der ersten Version des SPiels soll sich das Spielfeld aus der Gr��e des Canvas ableiten.
-	// In spaeteren Versionen soll das Spielfeld auch groesser gew�hlt werden k�nnen.
+	// In der ersten Version des SPiels soll sich das Spielfeld aus der Größe des Canvas ableiten.
+	// In spaeteren Versionen soll das Spielfeld auch groesser gewählt werden können.
 	{
 		// Hier wird berechnet, wieviele Hexatiles in die erste Zeile des canvas passen
 		cellsInLine = canvasWidth  / cellWidth;
@@ -409,8 +428,8 @@ function arrayBuild(){
 		// Hier wird berechnet, wieviele Hexatiles vertikal auf das canvas passen
 		var allCellHeight = 0;
 
-		// Dazu wird jeweils abwechselnd der Durchmesser und die Seitenkantenl�nge auf eine Variable
-		// (allCellHeight) addiert, bis die H�he des Canvas erreicht wurde.
+		// Dazu wird jeweils abwechselnd der Durchmesser und die Seitenkantenlänge auf eine Variable
+		// (allCellHeight) addiert, bis die Höhe des Canvas erreicht wurde.
 		while(canvasHeight > allCellHeight){
 			if(cellNumber%2 == 1){
 				allCellHeight = allCellHeight + (cellHeight / 2);
@@ -432,22 +451,22 @@ function arrayBuild(){
 		arrayColumns = arrayDimensionColumn;
 	}
 
-	// An dieser Stelle wird das Spielfeld als ein Array mit der berechneten Gr��e definiert
+	// An dieser Stelle wird das Spielfeld als ein Array mit der berechneten Größe definiert
 	gameField = new Array(arrayRows);
 	// Dann wird jedes Feld des Arrays durchlaufen
 	for(var i = 0; i < arrayRows; i++ ){
-		// und ebenfalls als Array der berechneten Gr��e definiert
+		// und ebenfalls als Array der berechneten Größe definiert
 		gameField[i] = new Array(arrayColumns);
-		// Anschlie�end werden also alle Spalten der eben erzeugten Zeile durchlaufen 
+		// Anschließend werden also alle Spalten der eben erzeugten Zeile durchlaufen 
 		for(var j = 0; j < arrayColumns; j++){
-			// Und gepr�ft, ob die entsprechenden Zelle mit einem Hexatile versehen werden muss.
+			// Und geprüft, ob die entsprechenden Zelle mit einem Hexatile versehen werden muss.
 			if(hexatileOnMap(i,j)) {
 				// Wenn ja, dann wird ein Hexatile an der entsprechenden Zelle erzeugt und mit 
 				// Koordinaten versehen, welche sich von den Original Koordinaten unterscheiden,
 				// jedoch notwendig sind, damit dich die hexatiles resourcenschonend selbst 
-				// zeichnen und verwalten k�nnen.
+				// zeichnen und verwalten können.
 				gameField[i][j] = new Hexatile(i - (cellsInLine - 1),j);
-				// In diesem Schritt wird anhand der vorher definierten Schwierigkeit zuf�llig ermittelt,
+				// In diesem Schritt wird anhand der vorher definierten Schwierigkeit zuföllig ermittelt,
 				// ob es sich bei diesem Hexatile um eine Mine handeln soll, oder nicht.
 				gameField[i][j].isMine = ((Math.random() * 101) < difficulty);
 			}
@@ -462,7 +481,7 @@ function arrayBuild(){
 
 
 /**
- * Diese Funktion durchl�uft das gesamte Array und st��t das Neuzeichnen jeder einuzelnen Zelle an,
+ * Diese Funktion durchläuft das gesamte Array und stößt das Neuzeichnen jeder einuzelnen Zelle an,
  * wenn sie vorhanden ist.
  */
 function repaint(){
@@ -509,7 +528,7 @@ function checkVictoryClick() {
  * Diese Funktion Ueberprueft, ob alle Minen markiert wurden
  */
 function checkVictoryMark() {
-	// Dazu muss �ber die gesamte Matrix iteriert werden
+	// Dazu muss über die gesamte Matrix iteriert werden
 	for(var i = 0; i < arrayDimensionLine; i++) {
 		for(var j = 0; j < arrayDimensionColumn; j++) {
 			// Und fuer jede Zelle muss geprueft werden, ob sie auf der Map ist
@@ -531,9 +550,9 @@ function checkVictoryMark() {
 
 
 /**
- * Diese Funktion f�hrt den Klick auf allen Zellen in der unmitelbaren Umgebung der �bergebenen Koordinaten
+ * Diese Funktion führt den Klick auf allen Zellen in der unmitelbaren Umgebung der übergebenen Koordinaten
  * aus. Dabei handelt es sich um die Hexatileeigenen Koordinaten, welche innerhalb dieser Funktion auf
- * die Matrixkoordinaten zur�ckgerechnet werden m�ssen.
+ * die Matrixkoordinaten zurückgerechnet werden müssen.
  */
 function clickSurroundingMines(line, column){
 	// Da sich die Hexatile-Koordinaten und die Matrix-Koordinaten nur in der Zeile unterscheiden, muss nur diese
@@ -565,12 +584,12 @@ function clickSurroundingMines(line, column){
 
 
 /**
- * In dieser Funktion werden alle Minen im direkten Umfeld gez�hlt relativ zu den �bergebenen Hexatile-Koordinaten.
- * Da sich die Hexatile-Koordinaten von den Matrix-Koordinaten unterscheiden, m�ssen dann erst die Hexatile-Koordinaten
- * in die Matrix-Koordinaten zur�ckgerechnet werden.
+ * In dieser Funktion werden alle Minen im direkten Umfeld gezählt relativ zu den übergebenen Hexatile-Koordinaten.
+ * Da sich die Hexatile-Koordinaten von den Matrix-Koordinaten unterscheiden, müssen dann erst die Hexatile-Koordinaten
+ * in die Matrix-Koordinaten zurückgerechnet werden.
  */
 function countSurroundingMines(line, column) {
-	// Hier wird gez�hlt, wieviele Minen es im direkten Umfeld gibt
+	// Hier wird gezählt, wieviele Minen es im direkten Umfeld gibt
 	var mineCounter = 0;
 
 	// Da sich die Hexatile-Koordinaten und die Matrix-Koordinaten nur in der Zeile unterscheiden, muss nur diese
@@ -595,7 +614,7 @@ function countSurroundingMines(line, column) {
 	if(hexatileOnMap(matLine + 1, column) && gameField[matLine + 1][column].isMine)
 		mineCounter++;
 
-	// Hier wird die Anzahl der gez�hlten Minen zur�ck gegeben
+	// Hier wird die Anzahl der gezählten Minen zurück gegeben
 	return mineCounter;
 }
 
@@ -605,9 +624,9 @@ function countSurroundingMines(line, column) {
 
 
 /**
- * Diese Methode berechnet, ob ein Hexatile �berhaupt auf der Map ist.
+ * Diese Methode berechnet, ob ein Hexatile überhaupt auf der Map ist.
  * 
- * In der ersten Version bedeutet dies, ob ein Hexatile vollst�ndig auf dem Canvas ist.
+ * In der ersten Version bedeutet dies, ob ein Hexatile vollständig auf dem Canvas ist.
  */
 function hexatileOnMap(line, column) {
 	// Wenn die Koordinaten nichtmal in dem Array liegen, dann liegt das Hexatile eh nicht auf der Map
@@ -640,7 +659,7 @@ function hexatileOnMap(line, column) {
 
 
 /**
- * �berpr�ft, ob die Koordinaten im Array Range sind.
+ * überprüft, ob die Koordinaten im Array Range sind.
  */
 function coordinatesInArrayRange(line, column) {
 	if(line >=0 && line < arrayDimensionLine && column >= 0 && column < arrayDimensionColumn)
@@ -656,7 +675,7 @@ function coordinatesInArrayRange(line, column) {
 
 
 /**
- * In dieser Funktion wird �berpr�ft, ob der Punkt vp in dem durch vt1, vt2 und vt3 beschriebenen Dreieck befindet
+ * In dieser Funktion wird überprüft, ob der Punkt vp in dem durch vt1, vt2 und vt3 beschriebenen Dreieck befindet
  */
 function pointCollidesWithTriangle(vp, vt1, vt2, vt3) {
 	//  calculate vector vt1->vt2 (AB)
