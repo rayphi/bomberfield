@@ -17,6 +17,11 @@ $(document).ready(function() {
 		statistics = new Statistics();
 	}
 	
+	//Schwierigkeitsgrade werden geladen 
+	loadDifficulties();
+	//startet ein trigger on change event (Schwierigkeit wird bei auswahl gesetzt)
+	difficultyTrigger();
+	
 	// Hier wird das Image für die Flaggen geladen
 	imageFlag = new Image();
 	imageFlag.src = "images/flag.png";
@@ -197,7 +202,7 @@ var gameField;
 /**
  * Hier werden alle möglichen Schwierigkeitsgrade als enum gespeichert
  */
-var difficulties = {"easy" : 10, "medium" : 20, "hard" : 30, "debug" : 2};
+var difficulties = {"easy" : 10, "medium" : 20, "hard" : 30, "debug" : 2, "test" : 1};
 
 /**
  * Der Schwierigkeitsgrad
@@ -245,24 +250,34 @@ var seconds;
 var statistics;
 
 /**
- * Diese Funktion setzt den Schwierigkeitsgrad 
- * der im Frontend ausgewählt werden kann
+ * Die in @var difficulties festgelegten Schwierigkeitsstufen
+ * werden in die Auswahlliste geladen.
  */
-function setDifficulty() {
-	switch($('#difficulty').attr('value')) {
-		case "0":
-			difficulty = difficulties.easy;
-			break;
-		case "1":
-			difficulty = difficulties.medium;
-			break;
-		case "2":
-			difficulty = difficulties.hard;
-			break;
-		case "3":
-			difficulty = difficulties.debug;
-			break;
+function loadDifficulties() {
+	var select = $('#difficulty');
+	if(select.prop) {
+	  var options = select.prop('options');
 	}
+	else {
+	  var options = select.attr('options');
+	}
+	$('option', select).remove();
+	
+	$.each(difficulties, function(text, value) {
+		options[options.length] = new Option(text, value);
+	});
+	select.val(difficulty);
+}
+
+/**
+ * Diese Funktion triggert einen 'change' in der Auswahlliste. 
+ * Sobald ein 'change' festgestellt wird, wird der Schwierigkeitsgrad
+ * neu gesetzt.
+ */
+function difficultyTrigger() {
+	$("#difficulty").change(function () {
+		difficulty = $('#difficulty :selected').val()
+	}).trigger('change');
 }
 
 /**
@@ -281,7 +296,6 @@ function newGame() {
 	$('div#timer').html(seconds);
 	
 	alive = true;
-	setDifficulty();
 	arrayBuild();
 	repaint();
 }
