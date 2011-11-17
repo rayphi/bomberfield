@@ -249,6 +249,11 @@ var seconds;
  */
 var statistics;
 
+
+
+
+
+
 /**
  * Die in @var difficulties festgelegten Schwierigkeitsstufen
  * werden in die Auswahlliste geladen.
@@ -270,6 +275,11 @@ function loadDifficulties() {
 	select.val(difficulty);
 }
 
+
+
+
+
+
 /**
  * Diese Funktion triggert einen 'change' in der Auswahlliste. 
  * Sobald ein 'change' festgestellt wird, wird der Schwierigkeitsgrad
@@ -281,6 +291,11 @@ function difficultyTrigger() {
 	}).trigger('change');
 }
 
+
+
+
+
+
 /**
  * Diese Funktion startet ein neues Spiel
  */
@@ -288,13 +303,14 @@ function newGame() {
 	// Das Spielfeld leeren
 	ctx.fillStyle = fsBackground;
 	ctx.fillRect(0,0,canvasWidth, canvasHeight);
+	
 	// Wenn der Timer widererwarten noch laufen sollte, dann muss er angehalten werden
 	if(time.Enable){
 		time.Stop();
 	}
 		
 	seconds = 0;
-	$('div#timer').html(seconds);
+	$('span#timer').html(seconds);
 	
 	alive = true;
 	arrayBuild();
