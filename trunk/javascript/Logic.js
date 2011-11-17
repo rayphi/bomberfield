@@ -255,11 +255,12 @@ var statistics;
  */
 function loadDifficulties() {
 	var select = $('#difficulty');
+	var options;
 	if(select.prop) {
-	  var options = select.prop('options');
+	  options = select.prop('options');
 	}
 	else {
-	  var options = select.attr('options');
+	  options = select.attr('options');
 	}
 	$('option', select).remove();
 	
@@ -276,7 +277,7 @@ function loadDifficulties() {
  */
 function difficultyTrigger() {
 	$("#difficulty").change(function () {
-		difficulty = $('#difficulty :selected').val()
+		difficulty = $('#difficulty :selected').val();
 	}).trigger('change');
 }
 
