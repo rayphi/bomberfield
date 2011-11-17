@@ -563,11 +563,16 @@ function checkVictoryMark() {
 	for(var i = 0; i < arrayDimensionLine; i++) {
 		for(var j = 0; j < arrayDimensionColumn; j++) {
 			// Und fuer jede Zelle muss geprueft werden, ob sie auf der Map ist
-			if(hexatileOnMap(i,j))
+			if(hexatileOnMap(i,j)) {
 				// Dann wird geprueft, ob diese Zelle eine Mine und unmarkiert ist
 				if(gameField[i][j].isMine && !gameField[i][j].isMarked)
 					// dies wuerde bedeuten, das man nicht durch markieren gewonnen hat
 					return false;
+				// oder, ob es keine Mine aber trotzdem markiert ist
+				else if(!gameField[i][j].isMine && gameField[i][j].isMarked)
+					// Dies wüde auch bedeuten, dass man nicht gewonnen hat
+					return false;
+			}
 		}
 	}
 	
