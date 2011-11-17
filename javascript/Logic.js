@@ -100,7 +100,19 @@ $(document).ready(function() {
 				for(var j = 0; j < arrayDimensionColumn; j++) {
 					if(hexatileOnMap(i,j))
 						if(gameField[i][j].collides(clickVector)) {
-							gameField[i][j].toggleMarked();
+							if(!gameField[i][j].isMarked) {
+								if(exsistingMines > 0) {
+									gameField[i][j].toggleMarked();
+									// Wenn eine Flagge gesetzt wurde, dann Minen runter zählen
+									exsistingMines--;
+								}
+							} else {
+								gameField[i][j].toggleMarked();
+								// sonst hoch zählen
+								exsistingMines++;
+							}
+							// Im Anschluß die Anzahl der Minen schreiben
+							$('span#mines').html(exsistingMines);
 						}
 				}
 			}
@@ -245,6 +257,11 @@ var time;
 var seconds;
 
 /**
+ * Beim Erzeugen des Spielfeldes wird hier gezählt, wieviele Minen erzeugt werden
+ */
+var exsistingMines;
+
+/**
  * Das Statistics-Objekt
  */
 var statistics;
@@ -313,7 +330,11 @@ function newGame() {
 	$('span#timer').html(seconds);
 	
 	alive = true;
+	// Baue das Spielfeld
 	arrayBuild();
+	// Zeichne die Anzahl der Minen
+	$('span#mines').html(exsistingMines);
+	
 	repaint();
 }
 
@@ -484,6 +505,8 @@ function arrayBuild(){
 
 	// An dieser Stelle wird das Spielfeld als ein Array mit der berechneten Größe definiert
 	gameField = new Array(arrayRows);
+	// Die Anzahl der existierenden Minen zurücksetzen
+	exsistingMines = 0;
 	// Dann wird jedes Feld des Arrays durchlaufen
 	for(var i = 0; i < arrayRows; i++ ){
 		// und ebenfalls als Array der berechneten Größe definiert
@@ -500,6 +523,9 @@ function arrayBuild(){
 				// In diesem Schritt wird anhand der vorher definierten Schwierigkeit zuföllig ermittelt,
 				// ob es sich bei diesem Hexatile um eine Mine handeln soll, oder nicht.
 				gameField[i][j].isMine = ((Math.random() * 101) < difficulty);
+				// Wenn eine Mine erzeugt wurde, dann den Zähler hoch zählen
+				if(gameField[i][j].isMine)
+					exsistingMines++;
 			}
 		}
 	}
