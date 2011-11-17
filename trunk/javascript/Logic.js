@@ -38,6 +38,8 @@ $(document).ready(function() {
 	$('#canvas').attr('height', canvasHeight);
 	$('#canvas').attr('width', canvasWidth);
 	
+	fsBackground = $("body").css("background-color");
+	
 	// Hier wird der New Game Button konfiguriert
 	$('#newGame').click(function(e){
 		if(alive) {
