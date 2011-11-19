@@ -38,13 +38,17 @@ $(document).ready(function() {
 	$('#canvas').attr('height', canvasHeight);
 	$('#canvas').attr('width', canvasWidth);
 	
+	// Hier wird die Hintergrundfarbe des body ausgelesen und für den canvas gesetzt
 	fsBackground = $("body").css("background-color");
 	
 	// Hier wird der New Game Button konfiguriert
 	$('#newGame').click(function(e){
+		// Wenn man noch am leben ist, ...
 		if(alive) {
+			// ...dann gilt das Spiel als abgebrochen
 			discard();
 		}
+		// Ein neues Spiel starten
 		newGame();
 	});
 	
@@ -53,6 +57,7 @@ $(document).ready(function() {
 		
 		// Wenn der Timer noch nicht gestartet ist wird er gestartet
 		if(time.Enable == false && alive){
+			// Timer starten und Statistik anhauen
 			start();
 		}
 		
@@ -71,6 +76,7 @@ $(document).ready(function() {
 				}
 			}
 
+			// TODO debug entfernen
 			$('#position').html(clickVector.x +', '+ clickVector.y);
 
 			// Das Spielfeld neu zeichnen
@@ -78,6 +84,7 @@ $(document).ready(function() {
 
 			// prüfen, ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle leeren Zellen aufgedeckt wurden
 			if(checkVictoryClick()) {
+				// Den Sieg verarbeiten
 				win();
 			}
 		}
@@ -89,6 +96,7 @@ $(document).ready(function() {
 		
 		// Wenn der Timer noch nicht gestartet ist wird er gestartet
 		if(time.Enable == false && alive){
+			// Den Timer starten und die Statistiken anhauen
 			start();
 		}
 		
@@ -119,6 +127,7 @@ $(document).ready(function() {
 				}
 			}
 
+			// TODO debug entfernen
 			$('#position').html(clickVector.x +', '+ clickVector.y);
 			
 			// das Spielfeld neu zeichnen
@@ -126,6 +135,7 @@ $(document).ready(function() {
 			
 			// Ermitteln ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle Minen markiert wurden
 			if(checkVictoryMark()) {
+				// Den Sieg verarbeiten
 				win();
 			}
 		}
@@ -327,7 +337,8 @@ function newGame() {
 	if(time.Enable){
 		time.Stop();
 	}
-		
+	
+	// Timer zurücksetzen
 	seconds = 0;
 	$('span#timer').html(seconds);
 	
@@ -419,22 +430,32 @@ function discard() {
  * Diese Funktion berechnet die % der aktuell aufgedeckten leeren Zellen
  */
 function calculateDiscoveredPercent() {
+	// Zähler für die Zellen
 	var cellCount = 0;
+	// Zähler für die aufgedeckten Zellen
 	var openCells = 0;
 	
+	// Über alle Zeilen iterieren...
 	for(var i = 0; i < arrayDimensionLine; i++) {
+		// ...über alle spalten iterieren ...
 		for(var j = 0; j < arrayDimensionColumn; j++) {
+			// ...prüfen, ob die Zelle auf der Map liegt...
 			if(hexatileOnMap(i, j)) {
+				// ...prüfen, ob die Zelle keine Miene ist...
 				if(!gameField[i][j].isMine) {
+					// ...Zähler für die Zellen hoch zählen
 					cellCount++;
 				}
+				// ...prüfen, ob die Zelle aufgedeckt ist...
 				if(gameField[i][j].isOpen) {
+					// ...Zähler für die aufgedeckten Zellen hochzählen
 					openCells++;
 				}
 			}
 		}
 	}
 	
+	// Gibt zurück, wieviel % der Zellen, welche keine Mienen sind aufgedeckt wurden
 	return (cellCount * 100) / openCells;
 }
 
@@ -544,9 +565,13 @@ function arrayBuild(){
  * wenn sie vorhanden ist.
  */
 function repaint(){
+	// Durchlaufe alle Zeilen...
 	for(var i = 0; i < arrayDimensionLine; i++) {
+		// ...und Spalten,...
 		for(var j = 0; j < arrayDimensionColumn; j++) {
+			// ...dann prüfe, ob die Zele auf der Map liegt,...
 			if(hexatileOnMap(i,j)) {
+				// ...wenn ja, dann zeichne sie
 				gameField[i][j].draw(ctx);
 			}
 		}
@@ -739,7 +764,7 @@ function coordinatesInArrayRange(line, column) {
 
 
 /**
- * In dieser Funktion wird überprüft, ob der Punkt vp in dem durch vt1, vt2 und vt3 beschriebenen Dreieck befindet
+ * In dieser Funktion wird überprüft, ob der Punkt vp in dem durch vt1, vt2 und vt3 beschriebenen Dreieck liegt
  */
 function pointCollidesWithTriangle(vp, vt1, vt2, vt3) {
 	//  calculate vector vt1->vt2 (AB)
