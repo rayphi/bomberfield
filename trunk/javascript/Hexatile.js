@@ -146,7 +146,7 @@ Hexatile.prototype.clicked = function() {
 	// Wenn die Zelle eine Mine ist, dann ...
 	if(this.isMine) {
 		// ... wird diese jetzt explodieren
-		// TODO explodierende Mine? verlust sihchtbar darstellen 
+		// TODO explodierende Mine? verlust sichtbar darstellen 
 
 		repaint();
 		

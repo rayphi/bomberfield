@@ -281,8 +281,6 @@ var statistics;
 
 
 
-
-
 /**
  * Die in @var difficulties festgelegten Schwierigkeitsstufen
  * werden in die Auswahlliste geladen.
@@ -304,11 +302,6 @@ function loadDifficulties() {
 	select.val(difficulty);
 }
 
-
-
-
-
-
 /**
  * Diese Funktion triggert einen 'change' in der Auswahlliste. 
  * Sobald ein 'change' festgestellt wird, wird der Schwierigkeitsgrad
@@ -319,8 +312,6 @@ function difficultyTrigger() {
 		difficulty = $('#difficulty :selected').val();
 	}).trigger('change');
 }
-
-
 
 
 
@@ -350,8 +341,6 @@ function newGame() {
 	
 	repaint();
 }
-
-
 
 
 
