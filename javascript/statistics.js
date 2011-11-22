@@ -9,7 +9,7 @@ function Statistics() {
 	this.state = {"win":1, "lose":2, "start":3, "discarded":4};
 	
 	/**
-	 * Hier werden die Anzahl der gesamzten Spiele festgehalten, aufgeschluesselt nach ihrer Schwierigkeit
+	 * Hier werden die Anzahl der gesamten Spiele festgehalten, aufgeschluesselt nach ihrer Schwierigkeit
 	 */
 	var gamesTotal = {};
 	
