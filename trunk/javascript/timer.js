@@ -1,7 +1,8 @@
 /**
  * Die Klasse Timer
  * 
- * TODO Doku
+ * Diese Klasse repräsentiert einen Timer, welcher in einem vordefinierten
+ * Zeitintervall eine definierbare Fuktion ausführt.
  */
 var Timer = function()
 {   
