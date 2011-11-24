@@ -108,13 +108,13 @@ Hexatile.prototype.draw = function(ctx) {
 
 	if(!alive && this.isMine) {
 		// Wenn man tot ist, dann sollen alle Minen gezeichnet werden
-		ctx.drawImage(imageMine, cellVector.x, cellVector.y);
+		ctx.drawImage(imageMine, cellVector.x, cellVector.y, cellWidth, cellHeight);
 	}
 
 	// Hier wird die Zelle markiert, wenn dies der Fall ist
 	if(this.isMarked) {
 		// Wenn ein Hexatile markiert ist, soll es eine Flagge bekommen
-		ctx.drawImage(imageFlag, cellVector.x, cellVector.y - (cellHeight / 10));
+		ctx.drawImage(imageFlag, cellVector.x, cellVector.y - (cellHeight / 10), cellWidth, cellHeight);
 	}
 	// Hier wird das Hexatile mit einer Zahl versehen, sollte es aufgedeckt sein, keine 
 	// Mine enthalten und mindestens eine Mine als Nachbarn habn.
