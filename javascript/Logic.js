@@ -52,94 +52,136 @@ $(document).ready(function() {
 		newGame();
 	});
 	
-	// linksklick am canvas registrieren
-	$('#canvas').click(function(e){
-		
-		// Wenn der Timer noch nicht gestartet ist wird er gestartet
-		if(time.Enable == false && alive){
-			// Timer starten und Statistik anhauen
-			start();
-		}
-		
-		// Nur wenn man noch lebt
-		if(alive) {
-			// Hier werden die Koordinaten des Klick in für das Spiel verwertbare Koordinaten umgewandelt
-			clickVector = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop).sub(offsetVector);
-
-			// Hier wird die geklickte Zelle ermittelt und letztenendes wirklich geklickt
-			for(var i = 0; i < arrayDimensionLine; i++) {
-				for(var j = 0; j < arrayDimensionColumn; j++) {
-					if(hexatileOnMap(i,j))
-						if(gameField[i][j].collides(clickVector)) {
-							gameField[i][j].clicked();
-						}
-				}
-			}
-
-			// TODO debug entfernen
-			$('#position').html(clickVector.x +', '+ clickVector.y);
-
+	// Wenn ein Mousebutton gedückt wurde
+	$('#canvas').mousedown(function(e) {
+		// Die aktuelle Position ermitteln
+		actualMousedownPosition = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop);
+		// Die aktuelle Position auch als initiale Klickposition setzen
+		initialMousedownPosition = actualMousedownPosition;
+		// Markieren, dass ein mousedown stattgefunden hat
+		mousedown = true;
+		// Wenn es sich um einen Rechtsklick handelt, dann den boolean setzen
+		if(e.button == 2)
+			rightMouseDown = true;
+		else
+			rightMouseDown = false;
+	});
+	
+	// Wenn die Maus bewegt wurde
+	$('#canvas').mousemove(function(e) {
+		// Wenn ein mousedown stattgefunden hat, ...
+		if (mousedown) {
+			// ...dann die neue Mausposition ermitteln
+			newMousePosition = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop);
+			// Den neuen offsetVector berechnen (also das Spielfeld verschieben
+			offsetVector = offsetVector.add(newMousePosition.sub(actualMousedownPosition));
+			// Die aktuelle Position setzen
+			actualMousedownPosition = newMousePosition;
 			// Das Spielfeld neu zeichnen
 			repaint();
-
-			// prüfen, ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle leeren Zellen aufgedeckt wurden
-			if(checkVictoryClick()) {
-				// Den Sieg verarbeiten
-				win();
-			}
 		}
-
 	});
-
-	// rechtsklick am canvas registrieren
-	$('#canvas').bind("contextmenu", function(e) {
+	
+	// Wenn man mit der Maus das canvas verlässt
+	$('#canvas').mouseout(function(e) {
+		// Den Mousdown beenden
+		mousedown = false;
+	});
+	
+	// Wenn eine Maustaste losgelassen wird
+	$('#canvas').mouseup(function(e) {
+		// Die aktuelle Mausposition berechnen
+		newMousePosition = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop);
 		
-		// Wenn der Timer noch nicht gestartet ist wird er gestartet
-		if(time.Enable == false && alive){
-			// Den Timer starten und die Statistiken anhauen
-			start();
-		}
-		
-		// Nur wenn man noch lebt
-		if(alive) {
-			// Hier werden die Koordinaten des Klick in für das Spiel verwertbare Koordinaten umgewandelt
-			clickVector = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop).sub(offsetVector);
+		// Wenn ein Rechtsklick stattgefunden hat
+		if(rightMouseDown && (newMousePosition.sub(initialMousedownPosition).absolute() <= mouseClickTolerance)) {
+			// Wenn der Timer noch nicht gestartet ist wird er gestartet
+			if(time.Enable == false && alive){
+				// Den Timer starten und die Statistiken anhauen
+				start();
+			}
+			
+			// Nur wenn man noch lebt
+			if(alive) {
+				// Hier werden die Koordinaten des Klick in für das Spiel verwertbare Koordinaten umgewandelt
+				clickVector = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop);
 
-			// Hier wird die gerechtsklickte Zelle ermittelt und markiert
-			for(var i = 0; i < arrayDimensionLine; i++) {
-				for(var j = 0; j < arrayDimensionColumn; j++) {
-					if(hexatileOnMap(i,j))
-						if(gameField[i][j].collides(clickVector)) {
-							if(!gameField[i][j].isMarked) {
-								if(exsistingMines > 0) {
+				// Hier wird die gerechtsklickte Zelle ermittelt und markiert
+				for(var i = 0; i < arrayDimensionLine; i++) {
+					for(var j = 0; j < arrayDimensionColumn; j++) {
+						if(hexatileOnMap(i,j))
+							if(gameField[i][j].collides(clickVector)) {
+								if(!gameField[i][j].isMarked) {
+									if(exsistingMines > 0) {
+										gameField[i][j].toggleMarked();
+										// Wenn eine Flagge gesetzt wurde, dann Minen runter zählen
+										exsistingMines--;
+									}
+								} else {
 									gameField[i][j].toggleMarked();
-									// Wenn eine Flagge gesetzt wurde, dann Minen runter zählen
-									exsistingMines--;
+									// sonst hoch zählen
+									exsistingMines++;
 								}
-							} else {
-								gameField[i][j].toggleMarked();
-								// sonst hoch zählen
-								exsistingMines++;
+								// Im Anschluß die Anzahl der Minen schreiben
+								$('span#mines').html(exsistingMines);
 							}
-							// Im Anschluß die Anzahl der Minen schreiben
-							$('span#mines').html(exsistingMines);
-						}
+					}
+				}
+
+				// TODO debug entfernen
+				$('#position').html(clickVector.x +', '+ clickVector.y);
+				
+				// das Spielfeld neu zeichnen
+				repaint();
+				
+				// Ermitteln ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle Minen markiert wurden
+				if(checkVictoryMark()) {
+					// Den Sieg verarbeiten
+					win();
 				}
 			}
-
-			// TODO debug entfernen
-			$('#position').html(clickVector.x +', '+ clickVector.y);
+		} else if(newMousePosition.sub(initialMousedownPosition).absolute() <= mouseClickTolerance) {
+			// Wenn der Timer noch nicht gestartet ist wird er gestartet
+			if(time.Enable == false && alive){
+				// Timer starten und Statistik anhauen
+				start();
+			}
 			
-			// das Spielfeld neu zeichnen
-			repaint();
-			
-			// Ermitteln ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle Minen markiert wurden
-			if(checkVictoryMark()) {
-				// Den Sieg verarbeiten
-				win();
+			// Nur wenn man noch lebt
+			if(alive) {
+				// Hier werden die Koordinaten des Klick in für das Spiel verwertbare Koordinaten umgewandelt
+				clickVector = newMousePosition;
+	
+				// Hier wird die geklickte Zelle ermittelt und letztenendes wirklich geklickt
+				for(var i = 0; i < arrayDimensionLine; i++) {
+					for(var j = 0; j < arrayDimensionColumn; j++) {
+						if(hexatileOnMap(i,j))
+							if(gameField[i][j].collides(clickVector)) {
+								gameField[i][j].clicked();
+							}
+					}
+				}
+	
+				// TODO debug entfernen
+				$('#position').html(clickVector.x +', '+ clickVector.y);
+	
+				// Das Spielfeld neu zeichnen
+				repaint();
+	
+				// prüfen, ob man gewonnen hat. An dieser Stelle kann man nur gewinnen, wenn alle leeren Zellen aufgedeckt wurden
+				if(checkVictoryClick()) {
+					// Den Sieg verarbeiten
+					win();
+				}
 			}
 		}
 		
+		// Den mousedown beenden, da der Knopf losgelassen wurde
+		mousedown = false;
+	});
+
+	// Kontextmenü unterdrücken
+	$('#canvas').bind("contextmenu", function(e) {
 		return false;
 	});
 
@@ -177,11 +219,11 @@ var offsetVector = new Vector(0,0);
 /**
  * Die Breite des Rechtecks in das die Zelle gezeichnet werden soll
  */
-var cellWidth = 50;
+var cellWidth = 30;
 /**
  * Die Höhe des Rechtecks in das die Zelle gezeichnet werden soll
  */
-var cellHeight = 50;
+var cellHeight = 30;
 
 /**
  * Der lineVector beschreibt die absolute Entfernung zwischen den Mittelpunkten zweier benachbarter
@@ -278,6 +320,24 @@ var exsistingMines;
  */
 var statistics;
 
+/**
+ * Wird bei einem Mousedown gesetzt
+ */
+var mousedown = false;
+var rightMouseDown = false;
+/**
+ * Hier wird die während eines Klicks letzte Mausposition gespeichert
+ */
+var actualMousedownPosition;
+var initialMousedownPosition;
+/**
+ * Dieser Wert gibt eine Bewegungstoleranz vor. Dieser Wert besagt, bei welcher
+ * Bewegungsdistanz ein Mouseup noch als click gezählt wird. (px)
+ */
+var mouseClickTolerance = 2;
+
+
+
 
 
 
@@ -302,6 +362,11 @@ function loadDifficulties() {
 	select.val(difficulty);
 }
 
+
+
+
+
+
 /**
  * Diese Funktion triggert einen 'change' in der Auswahlliste. 
  * Sobald ein 'change' festgestellt wird, wird der Schwierigkeitsgrad
@@ -312,6 +377,8 @@ function difficultyTrigger() {
 		difficulty = $('#difficulty :selected').val();
 	}).trigger('change');
 }
+
+
 
 
 
@@ -341,6 +408,8 @@ function newGame() {
 	
 	repaint();
 }
+
+
 
 
 
@@ -472,7 +541,6 @@ function timerTick() {
  * erzeugt die Hexatiles.
  */
 function arrayBuild(){
-	var cellNumber = 0;
 	/*
 	 * evtl moechte man in einer spaeteren Version manuell ein Array definieren, welches eine groessere Map
 	 * beherbergen kann als das canvas, deswegen gibt es diese beiden Variablen, welche in erster Version
@@ -487,25 +555,9 @@ function arrayBuild(){
 	// In spaeteren Versionen soll das Spielfeld auch groesser gewählt werden können.
 	{
 		// Hier wird berechnet, wieviele Hexatiles in die erste Zeile des canvas passen
-		cellsInLine = canvasWidth  / cellWidth;
-
-		// Hier wird berechnet, wieviele Hexatiles vertikal auf das canvas passen
-		var allCellHeight = 0;
-
-		// Dazu wird jeweils abwechselnd der Durchmesser und die Seitenkantenlänge auf eine Variable
-		// (allCellHeight) addiert, bis die Höhe des Canvas erreicht wurde.
-		while(canvasHeight > allCellHeight){
-			if(cellNumber%2 == 1){
-				allCellHeight = allCellHeight + (cellHeight / 2);
-			}
-			else{
-				allCellHeight = allCellHeight + cellHeight;	
-			}
-			cellNumber++;
-		}
-
+		cellsInLine = 50;
 		// Bei dieser Berechnungsart ist die Anzahl der Hexatiles in einer Spalte an dieser Stelle bereits berechnet
-		cellsInColumn = cellNumber;
+		cellsInColumn = 50;
 		// Die Dimension des Arrays leitet sich aus der Anzahl der Hexatiles in einer Zeile und der Anzahl der Hexatiles in
 		// einer Spalte ab.
 		arrayDimensionLine = cellsInLine + (Math.round(cellsInColumn / 2) - 1);
