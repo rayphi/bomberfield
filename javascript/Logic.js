@@ -248,11 +248,11 @@ var canvasHeight = 425;
 /**
  * Die Anzahl der Hexatiles in einer visuellen Zeile des Spielfeldes
  */
-var cellsInLine;
+var cellsInLine = 30;
 /**
  * Die Anzahl der Hexatiles in einer visuellen Spalte des Spielfeldes
  */
-var cellsInColumn;
+var cellsInColumn = 30;
 
 /** 
  * Die Ausdehnung der Matrix (solange diese noch quadratisch ist)
@@ -564,10 +564,6 @@ function arrayBuild(){
 	// In der ersten Version des SPiels soll sich das Spielfeld aus der Größe des Canvas ableiten.
 	// In spaeteren Versionen soll das Spielfeld auch groesser gewählt werden können.
 	{
-		// Hier wird berechnet, wieviele Hexatiles in die erste Zeile des canvas passen
-		cellsInLine = 50;
-		// Bei dieser Berechnungsart ist die Anzahl der Hexatiles in einer Spalte an dieser Stelle bereits berechnet
-		cellsInColumn = 50;
 		// Die Dimension des Arrays leitet sich aus der Anzahl der Hexatiles in einer Zeile und der Anzahl der Hexatiles in
 		// einer Spalte ab.
 		arrayDimensionLine = cellsInLine + (Math.round(cellsInColumn / 2) - 1);
@@ -690,7 +686,7 @@ function checkVictoryMark() {
 
 
 /**
- * Diese Funktion führt den Klick auf allen Zellen in der unmitelbaren Umgebung der übergebenen Koordinaten
+ * Diese Funktion führt den Klick auf allen Zellen in der unmittelbaren Umgebung der übergebenen Koordinaten
  * aus. Dabei handelt es sich um die Hexatileeigenen Koordinaten, welche innerhalb dieser Funktion auf
  * die Matrixkoordinaten zurückgerechnet werden müssen.
  */
@@ -698,24 +694,85 @@ function clickSurroundingMines(line, column){
 	// Da sich die Hexatile-Koordinaten und die Matrix-Koordinaten nur in der Zeile unterscheiden, muss nur diese
 	// umgerechnet werden.
 	var matLine = line + (cellsInLine - 1);
-	// rechts
-	if(hexatileOnMap(matLine + 1, column - 1))
-		gameField[matLine + 1][column - 1].clicked();
+	
+	// links
+	{
+		if(hexatileOnMap(matLine + 1, column - 1))
+			gameField[matLine + 1][column - 1].clicked();
+		// Wenn die Zelle am linken Rand der Map liegt
+		else
+			gameField[(matLine) - (cellsInLine - 2)][(column) + (cellsInColumn - 2)].clicked();
+	}
+	
 	// oben links
-	if(hexatileOnMap(matLine, column - 1))
-		gameField[matLine][column - 1].clicked();
+	{
+		if(hexatileOnMap(matLine, column - 1)) {
+			gameField[matLine][column - 1].clicked();
+		} 
+		// Wenn die Zelle am oberen Rand der Map liegt
+		else if(matLine < (cellsInLine-1)) {
+			gameField[matLine+(cellsInColumn/2)][column + ((cellsInColumn/2)-1)].clicked();
+		} 
+		// Wenn die Zelle am linken Rand der Map liegt
+		else if(matLine > cellsInLine-1) {
+			gameField[matLine-(cellsInLine-1)][column + (cellsInLine-2)].clicked();
+		} 
+		// Wenn die Zelle in der linken oberen Ecke der Map liegt
+		else {
+			gameField[cellsInLine / 2][(cellsInLine / 2) + (cellsInColumn-2)].clicked();
+		}
+	}
+	
 	// oben rechts
-	if(hexatileOnMap(matLine - 1, column))
-		gameField[matLine - 1][column].clicked();
+	{
+		if(hexatileOnMap(matLine - 1, column)) {
+			gameField[matLine - 1][column].clicked();
+		} 
+		// Wenn die Zelle am oberen Rand der Map liegt
+		else if(column < cellsInLine - 1) {
+			gameField[matLine + ((cellsInColumn/2)-1)][column + (cellsInColumn/2)].clicked();
+		} 
+		// Wenn die Zelle am rechten Rand der Map liegt
+		else {
+			gameField[matLine + (cellsInLine - 2)][column - (cellsInLine - 1)].clicked();
+		}
+	}
+		
 	// rechts
-	if(hexatileOnMap(matLine - 1, column + 1))
-		gameField[matLine - 1][column + 1].clicked();
+	{
+		if(hexatileOnMap(matLine - 1, column + 1))
+			gameField[matLine - 1][column + 1].clicked();
+		// Wenn die Zelle am rechten Rand der Map liegt
+		else
+			gameField[(matLine) + (cellsInLine - 2)][(column) - (cellsInColumn - 2)].clicked();
+	}
+	
 	// unten rechts
-	if(hexatileOnMap(matLine, column + 1))
-		gameField[matLine][column + 1].clicked();
+	{
+		if(hexatileOnMap(matLine, column + 1))
+			gameField[matLine][column + 1].clicked();
+		// Wenn die Zelle am rechten Rand der Map liegt
+		else if(matLine + column < (cellsInLine - 1) + (cellsInColumn - 1))
+			gameField[matLine + (cellsInLine - 1)][column - (cellsInLine - 2)].clicked();
+		// Wenn die Zelle unten rechts in der Ecke der Map liegt
+		else if((matLine == (cellsInLine/2) - (cellsInColumn - cellsInLine)))
+			gameField[cellsInLine - 1][0].clicked();
+		// Wenn die Zelle am unteren Rand der Map liegt
+		else
+			gameField[matLine - (cellsInColumn/2)][column - ((cellsInColumn - 2) / 2)].clicked();
+	}
+		
 	// unten links
-	if(hexatileOnMap(matLine + 1, column))
-		gameField[matLine + 1][column].clicked();
+	{
+		if(hexatileOnMap(matLine + 1, column))
+			gameField[matLine + 1][column].clicked();
+		// Wenn die Zelle am unteren Rand der Map liegt
+		else if(column >= cellsInColumn/2)
+			gameField[matLine - ((cellsInColumn - 2) / 2)][column - (cellsInColumn / 2)].clicked();
+		// Wenn die Zelle am linken Rand der Map liegt
+		else
+			gameField[matLine - (cellsInLine - 2)][column + (cellsInLine - 1)].clicked();
+	}
 }
 
 
@@ -735,24 +792,129 @@ function countSurroundingMines(line, column) {
 	// Da sich die Hexatile-Koordinaten und die Matrix-Koordinaten nur in der Zeile unterscheiden, muss nur diese
 	// umgerechnet werden.
 	var matLine = line + (cellsInLine - 1);
+	
 	// links
-	if(hexatileOnMap(matLine + 1, column - 1) && gameField[matLine + 1][column - 1].isMine)
-		mineCounter++;
+	{
+		if(hexatileOnMap(matLine + 1, column - 1)) {
+			if(gameField[matLine + 1][column - 1].isMine) {
+				mineCounter++;
+			}
+		} 
+		// Wenn die Zelle am linken Rand der Map liegt
+		else if (gameField[(matLine) - (cellsInLine - 2)][(column) + (cellsInColumn - 2)].isMine) {
+			mineCounter++;
+		}
+	}
+	
 	// oben links
-	if(hexatileOnMap(matLine, column - 1) && gameField[matLine][column - 1].isMine)
-		mineCounter++;
+	{
+		if(hexatileOnMap(matLine, column - 1)) {
+			if(gameField[matLine][column - 1].isMine) {
+				mineCounter++;
+			}
+		} 
+		// Wenn die Zelle am oberen Rand der Map liegt
+		else if(matLine < (cellsInLine-1)) { 
+			if(gameField[matLine+(cellsInColumn/2)][column + ((cellsInColumn/2)-1)].isMine) {
+				mineCounter++;
+			}
+		}
+		// Wenn die Zelle am linken Rand der Map liegt
+		else if(matLine > cellsInLine-1) { 
+			if(gameField[matLine-(cellsInLine-1)][column + (cellsInLine-2)].isMine) {
+				mineCounter++;
+			}
+		}
+		// Wenn die Zelle oben links in der Ecke der Map liegt
+		else { 
+			if(gameField[cellsInLine / 2][(cellsInLine / 2) + (cellsInColumn-2)].isMine) {
+				mineCounter++;
+			}
+		}
+	}
+	
+	
 	// oben rechts
-	if(hexatileOnMap(matLine - 1, column) && gameField[matLine - 1][column].isMine)
-		mineCounter++;
+	{
+		if(hexatileOnMap(matLine - 1, column)) { 
+			if(gameField[matLine - 1][column].isMine) {
+				mineCounter++;			
+			}
+		}
+		// Wenn die Zelle am oberen Rad liegt
+		else if(column < cellsInLine - 1) { 
+			if(gameField[matLine + ((cellsInColumn/2)-1)][column + (cellsInColumn/2)].isMine) {
+				mineCounter++;
+			}
+		} 
+		// Wenn die Zelle am rechten Rand liegt
+		else { 
+			if(gameField[matLine + (cellsInLine - 2)][column - (cellsInLine - 1)].isMine) {
+				mineCounter++;
+			}
+		}
+	}
+	
 	// rechts
-	if(hexatileOnMap(matLine - 1, column + 1) && gameField[matLine - 1][column + 1].isMine)
-		mineCounter++;
+	{
+		if(hexatileOnMap(matLine - 1, column + 1)) {
+			if(gameField[matLine - 1][column + 1].isMine) {
+				mineCounter++;
+			}
+		}
+		// Wenn die Zelle am rechten Rand der Map liegt
+		else if(gameField[(matLine) + (cellsInLine - 2)][(column) - (cellsInColumn - 2)].isMine) {
+			mineCounter++;
+		}
+	}
+	
 	// unten rechts
-	if(hexatileOnMap(matLine, column + 1) && gameField[matLine][column + 1].isMine)
-		mineCounter++;
+	{
+		if(hexatileOnMap(matLine, column + 1)) { 
+			if(gameField[matLine][column + 1].isMine) {
+				mineCounter++;
+			}
+		} 
+		// Wenn die Zelle am rechten Rand der Map liegt 
+		else if(matLine + column < (cellsInLine - 1) + (cellsInColumn - 1)) {
+			if(gameField[matLine + (cellsInLine - 1)][column - (cellsInLine - 2)].isMine) {
+				mineCounter++;
+			}
+		}
+		// Wenn die Zelle in der rechten unteren Ecke der Map liegt
+		else if((matLine == (cellsInLine/2) - (cellsInColumn - cellsInLine))) {
+			if(gameField[cellsInLine - 1][0].isMine) {
+				mineCounter++;
+			}
+		}
+		// Wenn die Zelle am unteren Rand liegt
+		else {
+			if(gameField[matLine - (cellsInColumn/2)][column - ((cellsInColumn - 2) / 2)].isMine) {
+				mineCounter++;
+			}
+		}
+	}
+	
 	// unten links
-	if(hexatileOnMap(matLine + 1, column) && gameField[matLine + 1][column].isMine)
-		mineCounter++;
+	{
+		if(hexatileOnMap(matLine + 1, column)) { 
+			if(gameField[matLine + 1][column].isMine) {
+				mineCounter++;				
+			}
+		}
+		// Wenn die Zelle am unteren Rand der Map liegt
+		else if(column >= cellsInColumn/2) {
+			if(gameField[matLine - ((cellsInColumn - 2) / 2)][column - (cellsInColumn / 2)].isMine) {
+				mineCounter++;				
+			}
+		}
+		// Wenn die Zelle am linken Rand der Map liegt
+		else {
+			if(gameField[matLine - (cellsInLine - 2)][column + (cellsInLine - 1)].isMine) {
+				mineCounter++;				
+			}
+		}
+	}
 
 	// Hier wird die Anzahl der gezählten Minen zurück gegeben
 	return mineCounter;
@@ -782,7 +944,7 @@ function hexatileOnMap(line, column) {
 		return false;
 
 	//rechts
-	if(line < column && line - column < -(cellsInLine - 1))
+	if(line < column && line - column < -(cellsInLine-2))
 		return false;
 
 	//unten
