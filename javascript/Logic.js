@@ -21,7 +21,7 @@ $(document).ready(function() {
 	loadDifficulties();
 	//startet ein trigger on change event (Schwierigkeit wird bei auswahl gesetzt)
 	difficultyTrigger();
-	
+	alive = true;
 	// Hier wird das Image für die Flaggen geladen
 	imageFlag = new Image();
 	imageFlag.src = "images/flag.png";
@@ -283,7 +283,7 @@ var ctx;
 /**
  * true wenn man noch am leben ist, false wenn die Bombe explodiert ist
  */
-var alive = true;
+var alive = false;
 
 /**
  * Es folgen alle ctx fillStyle(fs) und strokeStyle(ss) definitionen
@@ -374,7 +374,17 @@ function loadDifficulties() {
  */
 function difficultyTrigger() {
 	$("#difficulty").change(function () {
-		difficulty = $('#difficulty :selected').val();
+		if(alive) {
+			check = confirm("Wollen Sie das Spiel mit der gewählten Schwierigkeit neu starten? Besätigen sie mit 'OK' zumweiterspielen klicken Sie auf 'Abbrechen.");
+			if(!check) {
+				loadDifficulties();
+			} else {
+				difficulty = $('#difficulty :selected').val();
+				newGame();
+			}
+		} else {
+			difficulty = $('#difficulty :selected').val();
+		}
 	}).trigger('change');
 }
 
