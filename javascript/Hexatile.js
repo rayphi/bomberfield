@@ -121,7 +121,9 @@ Hexatile.prototype.draw = function(ctx) {
 	else if(this.isOpen && (!this.isMine) && this.surroundingMines > 0) {
 		// TODO schöner machen
 		ctx.fillStyle = fsText;
-		ctx.fillText(this.surroundingMines, cellVector.x + (cellWidth/2), cellVector.y+(cellHeight/2));
+		ctx.font = '8pt Helvetica';
+		ctx.textBaseline = "middle";
+		ctx.fillText(this.surroundingMines, cellVector.x + (cellWidth/2 - 3), cellVector.y+(cellHeight/2 -1));
 	}
 
 };
