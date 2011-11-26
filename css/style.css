@@ -7,7 +7,8 @@
 }
 
 body {
-	background: #eeddcc;
+	/* background: #eeddcc; */
+	background: url(../images/bg.png);
 }
 
 #wrapper {
@@ -15,13 +16,28 @@ body {
 }
 
 #HUD {
-	margin: 15px 0 0 0;
+	margin: 0 0 20px 0;
 	float: left;
+	background: #ffffff ;
+	padding: 15px 50px 0 50px;
+	-moz-box-shadow: 5px 5px 15px #666;
+	-webkit-box-shadow: 5px 5px 15px #666;
+	box-shadow: 5px 5px 15px #666;
+	
+	-moz-border-bottom-right-radius: 70px 90px;
+	-moz-border-bottom-left-radius: 70px 90px;
+	border-bottom-right-radius: 70px 90px;
+	border-bottom-left-radius: 70px 90px;
 }
 
 #canvas{
 	width:600px;
 	height:300px;
+	-moz-box-shadow: 10px 10px 20px #666;
+	-webkit-box-shadow: 10px 10px 20px #666;
+	box-shadow: 10px 10px 20px #666;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
 }
 
 #time {
