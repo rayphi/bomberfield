@@ -37,6 +37,7 @@ $(document).ready(function() {
 	// Hier wird der Backgroundbuffer des canvas angepasst
 	$('#canvas').attr('height', canvasHeight);
 	$('#canvas').attr('width', canvasWidth);
+	$('#HUD').css('width', canvasWidth-100);
 	
 	// Hier wird die Hintergrundfarbe des body ausgelesen und für den canvas gesetzt
 	fsBackground = $("body").css("background-color");
@@ -129,7 +130,7 @@ $(document).ready(function() {
 				}
 
 				// TODO debug entfernen
-				$('#position').html(clickVector.x +', '+ clickVector.y);
+				//$('#position').html(clickVector.x +', '+ clickVector.y);
 				
 				// das Spielfeld neu zeichnen
 				repaint();
@@ -288,18 +289,18 @@ var alive = false;
 /**
  * Es folgen alle ctx fillStyle(fs) und strokeStyle(ss) definitionen
  */
-var fsText = "rgb(0,0,0)";
-var ssBorder = "rgb(0, 0, 0)";
-var fs0Mines = "rgb(255, 255, 255)";
-var fs1Mines = "rgb(255, 255, 85)";
-var fs2Mines = "rgb(255, 170, 170)";
-var fs3Mines = "rgb(255, 170, 0)";
-var fs4Mines = "rgb(255, 85, 85)";
-var fs5Mines = "rgb(255, 0, 85)";
-var fs6Mines = "rgb(255, 0, 0)";
-var fsClosed = "rgb(50, 50, 255)";
-var fsExplode = "rgb(255,0,0)";
-var fsBackground = "rgb(255,255,255)";
+var fsText = "#000000";
+var ssBorder = "#4a4a4a";
+var fs0Mines = "#ffffff";
+var fs1Mines = "#eecaa6";
+var fs2Mines = "#eda877";
+var fs3Mines = "#ed8b6b";
+var fs4Mines = "#ed7a53";
+var fs5Mines = "#ed6347";
+var fs6Mines = "#ed4a3b";
+var fsClosed = "#699be0";
+var fsExplode = "#ed2f2f";
+var fsBackground = "#ffffff";
 
 /**
  * Der Timer
