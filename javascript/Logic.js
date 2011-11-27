@@ -39,9 +39,6 @@ $(document).ready(function() {
 	$('#canvas').attr('width', canvasWidth);
 	$('#HUD').css('width', canvasWidth-100);
 	
-	// Hier wird die Hintergrundfarbe des body ausgelesen und für den canvas gesetzt
-	fsBackground = $("body").css("background-color");
-	
 	// Hier wird der New Game Button konfiguriert
 	$('#newGame').click(function(e){
 		// Wenn man noch am leben ist, ...
@@ -114,14 +111,14 @@ $(document).ready(function() {
 							if(gameField[i][j].collides(clickVector)) {
 								if(!gameField[i][j].isMarked) {
 									if(exsistingMines > 0) {
-										gameField[i][j].toggleMarked();
-										// Wenn eine Flagge gesetzt wurde, dann Minen runter zählen
-										exsistingMines--;
+										if(gameField[i][j].toggleMarked())
+											// Wenn eine Flagge gesetzt wurde, dann Minen runter zählen
+											exsistingMines--;
 									}
 								} else {
-									gameField[i][j].toggleMarked();
-									// sonst hoch zählen
-									exsistingMines++;
+									if(gameField[i][j].toggleMarked())
+										// sonst hoch zählen
+										exsistingMines++;
 								}
 								// Im Anschluß die Anzahl der Minen schreiben
 								$('span#mines').html(exsistingMines);
@@ -300,7 +297,6 @@ var fs5Mines = "#ed6347";
 var fs6Mines = "#ed4a3b";
 var fsClosed = "#699be0";
 var fsExplode = "#ed2f2f";
-var fsBackground = "#ffffff";
 
 /**
  * Der Timer
@@ -399,8 +395,7 @@ function difficultyTrigger() {
  */
 function newGame() {
 	// Das Spielfeld leeren
-	ctx.fillStyle = fsBackground;
-	ctx.fillRect(0,0,canvasWidth, canvasHeight);
+	ctx.clearRect(0,0, canvasWidth, canvasHeight);
 	
 	// Wenn der Timer widererwarten noch laufen sollte, dann muss er angehalten werden
 	if(time.Enable){
