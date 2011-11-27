@@ -73,6 +73,23 @@ $(document).ready(function() {
 			newMousePosition = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop);
 			// Den neuen offsetVector berechnen (also das Spielfeld verschieben
 			offsetVector = offsetVector.add(newMousePosition.sub(actualMousedownPosition));
+			{ // Prüfen, ob der OfsetVector seine Maximalwerte überschreitet
+				var maxOffset = getMaxOffset();
+				
+				// Wenn die X-Koordinate des offsetVector zu groß wird, dann verringern
+				if (offsetVector.x >= maxOffset.x)
+					offsetVector = offsetVector.sub(new Vector(maxOffset.x, 0));
+				// Wenn die X-Koordinate des offsetVector zu klein wird, dann vergrößern
+				else if (offsetVector.x <= -maxOffset.x)
+					offsetVector = offsetVector.add(new Vector(maxOffset.x, 0));
+				
+				// Wenn die Y-Koordinate des offsetVector zu groß wird, dann verringern
+				if (offsetVector.y >= maxOffset.y)
+					offsetVector = offsetVector.sub(new Vector(0, maxOffset.y));
+				// Wenn die Y-Koordinate des offsetVector zu klein wird, dann vergrößern
+				else if (offsetVector.y <= maxOffset.y)
+					offsetVector = offsetVector.add(new Vector(0, maxOffset.y));
+			}
 			// Die aktuelle Position setzen
 			actualMousedownPosition = newMousePosition;
 			// Das Spielfeld neu zeichnen
@@ -125,9 +142,6 @@ $(document).ready(function() {
 							}
 					}
 				}
-
-				// TODO debug entfernen
-				//$('#position').html(clickVector.x +', '+ clickVector.y);
 				
 				// das Spielfeld neu zeichnen
 				repaint();
@@ -159,9 +173,6 @@ $(document).ready(function() {
 							}
 					}
 				}
-	
-				// TODO debug entfernen
-				$('#position').html(clickVector.x +', '+ clickVector.y);
 	
 				// Das Spielfeld neu zeichnen
 				repaint();
@@ -246,11 +257,11 @@ var canvasHeight = 425;
 /**
  * Die Anzahl der Hexatiles in einer visuellen Zeile des Spielfeldes
  */
-var cellsInLine = 30;
+var cellsInLine = 50;
 /**
  * Die Anzahl der Hexatiles in einer visuellen Spalte des Spielfeldes
  */
-var cellsInColumn = 30;
+var cellsInColumn = 50;
 
 /** 
  * Die Ausdehnung der Matrix (solange diese noch quadratisch ist)
@@ -993,4 +1004,69 @@ function pointCollidesWithTriangle(vp, vt1, vt2, vt3) {
 
 	// an dieser Stelle ist klar, dass sich der Punkt nicht im Dreieck befindet
 	return false;
+}
+
+
+
+
+
+
+/**
+ * Diese Funktion prüft, ob die Zelle mit dem cellVector auf dem canvas liegt
+ * 
+ * @param Vector cellVector
+ * @return Vector, falls die Zelle auf dem canvas ist, sonst null
+ */
+function correctCellVector(cellVector) {
+	
+	// Obere linke Ecke des Zellrechteckes
+	if (cellVector.x >= 0 && cellVector.x < canvasWidth && cellVector.y >= 0 && cellVector.y < canvasHeight)
+		return cellVector;
+	
+	// Obere rechte Ecke des Zellrechteckes
+	var upperRightVector = cellVector.add(new Vector(cellWidth, 0));
+	if (upperRightVector.x >= 0 && upperRightVector.x < canvasWidth && upperRightVector.y >= 0 && upperRightVector.y < canvasHeight)
+		return cellVector;
+	
+	// Untere linke Ecke des ZellRechteckes
+	var lowerLeftVector = cellVector.add(new Vector(0, cellHeight));
+	if (lowerLeftVector.x >= 0 && lowerLeftVector.x < canvasWidth && lowerLeftVector.y >= 0 && lowerLeftVector.y < canvasHeight)
+		return cellVector;
+	
+	// untere rechte Ecke des Zellrechteckes
+	var lowerRightVector = cellVector.add(new Vector(cellWidth, cellHeight));
+	if (lowerRightVector.x >= 0 && lowerRightVector.x < canvasWidth && lowerRightVector.y >= 0 && lowerRightVector.y < canvasHeight)
+		return cellVector;
+	
+	// An dieser Stelle muss berechnet werden, ob der ZellenVector umgerechnet werden muss
+	var maxOffset = getMaxOffset();
+	// Wenn die Zell links wieder reinkommen muss
+	if (cellVector.x >= (maxOffset.x - cellWidth))
+		return correctCellVector(cellVector.sub(new Vector(maxOffset.x, 0)));
+	// Wenn die Zelle rechts wieder reinkommen muss
+	else if (cellVector.x <= -(maxOffset.x - canvasWidth))
+		return correctCellVector(cellVector.add(new Vector(maxOffset.x, 0)));
+	
+	// Wenn die Zelle oben wieder reinkommen muss
+	if (cellVector.y >= (maxOffset.y - cellHeight))
+		return correctCellVector(cellVector.sub(new Vector(0, maxOffset.y)));
+	// Wenn die Zelle unten wieder reinkommen muss
+	else if (cellVector.y <= -(maxOffset.y - canvasHeight))
+		return correctCellVector(cellVector.add(new Vector(0, maxOffset.y)));
+	
+	return null;
+}
+
+
+
+
+
+
+/**
+ * Diese Funktion berechnet den Maximalen Offset anhand der Zellen größe und Anzahl
+ * 
+ * @returns {Vector} maxOffsetVector
+ */
+function getMaxOffset() {
+	return new Vector(cellWidth*(cellsInLine - 1), (cellHeight * (cellsInColumn/2)) + ((cellHeight / 2) * (cellsInColumn/2)));
 }

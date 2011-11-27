@@ -34,6 +34,8 @@ function Hexatile(line, column) {
 	 * Wenn die Zelle markiert wurde, dann ist diese Flag gesetzt
 	 */
 	this.isMarked = false;
+	
+	this.cellVector = null;
 }
 
 
@@ -63,71 +65,80 @@ Hexatile.prototype.draw = function(ctx) {
 	var currentLine = lineVector.mult(this.line);
 	var currentColumn = columnVector.mult(this.column);
 	var relativeCellVector = currentLine.add(currentColumn);
-	var cellVector = offsetVector.add(relativeCellVector);
-
-	if(this.isOpen == false) {
-		// Hier wird die Hintergrundfare eines unaufgedeckten Hexagon gesetzt
-		ctx.fillStyle = fsClosed;
-
-	} else if(this.isOpen == true && this.isMine == false) {
-
-		// In diesen Zeilen wird abhängig von der Anzahl der Nachbarminen die Hintergrundfarbe des Hexagon gesetzt
-		if(this.surroundingMines == 0)
-			ctx.fillStyle = fs0Mines;
-		if(this.surroundingMines == 1)
-			ctx.fillStyle = fs1Mines;
-		if(this.surroundingMines == 2)
-			ctx.fillStyle = fs2Mines;
-		if(this.surroundingMines == 3)
-			ctx.fillStyle = fs3Mines;
-		if(this.surroundingMines == 4)
-			ctx.fillStyle = fs4Mines;
-		if(this.surroundingMines == 5)
-			ctx.fillStyle = fs5Mines;
-		if(this.surroundingMines == 6)
-			ctx.fillStyle = fs6Mines;
-
-	} else if(this.isOpen && this.isMine) {
-		// Wenn dies eine Mine ist und sie angeklickt wurde, soll sichtbar sein, durch welche Mine man gestorben ist
-		ctx.fillStyle = fsExplode;
+	this.cellVector = offsetVector.add(relativeCellVector);
+	this.cellVector = correctCellVector(this.cellVector);
+	
+	// Die Zelle muss nur dann gezeichnet werden, wenn sie auf dem canvas sichtbar ist
+	if(this.cellVector) {
+		if(this.isOpen == false) {
+			// Hier wird die Hintergrundfare eines unaufgedeckten Hexagon gesetzt
+			ctx.fillStyle = fsClosed;
+	
+		} else if(this.isOpen == true && this.isMine == false) {
+	
+			// In diesen Zeilen wird abhängig von der Anzahl der Nachbarminen die Hintergrundfarbe des Hexagon gesetzt
+			if(this.surroundingMines == 0)
+				ctx.fillStyle = fs0Mines;
+			if(this.surroundingMines == 1)
+				ctx.fillStyle = fs1Mines;
+			if(this.surroundingMines == 2)
+				ctx.fillStyle = fs2Mines;
+			if(this.surroundingMines == 3)
+				ctx.fillStyle = fs3Mines;
+			if(this.surroundingMines == 4)
+				ctx.fillStyle = fs4Mines;
+			if(this.surroundingMines == 5)
+				ctx.fillStyle = fs5Mines;
+			if(this.surroundingMines == 6)
+				ctx.fillStyle = fs6Mines;
+	
+		} else if(this.isOpen && this.isMine) {
+			// Wenn dies eine Mine ist und sie angeklickt wurde, soll sichtbar sein, durch welche Mine man gestorben ist
+			ctx.fillStyle = fsExplode;
+		}
+	
+		// Hier wird die Bordr Farbe und die Border dicke gesetzt.
+		ctx.strokeStyle = ssBorder;
+		ctx.lineWidth = 1;
+	
+		// In den folgenden Zeilen wird das Hexagon gezeichnet
+		ctx.beginPath();
+		ctx.moveTo(this.cellVector.x + cellWidth/2, this.cellVector.y);
+		ctx.lineTo(this.cellVector.x + cellWidth, this.cellVector.y + topMargin);
+		ctx.lineTo(this.cellVector.x + cellWidth, this.cellVector.y + (cellHeight - topMargin));
+		ctx.lineTo(this.cellVector.x + cellWidth/2, this.cellVector.y + cellHeight);
+		ctx.lineTo(this.cellVector.x + 0, this.cellVector.y + (cellHeight - topMargin));
+		ctx.lineTo(this.cellVector.x + 0, this.cellVector.y + topMargin);
+		ctx.lineTo(this.cellVector.x + cellWidth/2, this.cellVector.y);
+		ctx.fill();
+		ctx.stroke();
+	
+		if(!alive && this.isMine) {
+			// Wenn man tot ist, dann sollen alle Minen gezeichnet werden
+			ctx.drawImage(imageMine, this.cellVector.x, this.cellVector.y, cellWidth, cellHeight);
+		}
+	
+		// Hier wird die Zelle markiert, wenn dies der Fall ist
+		if(this.isMarked) {
+			// Wenn ein Hexatile markiert ist, soll es eine Flagge bekommen
+			ctx.drawImage(imageFlag, this.cellVector.x, this.cellVector.y - (cellHeight / 10), cellWidth, cellHeight);
+		}
+		// Hier wird das Hexatile mit einer Zahl versehen, sollte es aufgedeckt sein, keine 
+		// Mine enthalten und mindestens eine Mine als Nachbarn habn.
+		else if(this.isOpen && (!this.isMine) && this.surroundingMines > 0) {
+			// TODO schöner machen
+			ctx.fillStyle = fsText;
+			ctx.font = '8pt Helvetica';
+			ctx.textBaseline = "middle";
+			ctx.fillText(this.surroundingMines, this.cellVector.x + (cellWidth/2 - 3), this.cellVector.y+(cellHeight/2 -1));
+		}
+		
+//		// FIXME
+//		ctx.fillStyle = fsText;
+//		ctx.font = '6pt Helvetica';
+//		ctx.textBaseline = "middle";
+//		ctx.fillText((this.line+(cellsInLine-1))+","+this.column, this.cellVector.x + (cellWidth/2 - 3), this.cellVector.y+(cellHeight/2 -1));
 	}
-
-	// Hier wird die Bordr Farbe und die Border dicke gesetzt.
-	ctx.strokeStyle = ssBorder;
-	ctx.lineWidth = 1;
-
-	// In den folgenden Zeilen wird das Hexagon gezeichnet
-	ctx.beginPath();
-	ctx.moveTo(cellVector.x + cellWidth/2, cellVector.y);
-	ctx.lineTo(cellVector.x + cellWidth, cellVector.y + topMargin);
-	ctx.lineTo(cellVector.x + cellWidth, cellVector.y + (cellHeight - topMargin));
-	ctx.lineTo(cellVector.x + cellWidth/2, cellVector.y + cellHeight);
-	ctx.lineTo(cellVector.x + 0, cellVector.y + (cellHeight - topMargin));
-	ctx.lineTo(cellVector.x + 0, cellVector.y + topMargin);
-	ctx.lineTo(cellVector.x + cellWidth/2, cellVector.y);
-	ctx.fill();
-	ctx.stroke();
-
-	if(!alive && this.isMine) {
-		// Wenn man tot ist, dann sollen alle Minen gezeichnet werden
-		ctx.drawImage(imageMine, cellVector.x, cellVector.y, cellWidth, cellHeight);
-	}
-
-	// Hier wird die Zelle markiert, wenn dies der Fall ist
-	if(this.isMarked) {
-		// Wenn ein Hexatile markiert ist, soll es eine Flagge bekommen
-		ctx.drawImage(imageFlag, cellVector.x, cellVector.y - (cellHeight / 10), cellWidth, cellHeight);
-	}
-	// Hier wird das Hexatile mit einer Zahl versehen, sollte es aufgedeckt sein, keine 
-	// Mine enthalten und mindestens eine Mine als Nachbarn habn.
-	else if(this.isOpen && (!this.isMine) && this.surroundingMines > 0) {
-		// TODO schöner machen
-		ctx.fillStyle = fsText;
-		ctx.font = '8pt Helvetica';
-		ctx.textBaseline = "middle";
-		ctx.fillText(this.surroundingMines, cellVector.x + (cellWidth/2 - 3), cellVector.y+(cellHeight/2 -1));
-	}
-
 };
 
 
@@ -184,7 +195,10 @@ Hexatile.prototype.toString = function() {
  * Diese Funktion berechnet, ob ein vorhergegangener Klick auf der Zelle stattgefunden hat.
  */
 Hexatile.prototype.collides = function(vector) {
-	var cellVector = offsetVector.add(lineVector.mult(this.line).add(columnVector.mult(this.column)));
+	if (!this.cellVector)
+		return false;
+	
+	var cellVector = this.cellVector;
 
 	// Erst wird geprüft, ob der Klick innerhalb des Rechtecks stattfand, welches dieses Hexagon beschreibt
 	if(vector.x > cellVector.x && vector.x < (cellVector.x + cellWidth) &&
