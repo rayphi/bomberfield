@@ -40,13 +40,15 @@ function Hexatile(line, column) {
 
 /**
  * Diese Funktion switched das isMarked Flag
+ * @return true wenn der Flaggenstatus sich geändert hat, false, wenn nicht
  */
 Hexatile.prototype.toggleMarked = function() {
 	if(this.isOpen)
-		return;
+		return false;
 
 	this.isMarked = !this.isMarked;
 	this.draw(ctx);
+	return true;
 };
 
 
