@@ -50,6 +50,19 @@ $(document).ready(function() {
 		newGame();
 	});
 	
+	// Hier wird der New Game Button im MessageFeld konfiguriert
+		$('#MessageNewGame').click(function(e){
+		$('#Message').addClass('displayed');
+		$('#Message').css({top:0, left:0, width:0, height:0});
+		$('#Message').remove(".wlMessage");
+		newGame();
+	});
+	
+	// Hier wird der Feld anschauen Button im MessageFeld konfiguriert
+		$('#showField').click(function(e){
+		$('#Message').addClass('displayed');
+	});
+	
 	// Wenn ein Mousebutton gedückt wurde
 	$('#canvas').mousedown(function(e) {
 		// Die aktuelle Position ermitteln
@@ -457,7 +470,9 @@ function win() {
 	statistics.addSeconds(difficulty, statistics.state.win, seconds);
 	statistics.addDiscovered(difficulty, statistics.state.win, calculateDiscoveredPercent());
 	
-	alert("Sie haben gewonnen! Benoetigte Zeit: " + seconds + " Sekunden");
+	message("Sie haben gewonnen! Benoetigte Zeit: " + seconds + " Sekunden");
+	//alert("Sie haben gewonnen! Benoetigte Zeit: " + seconds + " Sekunden");
+	
 }
 
 
@@ -476,11 +491,21 @@ function lose() {
 	statistics.addSeconds(difficulty, statistics.state.lose, seconds);
 	statistics.addDiscovered(difficulty, statistics.state.lose, calculateDiscoveredPercent());
 	
-	alert('Sie haben verloren! (' + seconds + 'sec)');
+	message("Sie haben verloren! Benoetigte Zeit: " + seconds + " Sekunden");
+	//alert('Sie haben verloren! (' + seconds + 'sec)');
 }
 
 
-
+/**
+ * Diese Funktion wird aufgerufen, wenn das Spiel verloren oder gewonnen wurde und öffnet das MessageFenster.
+ */
+function message(text){
+	var offset = $('#canvas').offset();
+	$('#Message').offset({top: offset.top, left: offset.left});
+	$('#Message').css({'width': canvasWidth, 'height': canvasHeight});
+	$('#Message').append('<p class="wlmessage">' + text + '</p>');
+	$('#Message').removeClass('displayed');
+}
 
 
 
@@ -648,7 +673,7 @@ function checkVictoryClick() {
 			if(hexatileOnMap(i,j))
 				// Dann wird geprueft, ob diese Zelle noch verdeckt und keine Mine ist
 				if(!gameField[i][j].isOpen && !gameField[i][j].isMine)
-					// in diesem Fall hat man noch nicht durch audecken aller leeren Felder gewonnen
+					// in diesem Fall hat man noch nicht durch aufdecken aller leeren Felder gewonnen
 					return false;
 		}
 	}

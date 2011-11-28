@@ -40,6 +40,36 @@ body {
 	border-radius: 50px;
 }
 
+#Message{
+	width:100px;
+	height:100px;
+	background-color:grey;
+	position: absolute;
+	border-radius:50px;
+	opacity:0.9;
+}
+
+#statistik{
+	width:200px;
+	height:350px;
+	border: 1px solid black;
+	float:right;
+	margin:30px 40px 0 0;
+}
+
+#buttons{
+	float:right;
+	width:730px;
+}
+
+.wlmessage{
+	margin:30px 0 0 40px;
+}
+
+.displayed{
+	display:none;
+}
+
 #time {
 	float: left;
 }

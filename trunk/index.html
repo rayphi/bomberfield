@@ -18,13 +18,22 @@
   <body>
     <div id="wrapper">
       <div id="HUD">
-        <input type="button" id="newGame" value="New Game"/>
+        <input type="button" class="newGame newGameTop" value="New Game"/>
         <select id="difficulty">
         	<option value="1">easy</option>
         </select>
         <div id="time">Zeit: <span id="timer">0</span> Sekunden</div><br />
         <div id="total_mine_div"><span id="mines">0</span> Minen</div><br />
       </div> <br />
+      <div id="Message" class="displayed">
+      		<div id="statistik">
+      			<h2>Statistik</h2>
+      		</div>
+      		<div id="buttons">  
+      			<input id="showField" type="button" value="Feld bestaunen"/>
+      			<input id="MessageNewGame" type="button" value="Neues Spiel" />
+      		</div>
+      </div>
       <canvas id="canvas" ></canvas>
     </div>
   </body>
