@@ -40,13 +40,16 @@ $(document).ready(function() {
 	$('#HUD').css('width', canvasWidth-100);
 	
 	// Hier wird der New Game Button konfiguriert
-	$('#newGame').click(function(e){
+	$('.newGame').click(function(e){
+		$('#Message').css({top:0, left:0, width:0, height:0});
 		// Wenn man noch am leben ist, ...
 		if(alive) {
 			// ...dann gilt das Spiel als abgebrochen
 			discard();
 		}
 		// Ein neues Spiel starten
+		
+		$('#Message').addClass('displayed');
 		newGame();
 	});
 	
