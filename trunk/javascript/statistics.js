@@ -158,7 +158,7 @@ function Statistics() {
 		break;
 		
 		// Die gespielte Zeit aller abgebrochenen Spiele der gewünschten Schwierigkeit zurückgeben
-		case this.state.discard: {
+		case this.state.discarded: {
 			var wonPlusLost = 0;
 			// Prüfen ob für die gewünschte Schwierigkeit an den gewonnenen Spielen ein Wert gesetzt wurde
 			if(secondsWon[difficulty]) {
