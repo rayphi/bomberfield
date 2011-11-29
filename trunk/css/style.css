@@ -50,11 +50,19 @@ body {
 }
 
 #statistik{
-	width:200px;
-	height:350px;
+	width:330px;
+	height:315px;
 	border: 1px solid black;
 	float:right;
 	margin:30px 40px 0 0;
+}
+
+#statistik h2{
+	text-align:center;	
+}
+
+#allStatistics p{
+	margin-top:5px;	
 }
 
 #buttons{
@@ -62,7 +70,7 @@ body {
 	width:730px;
 }
 
-.wlmessage{
+div.wlmessage{
 	margin:30px 0 0 40px;
 }
 

@@ -22,6 +22,12 @@ $(document).ready(function() {
 	//startet ein trigger on change event (Schwierigkeit wird bei auswahl gesetzt)
 	difficultyTrigger();
 	
+	//Schwierigkeitsgrade werden geladen 
+	loadStatisticsDifficulty();
+	
+	//startet ein trigger on change event (Statistik wird bei auswahl geändert)
+	statisticsTrigger();
+	
 	// Hier wird das Image für die Flaggen geladen
 	imageFlag = new Image();
 	imageFlag.src = "images/flag.png";
@@ -51,6 +57,8 @@ $(document).ready(function() {
 	
 	// Hier wird der New Game Button konfiguriert
 	$('#newGame').click(function(e){
+		// Entfernt beim klicken des NewGame buttons die alte Win|Lose Nachricht aus dem Messagefeld 
+		$('p').remove(".wlmessage");
 		// Das Messagefeld verschieben
 		$('#Message').css({top:0, left:0, width:0, height:0});
 		// Das Messagefeld verstecken
@@ -72,7 +80,7 @@ $(document).ready(function() {
 		$('#Message').addClass('displayed');
 		// Das Messagefeld verschieben
 		$('#Message').css({top:0, left:0, width:0, height:0});
-		// TODO ?
+		// Entfernt beim klicken des NewGame buttons die alte Win|Lose Nachricht aus dem Messagefeld 
 		$('p').remove(".wlmessage");
 		
 		// Ein neues Spiel starten
@@ -528,10 +536,49 @@ function message(text){
 	$('#Message').append('<p class="wlmessage">' + text + '</p>');
 	// Das Messagefeld anzeigen
 	$('#Message').removeClass('displayed');
+	// Entfernt beim klicken des NewGame buttons die alte Statistik aus dem Statistikfeld und fügt aktuelle ein.
+	$("#allStatistics").html("<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.win) + " mal gewonnen.</p>" + "<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.lose) + " mal verloren.</p>" + "<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.discarded) + " mal neuangefangen.</p>");
 }
 
 
 
+
+
+/**
+ * Die in @var difficulties festgelegten Schwierigkeitsstufen
+ * werden in die Auswahlliste geladen.
+ */
+function loadStatisticsDifficulty() {
+	var select = $('#difficulty4statistics');
+	var options;
+	if(select.prop) {
+	  options = select.prop('options');
+	}
+	else {
+	  options = select.attr('options');
+	}
+	$('option', select).remove();
+	$.each(difficulties, function(text, value) {
+		options[options.length] = new Option(text, value);
+	});
+	select.val(difficulty);
+}
+
+
+
+
+
+
+/**
+ * Diese Funktion triggert einen 'change' in der Auswahlliste. 
+ * Sobald ein 'change' festgestellt wird, wird die Statistik aktualisiert.
+ */
+function statisticsTrigger() {
+	$("#difficulty4statistics").change(function () {
+		// Entfernt beim klicken des NewGame buttons die alte Statistik aus dem Statistikfeld und fügt aktuelle ein.
+		$("#allStatistics").html("<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.win) + " mal gewonnen.</p>" + "<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.lose) + " mal verloren.</p>" + "<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.discarded) + " mal neuangefangen.</p>");
+	}).trigger('change');
+}
 
 
 
