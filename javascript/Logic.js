@@ -39,30 +39,49 @@ $(document).ready(function() {
 	$('#canvas').attr('width', canvasWidth);
 	$('#HUD').css('width', canvasWidth-100);
 	
+	// Kontextmenü des Messagefeldes unterdrücken
+	$('#Message').bind("contextmenu", function(e) {
+		return false;
+	});
+	
+	// Kontextmenü des canvas unterdrücken
+	$('#canvas').bind("contextmenu", function(e) {
+		return false;
+	});
+	
 	// Hier wird der New Game Button konfiguriert
-	$('.newGame').click(function(e){
+	$('#newGame').click(function(e){
+		// Das Messagefeld verschieben
 		$('#Message').css({top:0, left:0, width:0, height:0});
+		// Das Messagefeld verstecken
+		$('#Message').addClass('displayed');
+		
 		// Wenn man noch am leben ist, ...
 		if(alive) {
 			// ...dann gilt das Spiel als abgebrochen
 			discard();
-		}
-		// Ein neues Spiel starten
+		}		
 		
-		$('#Message').addClass('displayed');
+		// Ein neues Spiel starten		
 		newGame();
 	});
 	
 	// Hier wird der New Game Button im MessageFeld konfiguriert
-		$('#MessageNewGame').click(function(e){
+	$('#MessageNewGame').click(function(e){
+		// Das Messagefeld verstecken
 		$('#Message').addClass('displayed');
+		// Das Messagefeld verschieben
 		$('#Message').css({top:0, left:0, width:0, height:0});
-		$('#Message').remove(".wlMessage");
+		// TODO ?
+		$('p').remove(".wlmessage");
+		
+		// Ein neues Spiel starten
 		newGame();
 	});
 	
 	// Hier wird der Feld anschauen Button im MessageFeld konfiguriert
-		$('#showField').click(function(e){
+	$('#showField').click(function(e){
+		// Das Messagefeld  verstecken
 		$('#Message').addClass('displayed');
 	});
 	
@@ -203,11 +222,6 @@ $(document).ready(function() {
 		
 		// Den mousedown beenden, da der Knopf losgelassen wurde
 		mousedown = false;
-	});
-
-	// Kontextmenü unterdrücken
-	$('#canvas').bind("contextmenu", function(e) {
-		return false;
 	});
 
 	// Den context des canvas laden und in der globalen Variablen ctx ablegen
@@ -474,8 +488,6 @@ function win() {
 	statistics.addDiscovered(difficulty, statistics.state.win, calculateDiscoveredPercent());
 	
 	message("Sie haben gewonnen! Benoetigte Zeit: " + seconds + " Sekunden");
-	//alert("Sie haben gewonnen! Benoetigte Zeit: " + seconds + " Sekunden");
-	
 }
 
 
@@ -495,20 +507,31 @@ function lose() {
 	statistics.addDiscovered(difficulty, statistics.state.lose, calculateDiscoveredPercent());
 	
 	message("Sie haben verloren! Benoetigte Zeit: " + seconds + " Sekunden");
-	//alert('Sie haben verloren! (' + seconds + 'sec)');
 }
+
+
+
+
 
 
 /**
  * Diese Funktion wird aufgerufen, wenn das Spiel verloren oder gewonnen wurde und öffnet das MessageFenster.
  */
 function message(text){
+	// Den Offset des canvas lesen
 	var offset = $('#canvas').offset();
+	// Den Offset des Messagefeldes setzen
 	$('#Message').offset({top: offset.top, left: offset.left});
+	// Die Dimensionen des Messagefeldes setzen
 	$('#Message').css({'width': canvasWidth, 'height': canvasHeight});
+	// Die Nachricht dem Messagefeld hinzufügen
 	$('#Message').append('<p class="wlmessage">' + text + '</p>');
+	// Das Messagefeld anzeigen
 	$('#Message').removeClass('displayed');
 }
+
+
+
 
 
 
