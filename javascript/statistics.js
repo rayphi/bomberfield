@@ -97,7 +97,7 @@ function Statistics() {
 		break;
 		
 		// Es soll die Anzahl der abgebrochenen Spiele zurückgegeben werden
-		case this.state.discard: {
+		case this.state.discarded: {
 			var winPlusLost = 0;
 			// Prüfen ob für die gewünschte Schwierigkeit an den gewonnenen Spielen ein Wert gesetzt wurde
 			if(gamesWon[difficulty]) {
@@ -245,7 +245,7 @@ function Statistics() {
 		break;
 		
 		// Gibt die % der aufgedeckten Zellen aller abgebrochenen Spiele der gewünschten Schwierigkeit zurück
-		case this.state.discard: {
+		case this.state.discarded: {
 			if(discoveredPercentDiscarded[difficulty]) {
 				return discoveredPercentDiscarded[difficulty];
 			}
@@ -380,7 +380,7 @@ function Statistics() {
 		break;
 		
 		// Wenn es sich um ein abgebrochenes Spiel handelt, dann addiere die % auf den Zaehler der entsprechenden schwierigkeit
-		case this.state.discard: {
+		case this.state.discarded: {
 			if(!discoveredPercentDiscarded[difficulty]) {
 				discoveredPercentDiscarded[difficulty] = 0;
 			}
