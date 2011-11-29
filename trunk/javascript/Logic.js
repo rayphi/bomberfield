@@ -21,7 +21,7 @@ $(document).ready(function() {
 	loadDifficulties();
 	//startet ein trigger on change event (Schwierigkeit wird bei auswahl gesetzt)
 	difficultyTrigger();
-	alive = true;
+	
 	// Hier wird das Image für die Flaggen geladen
 	imageFlag = new Image();
 	imageFlag.src = "images/flag.png";
