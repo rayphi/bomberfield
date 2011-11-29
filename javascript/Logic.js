@@ -3,6 +3,10 @@
  */
 $(document).ready(function() {
 	
+	if (!isCanvasSupported()) {
+		$('.canvas-check').css('display', 'inline');
+	}
+	
 	{ // Timer initialisieren
 		// Einen neuen Timer erzeugen
 		time = new Timer();
@@ -37,7 +41,7 @@ $(document).ready(function() {
 	imageMine.src = "images/mine.png";
 
 	// Hier wird der CSS Style für das canvas angepasst
-	$('#canvas, #wrapper').css('width', canvasWidth + 'px');
+	$('#canvas, #main, #footer-content').css('width', canvasWidth + 'px');
 	$('#canvas').css('height', canvasHeight + 'px');
 
 	// Hier wird der Backgroundbuffer des canvas angepasst
@@ -235,7 +239,7 @@ $(document).ready(function() {
 	// Den context des canvas laden und in der globalen Variablen ctx ablegen
 	var canvas = document.getElementById('canvas');
 	ctx = canvas.getContext('2d');
-
+	
 	// Ein neues Spiel starten
 	newGame();
 });
@@ -383,7 +387,10 @@ var initialMousedownPosition;
 var mouseClickTolerance = 2;
 
 
-
+function isCanvasSupported() {
+	var elem = document.createElement('canvas');
+	return !!(elem.getContext && elem.getContext('2d'));
+}
 
 
 

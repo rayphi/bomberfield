@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" ></meta>
-		<link rel="stylesheet" type="text/css" href="css/style.css" media="all" ></link>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.min.js" ></script>
 		
 		<script src="javascript/Vector.js" type="text/javascript" ></script>
@@ -11,37 +10,62 @@
 		<script src="javascript/timer.js" type="text/javascript" ></script>
 		<script src="javascript/statistics.js" type="text/javascript" ></script>
 		<script src="javascript/Logic.js" type="text/javascript" ></script>
-
+		<!--<script src="javascript/check-24_analytics.js" type="text/javascript" ></script>-->
 		
 		<title>Bomberfield</title>
 	</head>
   <body>
     <div id="wrapper">
-      <div id="HUD">
-        <input type="button" id="newGame" value="New Game"/>
-        <select id="difficulty">
-        	<option value="1">easy</option>
-        </select>
-        <div id="time">Zeit: <span id="timer">0</span> Sekunden</div><br />
-        <div id="total_mine_div"><span id="mines">0</span> Minen</div><br />
-      </div> <br />
-      <div id="Message" class="displayed">
-      <div class="wlmessage"></div>
+	   	  <div class="canvas-check">
+		    	<div>
+		    	<h2>Uups...</h2>
+		     	<p>Ihr Internet Browser unterstützt die auf dieser Seite verwendeten techniken leider noch nicht.
+		     		Wir empfehlen deshalb ein Update oder einen der folgenden Browser:</p>
+		     	<ul class="clearfix">
+		     		<li><a href="http://www.google.com/chrome/"><img src="images/chrome.png" alt="" /><span>Google Chrome</span></a></li>
+		     		<li><a href="http://www.mozilla.org/de/firefox/new/"><img src="images/firefox.png" alt="" /><span>Mozilla Firefox</span></a></li>
+		     		<li><a href="http://www.apple.com/de/safari/"><img src="images/safari.png" alt="" /><span>Safari</span></a></li>
+		     		<li><a href="http://de.opera.com/download/"><img src="images/opera.png" alt="" /><span>Opera</span></a></li>
+		     	</ul>
+		     	</div>
+		     </div>
+    	<div id="main" class="clearfix">
+				<div id="HUD">
+        	<input type="button" id="newGame" value="New Game"/>
+        	<select id="difficulty">
+        		<option value="1">easy</option>
+        	</select>
+        	<div id="time">Zeit: <span id="timer">0</span> Sekunden</div><br />
+        	<div id="total_mine_div"><span id="mines">0</span> Minen</div><br />
+      	</div><br />
+
+      	<div id="Message" class="displayed">
+      		<div class="wlmessage"></div>
       		<div id="statistik">
       			<h2>Statistik</h2>
-      			 <select id="difficulty4statistics">
+      			<select id="difficulty4statistics">
         			<option value="1">easy</option>
-      		  	</select>
-      		  	<div id="allStatistics">
+      		  </select>
+      		  <div id="allStatistics">
       		  		
-      		  	</div>
+      		  </div>
       		</div>
+      		
       		<div id="buttons">  
       			<input id="showField" type="button" value="Feld bestaunen"/>
       			<input id="MessageNewGame" type="button" value="Neues Spiel" />
       		</div>
+      		
+      	</div>
+      	
+      		
+      	<canvas id="canvas" ></canvas>
       </div>
-      <canvas id="canvas" ></canvas>
-    </div>
+      </div>
+    <div id="footer">
+			<div id="footer-content">
+				<p></p>
+			</div>
+		</div>
   </body>
 </html>
