@@ -235,6 +235,40 @@ $(document).ready(function() {
 		// Den mousedown beenden, da der Knopf losgelassen wurde
 		mousedown = false;
 	});
+	
+	// Mousewheelevent hinzufügen
+	$('#canvas').mousewheel(function(e, delta){
+		// minimale Dimension eines Hexatile berechnen
+		minWidth = (canvasWidth / cellsInLine > 10 ? canvasWidth / cellsInLine : 20);
+		minHeight = (canvasHeight / cellsInLine > 10 ? canvasHeight / cellsInLine : 20);
+		if (minWidth > minHeight)
+			minHeight = minWidth;
+		else minWidth = minHeight;
+		
+		// maximale Dimension eines Hexatile berechnen
+		maxWidth = 80;
+		maxHeight = 80;
+		
+		// neue Dimension des Hexatile anpassen
+		cellHeight = cellHeight + (delta * mousewheelDelta);
+		cellWidth = cellWidth + (delta * mousewheelDelta);
+		
+		// Evtl Dimension des Hexatile korrigieren
+		if (cellWidth < minWidth || cellHeight < minHeight) {
+			cellWidth = minWidth;
+			cellHeight = minHeight;
+		} else if (cellWidth > maxWidth || cellHeight > maxHeight) {
+			cellWidth = maxWidth;
+			cellHeight = maxHeight;
+		}
+		
+		// line und column Vektoren neu berechnen
+		lineVector = new Vector(-(cellWidth/2), (cellHeight * 3) / 4);
+		columnVector = new Vector(cellWidth/2, (cellHeight * 3) / 4);
+		
+		// Spielfeld neu zeichnen
+		repaint();
+	});
 
 	// Den context des canvas laden und in der globalen Variablen ctx ablegen
 	var canvas = document.getElementById('canvas');
@@ -385,12 +419,28 @@ var initialMousedownPosition;
  * Bewegungsdistanz ein Mouseup noch als click gezählt wird. (px)
  */
 var mouseClickTolerance = 2;
+/**
+ * Der mousewheelDelta gibt vor, um wieviele px sich die Dimension eines Hexatile verändert,
+ * wenn am Mausrad gedreht wird
+ */
+var mousewheelDelta = 2;
 
 
+
+
+
+
+/**
+ * TODO Doku
+ * @returns {Boolean}
+ */
 function isCanvasSupported() {
 	var elem = document.createElement('canvas');
 	return !!(elem.getContext && elem.getContext('2d'));
 }
+
+
+
 
 
 
@@ -586,6 +636,9 @@ function statisticsTrigger() {
 		$("#allStatistics").html("<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.win) + " mal gewonnen.</p>" + "<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.lose) + " mal verloren.</p>" + "<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.discarded) + " mal neuangefangen.</p>");
 	}).trigger('change');
 }
+
+
+
 
 
 
