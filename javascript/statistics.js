@@ -211,6 +211,7 @@ function Statistics() {
 			// dann sie verlorenen
 			if(discoveredPercentLost[difficulty]) {
 				games = games + this.getGames(difficulty, this.state.lose);
+				alert(games);
 				totalPercent = totalPercent + (this.getGames(difficulty, this.state.lose) * discoveredPercentLost[difficulty]);
 			}
 			// dann die gewonnenen

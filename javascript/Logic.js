@@ -496,6 +496,7 @@ function loadDifficulties() {
  */
 function difficultyTrigger() {
 	$("#difficulty").change(function () {
+		$('#difficulty4statistics').val($('#difficulty').val());
 		if(alive) {
 			check = confirm("Wollen Sie das Spiel mit der gewählten Schwierigkeit neu starten? Besätigen sie mit 'OK' zumweiterspielen klicken Sie auf 'Abbrechen.");
 			if(!check) {
@@ -571,7 +572,9 @@ function win() {
 	statistics.addSeconds(difficulty, statistics.state.win, seconds);
 	statistics.addDiscovered(difficulty, statistics.state.win, calculateDiscoveredPercent());
 	
-	message("Sie haben gewonnen! Benoetigte Zeit: " + seconds + " Sekunden");
+	message("Sie haben gewonnen!<br>" +
+			" Benoetigte Zeit: " + seconds + " Sekunden. <br>" +
+			"Aufgedeckte Felder: " + calculateDiscoveredPercent());
 }
 
 
@@ -590,7 +593,10 @@ function lose() {
 	statistics.addSeconds(difficulty, statistics.state.lose, seconds);
 	statistics.addDiscovered(difficulty, statistics.state.lose, calculateDiscoveredPercent());
 	
-	message("Sie haben verloren! Benoetigte Zeit: " + seconds + " Sekunden");
+	message("Sie haben verloren!<br> <br>" + 
+			"Schwierigkeit: " + $('#difficulty :selected').text()   + " <br>" +
+			"Benoetigte Zeit: " + seconds + " Sekunden. <br>" +
+			"Aufgedeckte Felder: " + percCalculator(calculateDiscoveredPercent()) + "%");
 }
 
 
@@ -674,11 +680,11 @@ function percCalculator(perc){
  */
 function timeCalculator(time){
 	if(time < 60){
-		var secTime = time + " sekunden.";
+		var secTime = time + " Sekunden.";
 		return secTime;
 	}
 	else{
-		var minTime =  (time -(time%60))/60 + " minute/n.";
+		var minTime =  (time -(time%60))/60 + " Minute/n.";
 		return minTime;
 	}
 }
