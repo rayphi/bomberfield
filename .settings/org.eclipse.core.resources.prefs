@@ -1,7 +1,13 @@
-#Thu Nov 10 11:16:10 CET 2011
+#Tue Nov 29 23:18:24 CET 2011
 eclipse.preferences.version=1
 encoding//trunk/css=UTF-8
 encoding//trunk/css/style.css=UTF-8
 encoding//trunk/index.html=UTF-8
+encoding//trunk/javascript/Hexatile.js=UTF-8
+encoding//trunk/javascript/Logic.js=UTF-8
+encoding//trunk/javascript/Vector.js=UTF-8
+encoding//trunk/javascript/check-24_analytics.js=UTF-8
+encoding//trunk/javascript/statistics.js=UTF-8
+encoding//trunk/javascript/timer.js=UTF-8
 encoding/<project>=UTF-8
 encoding/trunk=UTF-8

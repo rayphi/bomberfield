@@ -120,8 +120,22 @@ div.wlmessage{
 }
 
 #newGame {
+	background: hsl(215, 50%, 55%);
 	float: left;
-	margin: 0 10px 0 0;
+	margin: -15px 10px 0 -50px;
+	padding: 23px 20px 20px 30px;
+	height: 30px;
+	-moz-border-bottom-left-radius: 70px 90px;
+	border-bottom-left-radius: 70px 90px;
+	-moz-box-shadow: inset 4px -6px 36px hsl(215, 66%, 69%);
+	-webkit-box-shadow: inset 4px -6px 36px hsl(215, 66%, 69%);
+	box-shadow: inset 4px -6px 36px hsl(215, 66%, 69%);
+	cursor: pointer;
+}
+#newGame:hover {
+	-moz-box-shadow: inset 4px -6px 36px  hsl(215, 50%, 55%);
+	-webkit-box-shadow: inset 4px -6px 36px hsl(215, 50%, 55%);
+	box-shadow: inset 4px -6px 36px hsl(215, 50%, 55%);
 }
 
 #difficulty {
