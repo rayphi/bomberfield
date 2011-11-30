@@ -612,13 +612,76 @@ function message(text){
 	$('#Message').append('<p class="wlmessage">' + text + '</p>');
 	// Das Messagefeld anzeigen
 	$('#Message').removeClass('displayed');
-	// Entfernt beim klicken des NewGame buttons die alte Statistik aus dem Statistikfeld und fügt aktuelle ein.
-	$("#allStatistics").html("<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.win) + " mal gewonnen.</p>" + "<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.lose) + " mal verloren.</p>" + "<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.discarded) + " mal neuangefangen.</p>");
+	statWritter();
 }
 
 
+/**
+ * Diese Funktion erstellt die Ausgabe für die Statistik,
+ * sie beinhaltet sowohl Anzahl der Spiele als auch Spielzeit.
+ *  
+ */
+function statWritter(){
+	// Variable welche die Anzahl der Siege beinhaltet
+	var win = statistics.getGames($("#difficulty4statistics").val(), statistics.state.win);
+	// Schreibt in winTime die insgesamt gespielte zeit wodrauf ein Sieg folgte.
+	var winTime = timeCalculator(statistics.getSeconds($("#difficulty4statistics").val(), statistics.state.win));
+	// Schreibt in winPerc die insgesamt aufgedeckten Felder wodrauf ein Sieg folgte & teilt die % durch die Spiele.
+	var winPerc = percCalculator(statistics.getDiscoveredPercent($("#difficulty4statistics").val(), statistics.state.win));
+	
+	
+	// Variable welche die Anzahl der Niederlagen beinhaltet
+	var lose = statistics.getGames($("#difficulty4statistics").val(), statistics.state.lose);
+	// Schreibt in loseTime die insgesamt gespielte zeit wodrauf eine Niederlage folgte.
+	var loseTime = timeCalculator(statistics.getSeconds($("#difficulty4statistics").val(), statistics.state.lose));
+	// Schreibt in winPerc die insgesamt aufgedeckten Felder wodrauf eine Niederlage folgte & teilt die % durch die Spiele.
+	var losePerc = percCalculator(statistics.getDiscoveredPercent($("#difficulty4statistics").val(), statistics.state.lose));
+	
+	// Variable welche die Anzahl der Aufgaben beinhaltet
+	var discard = statistics.getGames($("#difficulty4statistics").val(), statistics.state.discarded);
+	// Schreibt in discardTime die insgesamt gespielte zeit wodrauf eine Aufgabe folgte.
+	var discardTime= timeCalculator(statistics.getSeconds($("#difficulty4statistics").val(), statistics.state.discarded));
+	// Schreibt in winPerc die insgesamt aufgedeckten Felder wodrauf eine Aufgabe folgte & teilt die % durch die Spiele.
+	var discardPerc = percCalculator(statistics.getDiscoveredPercent($("#difficulty4statistics").val(), statistics.state.discarded));
+	
+	// Entfernt beim klicken des NewGame buttons die alte Statistik aus dem Statistikfeld und fügt aktuelle ein.
+	//$("#allStatistics").html("<p> Sie haben bereits " + win + " mal gewonnen & insgesamt " + winTime +" gespielt dabei haben Sie " + winPerc +"% der Felder Aufgedeckt.</p>" + "<p> Sie haben bereits " + lose + " mal verloren & insgesamt " + loseTime +" gespielt dabei haben Sie " + losePerc +"% der Felder Aufgedeckt.</p>" + "<p> Sie haben bereits " + discard + " mal neuangefangen & insgesamt " + discardTime +" gespielt dabei haben Sie " + discardPerc +"% der Felder Aufgedeckt.</p>");
+	$("#allStatistics").html("<p> Gewonnen: " + win + " mal." + "<br> Zeit gesamt: " + winTime +"<br> Felder aufgedeckt: " + winPerc +"%.</p>" + 
+	"<p> Verloren: " + lose + " mal." + "<br> Zeit gesamt: " + loseTime +"<br> Felder aufgedeckt: " + losePerc +"%.</p>" + 
+	"<p> Aufgegeben: " + discard + " mal." + "<br> Zeit gesamt: " + discardTime + "<br> Felder aufgedeckt: " + discardPerc +"%.</p>");
+}
 
+/**
+ * Diese Funktion Rechnet die nach Komma stellen auf 2 runter. 
+ * 
+ * @param perc beinhalter die Prozentzahl mit zuvielen Kommastellen
+ * @returns gibt die Prozentzahl mit nur noch 2 Kommastellen an
+ */
+function percCalculator(perc){
+	perc = perc * 100;
+	perc = Math.round(perc);
+	perc = perc / 100;
+	
+	return perc;
+}
 
+/**
+ * Diese Funktion überprüft ob time kleiner 60 ist und gibt time dann als sekunden zurück,
+ * falls time größer 60 wird time in Minuten zurück gegeben.
+ * 
+ * @param time beinhaltet die Zeit die übergenen wird.
+ * @returns gibt die gespielte Zeit entweder in Sekunden oder Minuten zurück.
+ */
+function timeCalculator(time){
+	if(time < 60){
+		var secTime = time + " sekunden.";
+		return secTime;
+	}
+	else{
+		var minTime =  (time -(time%60))/60 + " minute/n.";
+		return minTime;
+	}
+}
 
 /**
  * Die in @var difficulties festgelegten Schwierigkeitsstufen
@@ -651,8 +714,7 @@ function loadStatisticsDifficulty() {
  */
 function statisticsTrigger() {
 	$("#difficulty4statistics").change(function () {
-		// Entfernt beim klicken des NewGame buttons die alte Statistik aus dem Statistikfeld und fügt aktuelle ein.
-		$("#allStatistics").html("<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.win) + " mal gewonnen.</p>" + "<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.lose) + " mal verloren.</p>" + "<p> Sie haben bereits " + statistics.getGames($("#difficulty4statistics").val(), statistics.state.discarded) + " mal neuangefangen.</p>");
+		statWritter();
 	}).trigger('change');
 }
 
