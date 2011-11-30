@@ -364,27 +364,30 @@ function Statistics() {
 		
 		case this.state.win: {
 			if(!discoveredPercentWon[difficulty]) {
-				discoveredPercentWon[difficulty] = 0;
+				discoveredPercentWon[difficulty] = discoveredPercent;
 			}
-			discoveredPercentWon[difficulty] = (discoveredPercentWon[difficulty] + discoveredPercent) / 2;
+			else 
+				discoveredPercentWon[difficulty] = (discoveredPercentWon[difficulty] + discoveredPercent) / 2;
 		}
 		break;
 		
 		// Wenn es sich um ein verlorenes Spiel handelt, dann addiere die % auf den Zaehler der entsprechenden schwierigkeit
 		case this.state.lose: {
 			if(!discoveredPercentLost[difficulty]) {
-				discoveredPercentLost[difficulty] = 0;
+				discoveredPercentLost[difficulty] =  discoveredPercent;
 			}
-			discoveredPercentLost[difficulty] = (discoveredPercentLost[difficulty] + discoveredPercent) / 2;
+			else 
+				discoveredPercentLost[difficulty] = (discoveredPercentLost[difficulty] + discoveredPercent) / 2;
 		}
 		break;
 		
 		// Wenn es sich um ein abgebrochenes Spiel handelt, dann addiere die % auf den Zaehler der entsprechenden schwierigkeit
 		case this.state.discarded: {
 			if(!discoveredPercentDiscarded[difficulty]) {
-				discoveredPercentDiscarded[difficulty] = 0;
+				discoveredPercentDiscarded[difficulty] =  discoveredPercent;
 			}
-			discoveredPercentDiscarded[difficulty] = (discoveredPercentDiscarded[difficulty] + discoveredPercent) / 2;
+			else 
+				discoveredPercentDiscarded[difficulty] = (discoveredPercentDiscarded[difficulty] + discoveredPercent) / 2;
 		}
 		break;
 		
