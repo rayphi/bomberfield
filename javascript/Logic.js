@@ -238,12 +238,16 @@ $(document).ready(function() {
 	
 	// Mousewheelevent hinzufügen
 	$('#canvas').mousewheel(function(e, delta){
-		// minimale Dimension eines Hexatile berechnen
-		minWidth = (canvasWidth / cellsInLine > 10 ? canvasWidth / cellsInLine : 20);
-		minHeight = (canvasHeight / cellsInLine > 10 ? canvasHeight / cellsInLine : 20);
-		if (minWidth > minHeight)
-			minHeight = minWidth;
-		else minWidth = minHeight;
+		// wir müssen uns die alte dimension merken
+		vOldDimension = new Vector(cellWidth, cellHeight);
+		
+		{ // minimale Dimension eines Hexatile berechnen
+			minWidth = (canvasWidth / cellsInLine > 10 ? canvasWidth / cellsInLine : 20);
+			minHeight = (canvasHeight / cellsInLine > 10 ? canvasHeight / cellsInLine : 20);
+			if (minWidth > minHeight)
+				minHeight = minWidth;
+			else minWidth = minHeight;
+		}
 		
 		// maximale Dimension eines Hexatile berechnen
 		maxWidth = 80;
@@ -253,18 +257,32 @@ $(document).ready(function() {
 		cellHeight = cellHeight + (delta * mousewheelDelta);
 		cellWidth = cellWidth + (delta * mousewheelDelta);
 		
-		// Evtl Dimension des Hexatile korrigieren
-		if (cellWidth < minWidth || cellHeight < minHeight) {
-			cellWidth = minWidth;
-			cellHeight = minHeight;
-		} else if (cellWidth > maxWidth || cellHeight > maxHeight) {
-			cellWidth = maxWidth;
-			cellHeight = maxHeight;
+		{ // Evtl Dimension des Hexatile korrigieren
+			if (cellWidth < minWidth || cellHeight < minHeight) {
+				cellWidth = minWidth;
+				cellHeight = minHeight;
+			} else if (cellWidth > maxWidth || cellHeight > maxHeight) {
+				cellWidth = maxWidth;
+				cellHeight = maxHeight;
+			}
 		}
 		
 		// line und column Vektoren neu berechnen
 		lineVector = new Vector(-(cellWidth/2), (cellHeight * 3) / 4);
 		columnVector = new Vector(cellWidth/2, (cellHeight * 3) / 4);
+		
+//		{ // offsetVektor neu berechnen
+//			// dieser Vektor ist der Unterschied zwischen neuer Zelldimension und alter Zelldimension
+//			vCellDimDelta = new Vector(cellWidth, cellHeight).sub(vOldDimension);
+//			// die aktuelle Mausposition relativ zum canvas ermitteln
+//			vMousePos = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop);
+//			// Die verschiebung des Mauszeigers aufgrund der Zelldimensionsveränderung relativ zum Spielfeld berechnen
+//			vMouseDelta = new Vector((vMousePos.x / vOldDimension.x) * vCellDimDelta.x, (vMousePos.y / vOldDimension.y) * vCellDimDelta.y);
+//			
+////			alert(vMouseDelta.x+","+vMouseDelta.y);
+//			// offset addieren
+//			offsetVector = offsetVector.sub(vMouseDelta);
+//		}
 		
 		// Spielfeld neu zeichnen
 		repaint();
@@ -689,7 +707,7 @@ function calculateDiscoveredPercent() {
 	}
 	
 	// Gibt zurück, wieviel % der Zellen, welche keine Mienen sind aufgedeckt wurden
-	return (cellCount * 100) / openCells;
+	return (openCells * 100) / cellCount;
 }
 
 
