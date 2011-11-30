@@ -836,12 +836,29 @@ function arrayBuild(){
 				// jedoch notwendig sind, damit dich die hexatiles resourcenschonend selbst 
 				// zeichnen und verwalten können.
 				gameField[i][j] = new Hexatile(i - (cellsInLine - 1),j);
-				// In diesem Schritt wird anhand der vorher definierten Schwierigkeit zuföllig ermittelt,
-				// ob es sich bei diesem Hexatile um eine Mine handeln soll, oder nicht.
-				gameField[i][j].isMine = ((Math.random() * 101) < difficulty);
-				// Wenn eine Mine erzeugt wurde, dann den Zähler hoch zählen
-				if(gameField[i][j].isMine)
-					exsistingMines++;
+			}
+		}
+	}
+	
+	{// Die Mienen erzeugen
+		// berechnen, wieviele Mienen erzeugt werden müssen
+		minesToGo = ((cellsInLine * cellsInColumn) * difficulty) / 100;
+		
+		// solange noch Mienen erzeugt werden müssen..
+		while (minesToGo > 0) {
+			// ...zufällig eine Zeile ermitteln,...
+			line = Math.round(Math.random() * (arrayRows));
+			// ...zufällig eine Spalte ermitteln...
+			column = Math.round(Math.random() * (arrayColumns));
+			
+			// ...und prüfen, ob die so ermittelte Zelle auf dem Spielfeld liegt und noch keine Miene ist.
+			if (hexatileOnMap(line, column) && !gameField[line][column].isMine) {
+				// Die Zelle zu einer Miene machen
+				gameField[line][column].isMine = true;
+				// Die Anzahl der zu produzierenden Mienen herunterzählen
+				minesToGo--;
+				// Die Anzahl der exsistierenden Mienen hochzählen
+				exsistingMines++;
 			}
 		}
 	}
