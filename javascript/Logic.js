@@ -60,7 +60,7 @@ $(document).ready(function() {
 	});
 	
 	// Hier wird der New Game Button konfiguriert
-	$('#newGame').click(function(e){
+	$('.newGame').click(function(e){
 		// Entfernt beim klicken des NewGame buttons die alte Win|Lose Nachricht aus dem Messagefeld 
 		$('p').remove(".wlmessage");
 		// Das Messagefeld verschieben
@@ -498,13 +498,30 @@ function difficultyTrigger() {
 	$("#difficulty").change(function () {
 		$('#difficulty4statistics').val($('#difficulty').val());
 		if(alive) {
-			check = confirm("Wollen Sie das Spiel mit der gewählten Schwierigkeit neu starten? Besätigen sie mit 'OK' zumweiterspielen klicken Sie auf 'Abbrechen.");
-			if(!check) {
+			$('#resume').animate({
+				marginTop: '-15px',
+				opacity: 1
+			}, 300);
+			$('.newGame').toggleClass('restart');
+	
+			$('#resume').click(function(e){ 
 				loadDifficulties();
-			} else {
+				$('#resume').animate({
+					marginTop: '-88px',
+					opacity: 0
+				}, 300);
+				$('.newGame').removeClass('restart');
+			});
+			
+			$('.restart').click(function(e){ 
 				difficulty = $('#difficulty :selected').val();
-				newGame();
-			}
+				$('.newGame').removeClass('restart');
+				$('#resume').animate({
+					marginTop: '-88px',
+					opacity: 0
+				}, 300);
+				newGame(); 
+			});
 		} else {
 			difficulty = $('#difficulty :selected').val();
 		}

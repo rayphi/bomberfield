@@ -48,6 +48,7 @@ body {
 	float: left;
 	background: #ffffff;
 	padding: 15px 50px 0 50px;
+	position: relative;
 	-moz-box-shadow: 5px 5px 15px #666;
 	-webkit-box-shadow: 5px 5px 15px #666;
 	box-shadow: 5px 5px 15px #666;
@@ -115,16 +116,16 @@ div.wlmessage{
 	display:none;
 }
 
-#time {
-	float: left;
+#time, #total_mine_div {
+	float: right;
 }
 
-#newGame {
+.newGame {
 	background: hsl(215, 50%, 55%);
 	float: left;
-	margin: -15px 10px 0 -50px;
-	padding: 23px 20px 20px 30px;
-	height: 30px;
+	margin: -15px 0 0 -50px;
+	padding: 27px 20px 20px 35px;
+	height: 26px;
 	-moz-border-bottom-left-radius: 70px 90px;
 	border-bottom-left-radius: 70px 90px;
 	-moz-box-shadow: inset 4px -6px 36px hsl(215, 66%, 69%);
@@ -132,15 +133,46 @@ div.wlmessage{
 	box-shadow: inset 4px -6px 36px hsl(215, 66%, 69%);
 	cursor: pointer;
 }
-#newGame:hover {
+.newGame:hover {
 	-moz-box-shadow: inset 4px -6px 36px  hsl(215, 50%, 55%);
 	-webkit-box-shadow: inset 4px -6px 36px hsl(215, 50%, 55%);
 	box-shadow: inset 4px -6px 36px hsl(215, 50%, 55%);
 }
 
+.restart {
+	background: hsl(180, 50%, 47%);
+	-moz-box-shadow: inset 4px -6px 36px hsl(180, 50%, 69%);
+	-webkit-box-shadow: inset 4px -6px 36px hsl(180, 50%, 69%);
+	box-shadow: inset 4px -6px 36px hsl(180, 50%, 69%);
+}
+.restart:hover {
+	-moz-box-shadow: inset 4px -6px 36px hsl(180, 50%, 42%);
+	-webkit-box-shadow: inset 4px -6px 36px hsl(180, 50%, 42%);
+	box-shadow: inset 4px -6px 36px hsl(180, 50%, 42%);
+}
+
+#resume {
+	background: hsl(5, 83%, 58%);
+	float: left;
+	margin: -88px 10px 0 -10px;
+	padding: 27px 20px 20px 20px;
+	height: 26px;
+	opacity: 0;
+	-moz-box-shadow: inset 4px -6px 36px hsl(5, 83%, 68%);
+	-webkit-box-shadow: inset 4px -6px 36px hsl(5, 83%, 68%);
+	box-shadow: inset 4px -6px 36px hsl(5, 83%, 68%);
+	cursor: pointer;
+}
+#resume:hover {
+	-moz-box-shadow: inset 4px -6px 36px  hsl(5, 83%, 40%);
+	-webkit-box-shadow: inset 4px -6px 36px hsl(5, 83%, 40%);
+	box-shadow: inset 4px -6px 36px hsl(5, 83%, 40%);
+}
+
 #difficulty {
 	float: left;
-	margin: 0 10px 0 0;
+	margin: -15px 10px 0 0;
+	height: 73px;
 }
 #debug-information {
 	float: left;
