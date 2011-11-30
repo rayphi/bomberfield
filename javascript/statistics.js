@@ -396,4 +396,21 @@ function Statistics() {
 		
 	};
 	
+	/**
+	 * Diese Funktion erzeugt aus allen Attributen des Objektes einen PropertyString
+	 * und gibt diesen zurück
+	 * @returns string propertyString
+	 */
+	this.getPropertyString = function() {
+		// TODO property String erzeugen
+	};
+	
+	/**
+	 * Diese Funktion parst den übergebenen Propertystring und setzt alle enthaltenen Werte
+	 * in dem Objekt
+	 * @param string propertyString der PropertyString
+	 */
+	this.parsePropertyString = function(propertyString) {
+		// TODO property String parsen
+	};
 }
