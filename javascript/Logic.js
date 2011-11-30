@@ -271,18 +271,19 @@ $(document).ready(function() {
 		lineVector = new Vector(-(cellWidth/2), (cellHeight * 3) / 4);
 		columnVector = new Vector(cellWidth/2, (cellHeight * 3) / 4);
 		
-//		{ // offsetVektor neu berechnen
-//			// dieser Vektor ist der Unterschied zwischen neuer Zelldimension und alter Zelldimension
-//			vCellDimDelta = new Vector(cellWidth, cellHeight).sub(vOldDimension);
-//			// die aktuelle Mausposition relativ zum canvas ermitteln
-//			vMousePos = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop);
-//			// Die verschiebung des Mauszeigers aufgrund der Zelldimensionsveränderung relativ zum Spielfeld berechnen
-//			vMouseDelta = new Vector((vMousePos.x / vOldDimension.x) * vCellDimDelta.x, (vMousePos.y / vOldDimension.y) * vCellDimDelta.y);
-//			
-////			alert(vMouseDelta.x+","+vMouseDelta.y);
-//			// offset addieren
-//			offsetVector = offsetVector.sub(vMouseDelta);
-//		}
+		{ // offsetVektor neu berechnen
+			// dieser Vektor ist der Unterschied zwischen neuer Zelldimension und alter Zelldimension
+			vCellDimDelta = new Vector(cellWidth, cellHeight).sub(vOldDimension);
+			// die aktuelle Mausposition relativ zum canvas ermitteln
+			vMousePos = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop);
+			// Den Vektor von offset zur Mausposition berechnen
+			vOffsetMouse = vMousePos.sub(offsetVector);
+			// Die Verschiebung des Mauszeigers aufgrund der Zelldimensionsveränderung relativ zum Spielfeld berechnen
+			vDelta = new Vector((vOffsetMouse.x / vOldDimension.x) * vCellDimDelta.x, (vOffsetMouse.y / vOldDimension.y) * vCellDimDelta.y);
+			
+			// offset neuberechnung durchführen
+			offsetVector = offsetVector.sub(vDelta);
+		}
 		
 		// Spielfeld neu zeichnen
 		repaint();
