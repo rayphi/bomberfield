@@ -496,7 +496,6 @@ function loadDifficulties() {
  */
 function difficultyTrigger() {
 	$("#difficulty").change(function () {
-		$('#difficulty4statistics').val($('#difficulty').val());
 		if(alive) {
 			$('#resume').animate({
 				marginTop: '-15px',
@@ -555,6 +554,9 @@ function newGame() {
 	// Zeichne die Anzahl der Minen
 	$('span#mines').html(exsistingMines);
 	
+	// Den Schwierigkeitsgrad des Statistikdiv setzen
+	$('#difficulty4statistics').val($('#difficulty').val());
+	
 	repaint();
 }
 
@@ -590,8 +592,9 @@ function win() {
 	statistics.addDiscovered(difficulty, statistics.state.win, calculateDiscoveredPercent());
 	
 	message("Sie haben gewonnen!<br>" +
-			" Benoetigte Zeit: " + seconds + " Sekunden. <br>" +
-			"Aufgedeckte Felder: " + calculateDiscoveredPercent());
+			"Schwierigkeit: " + $('#difficulty :selected').text()   + " <br>" +
+			"Benötigte Zeit: " + timeCalculator(seconds) + " <br>" +
+			"Aufgedeckte Felder: " + percCalculator(calculateDiscoveredPercent())) + "%";
 }
 
 
@@ -612,7 +615,7 @@ function lose() {
 	
 	message("Sie haben verloren!<br> <br>" + 
 			"Schwierigkeit: " + $('#difficulty :selected').text()   + " <br>" +
-			"Benoetigte Zeit: " + seconds + " Sekunden. <br>" +
+			"Benötigte Zeit: " + timeCalculator(seconds) + " <br>" +
 			"Aufgedeckte Felder: " + percCalculator(calculateDiscoveredPercent()) + "%");
 }
 
@@ -637,6 +640,10 @@ function message(text){
 	$('#Message').removeClass('displayed');
 	statWritter();
 }
+
+
+
+
 
 
 /**
@@ -674,6 +681,11 @@ function statWritter(){
 	"<p> Aufgegeben: " + discard + " mal." + "<br> Zeit gesamt: " + discardTime + "<br> Felder aufgedeckt: " + discardPerc +"%.</p>");
 }
 
+
+
+
+
+
 /**
  * Diese Funktion Rechnet die nach Komma stellen auf 2 runter. 
  * 
@@ -688,6 +700,11 @@ function percCalculator(perc){
 	return perc;
 }
 
+
+
+
+
+
 /**
  * Diese Funktion überprüft ob time kleiner 60 ist und gibt time dann als sekunden zurück,
  * falls time größer 60 wird time in Minuten zurück gegeben.
@@ -701,10 +718,15 @@ function timeCalculator(time){
 		return secTime;
 	}
 	else{
-		var minTime =  (time -(time%60))/60 + ":" + ((time%60) < 10 ? "0"+(time%60) : (time%60)) + " Minuten.";
+		var minTime =  (time -(time%60))/60 + ":" + ((time%60) < 10 ? "0"+(time%60) : (time%60)) + " Minute/n.";
 		return minTime;
 	}
 }
+
+
+
+
+
 
 /**
  * Die in @var difficulties festgelegten Schwierigkeitsstufen
