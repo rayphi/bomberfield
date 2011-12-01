@@ -21,15 +21,15 @@ $(document).ready(function() {
 		statistics = new Statistics();
 	}
 	
-	//Schwierigkeitsgrade werden geladen 
+	// Schwierigkeitsgrade werden geladen 
 	loadDifficulties();
-	//startet ein trigger on change event (Schwierigkeit wird bei auswahl gesetzt)
+	// startet ein trigger on change event (Schwierigkeit wird bei auswahl gesetzt)
 	difficultyTrigger();
 	
-	//Schwierigkeitsgrade werden geladen 
+	// Schwierigkeitsgrade für die Statistiken laden 
 	loadStatisticsDifficulty();
 	
-	//startet ein trigger on change event (Statistik wird bei auswahl geändert)
+	// startet ein trigger on change event (Statistik wird bei auswahl geändert)
 	statisticsTrigger();
 	
 	// Hier wird das Image für die Flaggen geladen
@@ -97,7 +97,7 @@ $(document).ready(function() {
 		$('#Message').addClass('displayed');
 	});
 	
-	// Wenn ein Mousebutton gedückt wurde
+	// Wenn ein Mousebutton gedrückt wurde
 	$('#canvas').mousedown(function(e) {
 		// Die aktuelle Position ermitteln
 		actualMousedownPosition = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop);
@@ -120,7 +120,7 @@ $(document).ready(function() {
 			newMousePosition = new Vector(e.pageX  - this.offsetLeft, e.pageY - this.offsetTop);
 			// Den neuen offsetVector berechnen (also das Spielfeld verschieben
 			offsetVector = offsetVector.add(newMousePosition.sub(actualMousedownPosition));
-			{ // Prüfen, ob der OfsetVector seine Maximalwerte überschreitet
+			{ // Prüfen, ob der OffsetVector seine Maximalwerte überschreitet
 				var maxOffset = getMaxOffset();
 				
 				// Wenn die X-Koordinate des offsetVector zu groß wird, dann verringern
@@ -588,10 +588,11 @@ function win() {
 	alive = false;
 	
 	statistics.addGame(difficulty, statistics.state.win);
-	statistics.addSeconds(difficulty, statistics.state.win, seconds);
+	best = statistics.addSeconds(difficulty, statistics.state.win, seconds);
 	statistics.addDiscovered(difficulty, statistics.state.win, calculateDiscoveredPercent());
 	
-	message("Sie haben gewonnen!<br>" +
+	message("Sie haben gewonnen!<br> <br>" +
+			(best ? "Neue Bestzeit <br>" : "") +
 			"Schwierigkeit: " + $('#difficulty :selected').text()   + " <br>" +
 			"Benötigte Zeit: " + timeCalculator(seconds) + " <br>" +
 			"Aufgedeckte Felder: " + percCalculator(calculateDiscoveredPercent())) + "%";
@@ -674,8 +675,10 @@ function statWritter(){
 	// Schreibt in winPerc die insgesamt aufgedeckten Felder wodrauf eine Aufgabe folgte & teilt die % durch die Spiele.
 	var discardPerc = percCalculator(statistics.getDiscoveredPercent($("#difficulty4statistics").val(), statistics.state.discarded));
 	
+	// Die Bestzeit der gewählten Schwierigkeit auslesen
+	var bestTime = statistics.getBestSeconds($("#difficulty4statistics").val()); // TODO die muss noch irgendwo angezeigt werden
+	
 	// Entfernt beim klicken des NewGame buttons die alte Statistik aus dem Statistikfeld und fügt aktuelle ein.
-	//$("#allStatistics").html("<p> Sie haben bereits " + win + " mal gewonnen & insgesamt " + winTime +" gespielt dabei haben Sie " + winPerc +"% der Felder Aufgedeckt.</p>" + "<p> Sie haben bereits " + lose + " mal verloren & insgesamt " + loseTime +" gespielt dabei haben Sie " + losePerc +"% der Felder Aufgedeckt.</p>" + "<p> Sie haben bereits " + discard + " mal neuangefangen & insgesamt " + discardTime +" gespielt dabei haben Sie " + discardPerc +"% der Felder Aufgedeckt.</p>");
 	$("#allStatistics").html("<p> Gewonnen: " + win + " mal." + "<br> Zeit gesamt: " + winTime +"<br> Felder aufgedeckt: " + winPerc +"%.</p>" + 
 	"<p> Verloren: " + lose + " mal." + "<br> Zeit gesamt: " + loseTime +"<br> Felder aufgedeckt: " + losePerc +"%.</p>" + 
 	"<p> Aufgegeben: " + discard + " mal." + "<br> Zeit gesamt: " + discardTime + "<br> Felder aufgedeckt: " + discardPerc +"%.</p>");
@@ -772,11 +775,15 @@ function statisticsTrigger() {
  * Diese Funktion wird aufgerufen, wenn das Spiel abgebrochen wurde.
  */
 function discard() {
+	// Wenn der Timer aktiv ist,...
 	if(time.Enable) {
+		// ...dann anhalten
 		time.Stop();
 	}
 	
+	// Die gespielte Zeit in die Statistiken einfließen lassen
 	statistics.addSeconds(difficulty, statistics.state.discard, seconds);
+	// Die aufgedeckte Fläche in die Statistiken einfließen lassen
 	statistics.addDiscovered(difficulty, statistics.state.discard, calculateDiscoveredPercent());
 }
 
