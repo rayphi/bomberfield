@@ -328,9 +328,11 @@ function Statistics() {
 			// Auf neue Bestzeit prüfen
 			if(!secondsBest[difficulty]) {
 				secondsBest[difficulty] = seconds;
+				return true;
 			} else {
-				if(secondsBest[difficulty] < seconds) {
+				if(secondsBest[difficulty] > seconds) {
 					secondsBest[difficulty] = seconds;
+					return true;
 				}
 			}
 		}
