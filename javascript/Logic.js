@@ -4,6 +4,7 @@
 $(document).ready(function() {
 	
 	if (!isCanvasSupported()) {
+		$('#like-bar').hide();
 		$('.canvas-check').css('display', 'inline');
 	}
 	
