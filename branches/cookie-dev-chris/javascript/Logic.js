@@ -12,7 +12,8 @@ $(document).ready(function() {
 		// Einen neuen Timer erzeugen
 		time = new Timer();
 		time.Enable = false;
-		/* die function die zur definierten frequenz (default: 1000ms) 
+		/* 
+		 * die function die zur definierten frequenz (default: 1000ms) 
 		 * aufgerufen wird wird festgelegt
 		 */ 
 		time.Tick = timerTick;
