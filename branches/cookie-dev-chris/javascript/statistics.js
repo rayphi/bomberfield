@@ -404,7 +404,55 @@ function Statistics() {
 	 * @returns string propertyString
 	 */
 	this.getPropertyString = function() {
-		// TODO property String erzeugen
+		
+		// Statistics ist ein JSON Array aus allen Daten der Statistic
+		/* 
+		 * SO HAB ICH DAS NICHT HINBEKOMMEN
+		var statistics = new Array({
+			"wonGamesEasy" 	: gamesWon[10],
+			"wonGamesMid" 	: gamesWon[20],
+			"wonGamesHar" 	: gamesWon[30],
+			"lostGamesEasy" : gamesLost[10],
+			"lostGamesMid" 	: gamesLost[20],
+			"lostGamesHar" 	: gamesLost[30],
+			"disGamesEasy" 	: this.getGames(10, this.state.discarded ),
+			"disGamesMid" 	: this.getGames(20, this.state.discarded ),
+			"disGamesHar" 	: this.getGames(30, this.state.discarded),
+			"secWonEasy"	: secondsWon[10],
+			"secWonMid"		: secondsWon[20],
+			"secWonHar"		: secondsWon[30],
+			"secLostEasy"	: secondsLost[10],
+			"secLostMid"	: secondsLost[20],
+			"secLostHar"	: secondsLost[30],
+			"secDisEasy"	: this.getSeconds(10, this.state.discarded),
+			"secDisMid"		: this.getSeconds(20, this.state.discarded),
+			"secDisHar"		: this.getSeconds(30, this.state.discarded),
+			"persWonEasy"	: discoveredPercentWon[10],
+			"persWonMid"	: discoveredPercentWon[20],
+			"persWonHar"	: discoveredPercentWon[30],
+			"persLostEasy"	: discoveredPercentLost[10],
+			"persLostMid"	: discoveredPercentLost[20],
+			"persLostHar"	: discoveredPercentLost[30],
+			"persDisEasy"	: discoveredPercentDiscarded[10],
+			"persDisMid"	: discoveredPercentDiscarded[20],
+			"persDisHar"	: discoveredPercentDiscarded[30]
+		});
+		*/
+		
+		var statistics = new Array(gamesWon[10],gamesWon[20],gamesWon[30],gamesLost[10],
+			gamesLost[20],gamesLost[30],this.getGames(10, this.state.discarded ),
+			this.getGames(20, this.state.discarded ),this.getGames(30, this.state.discarded),
+			secondsWon[10],secondsWon[20],secondsWon[30],secondsLost[10],secondsLost[20],
+			secondsLost[30],this.getSeconds(10, this.state.discarded),
+			this.getSeconds(20, this.state.discarded),this.getSeconds(30, this.state.discarded),
+			discoveredPercentWon[10],discoveredPercentWon[20],discoveredPercentWon[30],
+			discoveredPercentLost[10],discoveredPercentLost[20],discoveredPercentLost[30],
+			discoveredPercentDiscarded[10],discoveredPercentDiscarded[20],discoveredPercentDiscarded[30]
+		);
+	
+		
+		var statString = statistics.join(",");
+		return statString;
 	};
 	
 	/**

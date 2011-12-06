@@ -21,9 +21,11 @@ $(document).ready(function() {
 	
 	{ // Die Statistics initialisieren
 		statistics = new Statistics();
+	
+		statistics.getPropertyString();
 	}
 	
-	// Schwierigkeitsgrade werden geladen 
+	// Schwierigkeitsgrade werden geladen
 	loadDifficulties();
 	// startet ein trigger on change event (Schwierigkeit wird bei auswahl gesetzt)
 	difficultyTrigger();
@@ -593,6 +595,8 @@ function win() {
 	best = statistics.addSeconds(difficulty, statistics.state.win, seconds);
 	statistics.addDiscovered(difficulty, statistics.state.win, calculateDiscoveredPercent());
 	
+	CookiePersister.saveStatistics();
+	
 	message("Sie haben gewonnen!<br> <br>" +
 			(best ? "Neue Bestzeit <br>" : "") +
 			"Schwierigkeit: " + $('#difficulty :selected').text()   + " <br>" +
@@ -615,6 +619,8 @@ function lose() {
 	statistics.addGame(difficulty, statistics.state.lose);
 	statistics.addSeconds(difficulty, statistics.state.lose, seconds);
 	statistics.addDiscovered(difficulty, statistics.state.lose, calculateDiscoveredPercent());
+	
+	CookiePersister.saveStatistics();
 	
 	message("Sie haben verloren!<br> <br>" + 
 			"Schwierigkeit: " + $('#difficulty :selected').text()   + " <br>" +
@@ -787,6 +793,8 @@ function discard() {
 	statistics.addSeconds(difficulty, statistics.state.discard, seconds);
 	// Die aufgedeckte Fläche in die Statistiken einfließen lassen
 	statistics.addDiscovered(difficulty, statistics.state.discard, calculateDiscoveredPercent());
+	
+	CookiePersister.saveStatistics();
 }
 
 
