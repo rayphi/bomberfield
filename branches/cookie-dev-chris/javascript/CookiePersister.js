@@ -7,7 +7,7 @@ function CookiePersister(){
 	CookiePersister.saveStatistics = function(){
 		
 		stat = new Statistics();
-		var cookieContent = stat.getPropertyString;
+		var cookieContent = stat.getPropertyString();
 		$.cookie("statistics", cookieContent);
 	};
 	
