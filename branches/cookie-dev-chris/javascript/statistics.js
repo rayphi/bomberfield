@@ -440,6 +440,8 @@ function Statistics() {
 		});
 		*/
 		
+		// Erstellung eines Arrays mit den GameDaten für die Statistik
+		
 		var statistics = new Array(
 				this.getGames(10, this.state.win),
 				this.getGames(20, this.state.win),
@@ -470,9 +472,11 @@ function Statistics() {
 				this.getDiscoveredPercent(30, this.state.discarded)
 		);
 	
-		
+		// Aus dem Array statistics wird ein string mit einem (,) als delimiter und wird in statString geschrieben. 
 		var statString = statistics.join(",");
+		//Test ausgabe
 		alert(statString);
+		//Rückgabe des Arrays als String
 		return statString;
 	};
 	
