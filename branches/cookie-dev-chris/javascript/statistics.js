@@ -406,8 +406,9 @@ function Statistics() {
 	this.getPropertyString = function() {
 		
 		// Statistics ist ein JSON Array aus allen Daten der Statistic
+		
+		//SO HAB ICH DAS NICHT HINBEKOMMEN
 		/* 
-		 * SO HAB ICH DAS NICHT HINBEKOMMEN
 		var statistics = new Array({
 			"wonGamesEasy" 	: gamesWon[10],
 			"wonGamesMid" 	: gamesWon[20],
@@ -439,19 +440,39 @@ function Statistics() {
 		});
 		*/
 		
-		var statistics = new Array(gamesWon[10],gamesWon[20],gamesWon[30],gamesLost[10],
-			gamesLost[20],gamesLost[30],this.getGames(10, this.state.discarded ),
-			this.getGames(20, this.state.discarded ),this.getGames(30, this.state.discarded),
-			secondsWon[10],secondsWon[20],secondsWon[30],secondsLost[10],secondsLost[20],
-			secondsLost[30],this.getSeconds(10, this.state.discarded),
-			this.getSeconds(20, this.state.discarded),this.getSeconds(30, this.state.discarded),
-			discoveredPercentWon[10],discoveredPercentWon[20],discoveredPercentWon[30],
-			discoveredPercentLost[10],discoveredPercentLost[20],discoveredPercentLost[30],
-			discoveredPercentDiscarded[10],discoveredPercentDiscarded[20],discoveredPercentDiscarded[30]
+		var statistics = new Array(
+				this.getGames(10, this.state.win),
+				this.getGames(20, this.state.win),
+				this.getGames(30, this.state.win),
+				this.getGames(10, this.state.lose),
+				this.getGames(20, this.state.lose),
+				this.getGames(30, this.state.lose),
+				this.getGames(10, this.state.discarded),
+				this.getGames(20, this.state.discarded),
+				this.getGames(30, this.state.discarded),
+				this.getSeconds(10, this.state.win),
+				this.getSeconds(20, this.state.win),
+				this.getSeconds(30, this.state.win),
+				this.getSeconds(10, this.state.lose),
+				this.getSeconds(20, this.state.lose),
+				this.getSeconds(30, this.state.lose),
+				this.getSeconds(10, this.state.discarded),
+				this.getSeconds(20, this.state.discarded),
+				this.getSeconds(30, this.state.discarded),
+				this.getDiscoveredPercent(10, this.state.win),
+				this.getDiscoveredPercent(20, this.state.win),
+				this.getDiscoveredPercent(30, this.state.win),
+				this.getDiscoveredPercent(10, this.state.lose),
+				this.getDiscoveredPercent(20, this.state.lose),
+				this.getDiscoveredPercent(30, this.state.lose),
+				this.getDiscoveredPercent(10, this.state.discarded),
+				this.getDiscoveredPercent(20, this.state.discarded),
+				this.getDiscoveredPercent(30, this.state.discarded)
 		);
 	
 		
 		var statString = statistics.join(",");
+		alert(statString);
 		return statString;
 	};
 	
