@@ -320,13 +320,13 @@ function Statistics() {
 		// Handelt es sich um ein gewonnenes Spiel muss geprueft werden, ob es sich um eine neue Bestzeit handelt
 		case this.state.win: {
 			// Die Sekunden der gewonnenen Spiele hinzufügen
-			if(!secondsWon[difficulty]) {
+			if(secondsWon[difficulty]) {
 				secondsWon[difficulty] = 0;
 			} 
 			secondsWon[difficulty] = secondsWon[difficulty] + seconds;
 		
 			// Auf neue Bestzeit prüfen
-			if(!secondsBest[difficulty]) {
+			if(typeof secondsBest[difficulty] == "undefined") {
 				secondsBest[difficulty] = seconds;
 				return true;
 			} else {
