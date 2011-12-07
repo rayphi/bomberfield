@@ -592,7 +592,7 @@ function win() {
 	best = statistics.addSeconds(difficulty, statistics.state.win, seconds);
 	statistics.addDiscovered(difficulty, statistics.state.win, calculateDiscoveredPercent());
 	
-	message("Sie haben gewonnen!<br> <br>" +
+	message("Sie haben gewonnen!<br>" +
 			(best ? "Neue Bestzeit <br>" : "") +
 			"Schwierigkeit: " + $('#difficulty :selected').text()   + " <br>" +
 			"Benötigte Zeit: " + timeCalculator(seconds) + " <br>" +
@@ -677,12 +677,12 @@ function statWritter(){
 	var discardPerc = percCalculator(statistics.getDiscoveredPercent($("#difficulty4statistics").val(), statistics.state.discarded));
 	
 	// Die Bestzeit der gewählten Schwierigkeit auslesen
-	var bestTime = statistics.getBestSeconds($("#difficulty4statistics").val()); // TODO die muss noch irgendwo angezeigt werden
+	var bestTime = timeCalculator(statistics.getBestSeconds($("#difficulty4statistics").val()));
 	
 	// Entfernt beim klicken des NewGame buttons die alte Statistik aus dem Statistikfeld und fügt aktuelle ein.
-	$("#allStatistics").html("<p> Gewonnen: " + win + " mal." + "<br> Zeit gesamt: " + winTime +"<br> Felder aufgedeckt: " + winPerc +"%.</p>" + 
-	"<p> Verloren: " + lose + " mal." + "<br> Zeit gesamt: " + loseTime +"<br> Felder aufgedeckt: " + losePerc +"%.</p>" + 
-	"<p> Aufgegeben: " + discard + " mal." + "<br> Zeit gesamt: " + discardTime + "<br> Felder aufgedeckt: " + discardPerc +"%.</p>");
+	$("#allStatistics").html("<p> Gewonnen: " + win + " mal" + "<br> Zeit gesamt: " + winTime +"<br> Felder aufgedeckt: " + winPerc +"%<br> Bestzeit: " + bestTime + "</p>" + 
+	"<p> Verloren: " + lose + " mal" + "<br> Zeit gesamt: " + loseTime +"<br> Felder aufgedeckt: " + losePerc +"%</p>" + 
+	"<p> Abgebrochen: " + discard + " mal" + "<br> Zeit gesamt: " + discardTime + "<br> Felder aufgedeckt: " + discardPerc +"%</p>");
 }
 
 
@@ -718,11 +718,11 @@ function percCalculator(perc){
  */
 function timeCalculator(time){
 	if(time < 60){
-		var secTime = time + " Sekunden.";
+		var secTime = time + " Sekunden";
 		return secTime;
 	}
 	else{
-		var minTime =  (time -(time%60))/60 + ":" + ((time%60) < 10 ? "0"+(time%60) : (time%60)) + " Minute/n.";
+		var minTime =  (time -(time%60))/60 + ":" + ((time%60) < 10 ? "0"+(time%60) : (time%60)) + " Minute/n";
 		return minTime;
 	}
 }
