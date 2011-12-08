@@ -59,6 +59,20 @@ function Statistics() {
 	var discoveredPercentDiscarded = {};
 	
 	/**
+	 * Dieses Array enthält codes für die einzelnen Datenarrays in diesem Objek. diese Codes
+	 * sind ein Stringkürzel, um beim parsen erkennen zu können, in welches Array das jeweils betrachtete
+	 * Dateum geschrieben werden soll.
+	 */
+	var arrayCodes = {"gamesTotal" : "gT", "gamesWon" : "gW", "gamesLost" : "gL",
+						"secondsTotal" : "sT", "secondsWon" : "sW", "secondsLost" : "sL", "secondsBest" : "sB",
+						"discoveredPercentLost" : "dPL", "discoveredPercentWon" : "dPW", "discoveredPercentDiscarded" : "dPD"};
+	
+	/**
+	 * Dieser Spacer wird innerhalb eines Datums verwendet, um arrayCode, index und value zu trennen
+	 */
+	var spacer = "-";
+	
+	/**
 	 * Mit dieser Funktion kann man die Anzahl der Spiele des gewünschten Status und der gewünschten Schwierigkeit auslesen
 	 */
 	this.getGames = function(difficulty, state) {
@@ -277,6 +291,9 @@ function Statistics() {
 				gamesWon[difficulty] = 0;
 			}
 			gamesWon[difficulty]++;
+			
+			// Die globalen Daten updaten
+			PersistanceManager.updateStatistics(arrayCodes["gamesWon"]+spacer+difficulty+spacer+"1");
 		}
 		break;
 			
@@ -286,6 +303,9 @@ function Statistics() {
 				gamesLost[difficulty] = 0;
 			}
 			gamesLost[difficulty]++;
+			
+			// Die globalen Daten updaten
+			PersistanceManager.updateStatistics(arrayCodes["gamesLost"]+spacer+difficulty+spacer+"1");
 		}break;
 		
 		// Handelt es sich um ein gestartetes Spiel
@@ -294,6 +314,9 @@ function Statistics() {
 				gamesTotal[difficulty] = 0;
 			}
 			gamesTotal[difficulty]++;
+			
+			// Die globalen Daten updaten
+			PersistanceManager.updateStatistics(arrayCodes["gamesTotal"]+spacer+difficulty+spacer+"1");
 		}
 		break;
 		
@@ -314,6 +337,9 @@ function Statistics() {
 		}
 		secondsTotal[difficulty] = secondsTotal[difficulty] + seconds;
 		
+		// Die globalen Daten updaten
+		PersistanceManager.updateStatistics(arrayCodes["secondsTotal"]+spacer+difficulty+spacer+seconds);
+		
 		// ueber den gewuenschten Status switchen
 		switch(state) {
 		
@@ -324,16 +350,18 @@ function Statistics() {
 				secondsWon[difficulty] = 0;
 			} 
 			secondsWon[difficulty] = secondsWon[difficulty] + seconds;
+			
+			// Die globalen Daten updaten
+			PersistanceManager.updateStatistics(arrayCodes["secondsWon"]+spacer+difficulty+spacer+seconds);
 		
 			// Auf neue Bestzeit prüfen
-			if(typeof secondsBest[difficulty] == "undefined") {
+			if((typeof secondsBest[difficulty] == "undefined") || secondsBest[difficulty] > seconds) {
 				secondsBest[difficulty] = seconds;
+				
+				// Die globalen Daten updaten
+				PersistanceManager.updateStatistics(arrayCodes["secondsBest"]+spacer+difficulty+spacer+seconds);
+				
 				return true;
-			} else {
-				if(secondsBest[difficulty] > seconds) {
-					secondsBest[difficulty] = seconds;
-					return true;
-				}
 			}
 		}
 		break;
@@ -345,6 +373,9 @@ function Statistics() {
 				secondsLost[difficulty] = 0;
 			} 
 			secondsLost[difficulty] = secondsLost[difficulty] + seconds;
+			
+			// Die globalen Daten updaten
+			PersistanceManager.updateStatistics(arrayCodes["secondsLost"]+spacer+difficulty+spacer+seconds);
 		}
 		break;
 		
@@ -370,6 +401,9 @@ function Statistics() {
 			}
 			else 
 				discoveredPercentWon[difficulty] = (discoveredPercentWon[difficulty] + discoveredPercent) / 2;
+			
+			// Die globalen Daten updaten
+			PersistanceManager.updateStatistics(arrayCodes["discoveredPercentWon"]+spacer+difficulty+spacer+discoveredPercent);
 		}
 		break;
 		
@@ -380,6 +414,9 @@ function Statistics() {
 			}
 			else 
 				discoveredPercentLost[difficulty] = (discoveredPercentLost[difficulty] + discoveredPercent) / 2;
+			
+			// Die globalen Daten updaten
+			PersistanceManager.updateStatistics(arrayCodes["discoveredPercentLost"]+spacer+difficulty+spacer+discoveredPercent);
 		}
 		break;
 		
@@ -390,6 +427,9 @@ function Statistics() {
 			}
 			else 
 				discoveredPercentDiscarded[difficulty] = (discoveredPercentDiscarded[difficulty] + discoveredPercent) / 2;
+			
+			// Die globalen Daten updaten
+			PersistanceManager.updateStatistics(arrayCodes["discoveredPercentDiscarded"]+spacer+difficulty+spacer+discoveredPercent);
 		}
 		break;
 		

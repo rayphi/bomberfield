@@ -1,5 +1,5 @@
 /**
- * Diese Klasse stellt eine KommunikationsAPI mit ein paar php Fuunktionen dar, über
+ * Diese Klasse stellt eine KommunikationsAPI mit ein paar php Funktionen dar, über
  * die Daten in eine MySQL Datenbank geschrieben und aus dieser geladen
  * werden können. Außerdem stellt diese API eine Funktion zur Verfügung,
  * um zu überprüfen, ob php und MySQL Datenbank überhaupt verwendet werden können
@@ -20,13 +20,13 @@ DatabasePersister.isDatabaseAvailable = function() {
 };
 
 /**
- * Diese Funktion speichert die Daten des Übergebenen Statistics-Objektes via
- * php Funktionen in einer MySQL Datenbank
+ * Diese Funktion aktualisiert die Daten der Datenbank via
+ * php Funktionen mit den Daten im übergebenen String
  * 
- * @param Statistics statistics Das Statistics-Objekt
- * @returns true, wenn das Speichern erfolgreich war, false sonst
+ * @param String update ein String mit den entsprechenden updates
+ * @returns true, wenn das Updaten erfolgreich war, false sonst
  */
-DatabasePersister.saveStatistics = function(statistics) {
+DatabasePersister.updateStatistics = function(update) {
 	// Das request Objekt bauen
 	var xmlhttp;
 	if (window.XMLHttpRequest) { // moderne Browser
@@ -35,20 +35,17 @@ DatabasePersister.saveStatistics = function(statistics) {
 		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	
-	// Die Stringrepräsentation der Statistics auslesen
-	var strStats = statistics.getPropertyString();
-	
 	// Daten asynchron als POST an die entsprechende php senden
-	xmlhttp.open("POST", "php/saveStatistics.php", true);
+	xmlhttp.open("POST", "php/updateStatistics.php", true);
 	// Die Daten senden
-	xmlhttp.send(strStats);
+	xmlhttp.send(update);
 };
 
 /**
  * Diese Funktion lädt die Statistiken aus der Datenbank und gibt diese als
  * Statistics Objekt zurück
  * 
- * @returns Statistics statistics Ein Statistics Objekt mit allen Statistiken
+ * @returns Statistics statistics Ein Statistics Objekt mit allen globalen Statistiken
  */
 DatabasePersister.loadStatistics = function() {
 	var statistics = new Statistics();
