@@ -423,9 +423,6 @@ function Statistics() {
 		}
 		// Aus dem Array statistics wird ein string mit einem (,) als delimiter und wird in statString geschrieben. 
 		var statString = statistics.join(",");
-		//Test ausgabe
-		//alert(statString);
-		//Rückgabe des String
 		return statString;
 	};
 	
@@ -435,44 +432,49 @@ function Statistics() {
 	 * @param string propertyString der PropertyString
 	 */
 	this.parsePropertyString = function(propertyString) {
+		//Hier wird der übergebene String unterteilt hierfür wird ein (;) als delimiter genutzt.
 		var statistics = propertyString.split(",");
 			for(i in statistics){
+				//Beim durchlaufen des statistics-Array spliten wir jeden Eintrag mit dem delimiter (-).
 				var singelSplit = statistics[i].split("-");
+				
+					/*
+					 * In diesen If-Blöcken prüfen wir auf die einzelnen Statistiken 
+					 * und 
+					 * schreiben ihre Werte in die KlassenVariablen.
+					 * 
+					 * Die Werte aus dem Array werden mit parseInt zu Integern.
+					*/
 					if (singelSplit[0] == "gWon") {
-						gamesWon[singelSplit[1]] = singelSplit[2];
+						gamesWon[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 					else if (singelSplit[0] == "gLos") {
 						gamesLost[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
-						alert(singelSplit[1] + " __" + singelSplit[2] + "__>__" + this.getGames(singelSplit[1], this.state.lose));
 					}
 					else if (singelSplit[0] == "gDis") {
-						gamesTotal[singelSplit[1]] = singelSplit[2];
+						gamesTotal[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 					else if (singelSplit[0] == "sWon") {
-						secondsWon[singelSplit[1]] = singelSplit[2];
+						secondsWon[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 					else if (singelSplit[0] == "sLos") {
-						secondsLost[singelSplit[1]] = singelSplit[2];
+						secondsLost[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 					else if (singelSplit[0] == "sDis") {
-						secondsTotal[singelSplit[1]] = singelSplit[2];
+						secondsTotal[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 					else if (singelSplit[0] == "dWon") {
-						discoveredPercentWon[singelSplit[1]] = singelSplit[2];
+						discoveredPercentWon[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 					else if (singelSplit[0] == "dLos") {
-						discoveredPercentLost[singelSplit[1]] = singelSplit[2];
+						discoveredPercentLost[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 					else if (singelSplit[0] == "dDis") {
-						discoveredPercentDiscarded[singelSplit[1]] = singelSplit[2];
+						discoveredPercentDiscarded[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 					else if (singelSplit[0] == "sBes") {
-						secondsBest[singelSplit[1]] = singelSplit[2];
+						secondsBest[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 			}
-		//Test ausgabe
-		//alert(statistics);
-		return statistics;
-		
 	};
 }

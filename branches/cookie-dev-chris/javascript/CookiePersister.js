@@ -32,8 +32,8 @@ CookiePersister.loadStatistics = function(){
 	if($.cookie("statistics") != null){	
 		 var cookieContent = $.cookie("statistics");
 		 var stat = new Statistics();
-		 var statArray = stat.parsePropertyString(cookieContent);	
-		 return new Statistics();
+		 stat.parsePropertyString(cookieContent);	
+		 return stat;
 	}
 		return new Statistics();
 };
