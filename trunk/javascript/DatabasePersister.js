@@ -35,8 +35,8 @@ DatabasePersister.saveStatistics = function(statistics) {
 		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	
-	// TODO statistics in einen String packen
-	var strStats = "";
+	// Die Stringrepräsentation der Statistics auslesen
+	var strStats = statistics.getPropertyString();
 	
 	// Daten asynchron als POST an die entsprechende php senden
 	xmlhttp.open("POST", "php/saveStatistics.php", true);
@@ -51,9 +51,9 @@ DatabasePersister.saveStatistics = function(statistics) {
  * @returns Statistics statistics Ein Statistics Objekt mit allen Statistiken
  */
 DatabasePersister.loadStatistics = function() {
-	// TODO Statistics via pphp Funktionen laden
 	var statistics = new Statistics();
 	
+	// Das Request Objekt bauen
 	var xmlhttp;
 	if (window.XMLHttpRequest) { // moderne Browser
 		xmlhttp = new XMLHttpRequest();
@@ -68,9 +68,9 @@ DatabasePersister.loadStatistics = function() {
 	
 	// Statistics String empfangen
 	var strStats = xmlhttp.responseText;
-	var array = strStats
 	
-	// TODO Statistics String parsen und Daten in das Statistics Objekt einpflegen
+	// Statistics String parsen und Daten in das Statistics Objekt einpflegen
+	statistics.parsePropertyString(strStats);
 	
 	return statistics;
 };
