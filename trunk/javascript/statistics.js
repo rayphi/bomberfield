@@ -404,7 +404,80 @@ function Statistics() {
 	 * @returns string propertyString
 	 */
 	this.getPropertyString = function() {
-		// TODO property String erzeugen
+		
+		// Statistics ist ein JSON Array aus allen Daten der Statistic
+		
+		//SO HAB ICH DAS NICHT HINBEKOMMEN
+		/* 
+		var statistics = new Array({
+			"wonGamesEasy" 	: gamesWon[10],
+			"wonGamesMid" 	: gamesWon[20],
+			"wonGamesHar" 	: gamesWon[30],
+			"lostGamesEasy" : gamesLost[10],
+			"lostGamesMid" 	: gamesLost[20],
+			"lostGamesHar" 	: gamesLost[30],
+			"disGamesEasy" 	: this.getGames(10, this.state.discarded ),
+			"disGamesMid" 	: this.getGames(20, this.state.discarded ),
+			"disGamesHar" 	: this.getGames(30, this.state.discarded),
+			"secWonEasy"	: secondsWon[10],
+			"secWonMid"		: secondsWon[20],
+			"secWonHar"		: secondsWon[30],
+			"secLostEasy"	: secondsLost[10],
+			"secLostMid"	: secondsLost[20],
+			"secLostHar"	: secondsLost[30],
+			"secDisEasy"	: this.getSeconds(10, this.state.discarded),
+			"secDisMid"		: this.getSeconds(20, this.state.discarded),
+			"secDisHar"		: this.getSeconds(30, this.state.discarded),
+			"persWonEasy"	: discoveredPercentWon[10],
+			"persWonMid"	: discoveredPercentWon[20],
+			"persWonHar"	: discoveredPercentWon[30],
+			"persLostEasy"	: discoveredPercentLost[10],
+			"persLostMid"	: discoveredPercentLost[20],
+			"persLostHar"	: discoveredPercentLost[30],
+			"persDisEasy"	: discoveredPercentDiscarded[10],
+			"persDisMid"	: discoveredPercentDiscarded[20],
+			"persDisHar"	: discoveredPercentDiscarded[30]
+		});
+		*/
+		
+		// Erstellung eines Arrays mit den GameDaten für die Statistik
+		
+		var statistics = new Array(
+				this.getGames(10, this.state.win),
+				this.getGames(20, this.state.win),
+				this.getGames(30, this.state.win),
+				this.getGames(10, this.state.lose),
+				this.getGames(20, this.state.lose),
+				this.getGames(30, this.state.lose),
+				this.getGames(10, this.state.discarded),
+				this.getGames(20, this.state.discarded),
+				this.getGames(30, this.state.discarded),
+				this.getSeconds(10, this.state.win),
+				this.getSeconds(20, this.state.win),
+				this.getSeconds(30, this.state.win),
+				this.getSeconds(10, this.state.lose),
+				this.getSeconds(20, this.state.lose),
+				this.getSeconds(30, this.state.lose),
+				this.getSeconds(10, this.state.discarded),
+				this.getSeconds(20, this.state.discarded),
+				this.getSeconds(30, this.state.discarded),
+				this.getDiscoveredPercent(10, this.state.win),
+				this.getDiscoveredPercent(20, this.state.win),
+				this.getDiscoveredPercent(30, this.state.win),
+				this.getDiscoveredPercent(10, this.state.lose),
+				this.getDiscoveredPercent(20, this.state.lose),
+				this.getDiscoveredPercent(30, this.state.lose),
+				this.getDiscoveredPercent(10, this.state.discarded),
+				this.getDiscoveredPercent(20, this.state.discarded),
+				this.getDiscoveredPercent(30, this.state.discarded)
+		);
+	
+		// Aus dem Array statistics wird ein string mit einem (,) als delimiter und wird in statString geschrieben. 
+		var statString = statistics.join(",");
+		//Test ausgabe
+		alert(statString);
+		//Rückgabe des Arrays als String
+		return statString;
 	};
 	
 	/**
