@@ -10,12 +10,12 @@ html, body, #wrapper {height: 100%;}
 
 body > #wrapper {height: auto; min-height: 100%;}
 
-#main {padding-bottom: 35px;}  /* Muss genau so hoch sein wie der Footer */
+#main {padding-bottom: 45px;}  /* Muss genau so hoch sein wie der Footer */
 
 #footer {
 	position: relative;
-	margin-top: -35px; /* Negativer Wert der Footer-Höhe */
-	height: 35px;
+	margin-top: -45px; /* Negativer Wert der Footer-Höhe */
+	height: 45px;
 	clear:both;
 }
 
@@ -37,6 +37,7 @@ body > #wrapper {height: auto; min-height: 100%;}
 body {
 	/* background: #eeddcc; */
 	background: url(../images/bg.png);
+	font-size: 14px;
 }
 
 body#game {
@@ -49,10 +50,12 @@ body#game {
 
 #main {
 	margin: 0 auto;
+	width: 800px;
 }
 
 #HUD {
-	margin: 0 0 20px 0;
+	width: 700px;
+	margin: 0 auto 20px auto;
 	float: left;
 	background: #ffffff;
 	padding: 15px 50px 0 50px;
@@ -68,8 +71,8 @@ body#game {
 }
 
 #canvas{
-	width:600px;
-	height:300px;
+	width:800px;
+	height:425px;
 	-moz-box-shadow: 10px 10px 20px #666;
 	-webkit-box-shadow: 10px 10px 20px #666;
 	box-shadow: 10px 10px 20px #666;
@@ -231,8 +234,11 @@ a:hover {
 }
 
 #footer-content {
+	width: 800px;
 	margin: 0 auto;
-	height: 25px;
+	height: 35px;
+	text-align: center;
+	font-size: 8pt;
 	background: #ffffff ;
 	padding: 10px 50px 0 50px;
 	-moz-box-shadow: 5px 5px 15px #666;
@@ -243,4 +249,35 @@ a:hover {
 	-moz-border-top-left-radius: 70px 90px;
 	border-top-right-radius: 70px 90px;
 	border-top-left-radius: 70px 90px;
+}
+
+#header {
+	width: 700px;
+	margin: 0 auto 20px auto;
+	background: #ffffff;
+	padding: 15px 50px 15px 50px;
+	position: relative;
+	-moz-box-shadow: 5px 5px 15px #666;
+	-webkit-box-shadow: 5px 5px 15px #666;
+	box-shadow: 5px 5px 15px #666;
+	
+	-moz-border-bottom-right-radius: 70px 90px;
+	-moz-border-bottom-left-radius: 70px 90px;
+	border-bottom-right-radius: 70px 90px;
+	border-bottom-left-radius: 70px 90px;
+	
+	text-align: center;
+	font-size: 16px;
+}
+
+#content{
+	width: 740px;
+	padding: 30px;
+	background: #fff;
+	-moz-box-shadow: 10px 10px 20px #666;
+	-webkit-box-shadow: 10px 10px 20px #666;
+	box-shadow: 10px 10px 20px #666;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+	margin: 0 auto 15px auto;
 }
