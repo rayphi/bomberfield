@@ -450,17 +450,28 @@ function Statistics() {
 		
 		// for-Schleife welche jede Schwierigkeit durch geht und den jeweiligen Wert rein schreibt :D
 		for(var i in difficulties) {
-				statistics.push("gWon-" + difficulties[i] + "-" + this.getGames(difficulties[i],this.state.win));
-				statistics.push("gLos-" + difficulties[i] + "-" + this.getGames(difficulties[i],this.state.lose));
-				statistics.push("gTot-" + difficulties[i] + "-" + this.getGames(difficulties[i],this.state.start));
-				statistics.push("sWon-" + difficulties[i] + "-" + this.getSeconds(difficulties[i], this.state.win));
-				statistics.push("sLos-" + difficulties[i] + "-" + this.getSeconds(difficulties[i], this.state.lose));
-				statistics.push("sTot-" + difficulties[i] + "-" + this.getSeconds(difficulties[i], this.state.start));
-				statistics.push("dWon-" + difficulties[i] + "-" + this.getDiscoveredPercent(difficulties[i], this.state.win));
-				statistics.push("dLos-" + difficulties[i] + "-" + this.getDiscoveredPercent(difficulties[i], this.state.lose));
-				statistics.push("dDis-" + difficulties[i] + "-" + this.getDiscoveredPercent(difficulties[i], this.state.discarded));
-				statistics.push("sBes-" + difficulties[i] + "-" + this.getBestSeconds(difficulties[i]));
+			if (typeof gamesWon[difficulties[i]] !== "undefined")
+				statistics.push(arrayCodes.gamesWon + spacer + difficulties[i] + spacer + this.getGames(difficulties[i],this.state.win));
+			if (typeof gamesLost[difficulties[i]] !== "undefined")
+				statistics.push(arrayCodes.gamesLost + spacer + difficulties[i] + spacer + this.getGames(difficulties[i],this.state.lose));
+			if (typeof gamesTotal[difficulties[i]] !== "undefined")
+				statistics.push(arrayCodes.gamesTotal + spacer + difficulties[i] + spacer + this.getGames(difficulties[i],this.state.start));
+			if (typeof secondsWon[difficulties[i]] !== "undefined")
+				statistics.push(arrayCodes.secondsWon + spacer + difficulties[i] + spacer + this.getSeconds(difficulties[i], this.state.win));
+			if (typeof secondsLost[difficulties[i]] !== "undefined")
+				statistics.push(arrayCodes.secondsLost + spacer + difficulties[i] + spacer + this.getSeconds(difficulties[i], this.state.lose));
+			if (typeof secondsTotal[difficulties[i]] !== "undefined")
+				statistics.push(arrayCodes.secondsTotal + spacer + difficulties[i] + spacer + this.getSeconds(difficulties[i], this.state.start));
+			if (typeof discoveredPercentWon[difficulties[i]] !== "undefined")
+				statistics.push(arrayCodes.discoveredPercentWon + spacer + difficulties[i] + spacer + this.getDiscoveredPercent(difficulties[i], this.state.win));
+			if (typeof discoveredPercentLost[difficulties[i]] !== "undefined")
+				statistics.push(arrayCodes.discoveredPercentLost + spacer + difficulties[i] + spacer + this.getDiscoveredPercent(difficulties[i], this.state.lose));
+			if (typeof discoveredPercentDiscarded[difficulties[i]] !== "undefined")
+				statistics.push(arrayCodes.discoveredPercentDiscarded + spacer + difficulties[i] + spacer + this.getDiscoveredPercent(difficulties[i], this.state.discarded));
+			if (typeof secondsBest[difficulties[i]] !== "undefined")
+				statistics.push(arrayCodes.secondsBest + spacer + difficulties[i] + spacer + this.getBestSeconds(difficulties[i]));
 		}
+		
 		// Aus dem Array statistics wird ein string mit einem (,) als delimiter und wird in statString geschrieben. 
 		var statString = statistics.join(",");
 		return statString;
@@ -476,7 +487,7 @@ function Statistics() {
 		var statistics = propertyString.split(",");
 			for(i in statistics){
 				//Beim durchlaufen des statistics-Array spliten wir jeden Eintrag mit dem delimiter (-).
-				var singelSplit = statistics[i].split("-");
+				var singelSplit = statistics[i].split(spacer);
 				
 					/*
 					 * In diesen If-Blöcken prüfen wir auf die einzelnen Statistiken 
@@ -485,34 +496,34 @@ function Statistics() {
 					 * 
 					 * Die Werte aus dem Array werden mit parseInt zu Integern.
 					*/
-					if (singelSplit[0] == "gWon") {
+					if (singelSplit[0] == arrayCodes.gamesWon) {
 						gamesWon[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
-					else if (singelSplit[0] == "gLos") {
+					else if (singelSplit[0] == arrayCodes.gamesLost) {
 						gamesLost[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
-					else if (singelSplit[0] == "gTot") {
+					else if (singelSplit[0] == arrayCodes.gamesTotal) {
 						gamesTotal[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
-					else if (singelSplit[0] == "sWon") {
+					else if (singelSplit[0] == arrayCodes.secondsWon) {
 						secondsWon[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
-					else if (singelSplit[0] == "sLos") {
+					else if (singelSplit[0] == arrayCodes.secondsLost) {
 						secondsLost[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
-					else if (singelSplit[0] == "sTot") {
+					else if (singelSplit[0] == arrayCodes.secondsTotal) {
 						secondsTotal[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
-					else if (singelSplit[0] == "dWon") {
+					else if (singelSplit[0] == arrayCodes.discoveredPercentWon) {
 						discoveredPercentWon[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
-					else if (singelSplit[0] == "dLos") {
+					else if (singelSplit[0] == arrayCodes.discoveredPercentLost) {
 						discoveredPercentLost[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
-					else if (singelSplit[0] == "dDis") {
+					else if (singelSplit[0] == arrayCodes.discoveredPercentDiscarded) {
 						discoveredPercentDiscarded[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
-					else if (singelSplit[0] == "sBes") {
+					else if (singelSplit[0] == arrayCodes.secondsBest) {
 						secondsBest[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 			}
