@@ -25,6 +25,15 @@ CookiePersister.saveStatistics = function(statistics){
  * @returns Statistics
  */
 CookiePersister.loadStatistics = function(){
-	// TODO
-	return new Statistics();
+	/* if-Abfrage welche prüft ob der cookie schon gesetzt ist.
+	 * Wenn TRUE dann den Cookie auslesen und die daten in der Statistik anlegen.
+	 * Wenn FALSE dann neue Statistik an legen
+	*/
+	if($.cookie("statistics") != null){	
+		 var cookieContent = $.cookie("statistics");
+		 var stat = new Statistics();
+		 stat.parsePropertyString(cookieContent);	
+		 return stat;
+	}
+		return new Statistics();
 };
