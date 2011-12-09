@@ -451,7 +451,7 @@ function Statistics() {
 					else if (singelSplit[0] == "gLos") {
 						gamesLost[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
-					else if (singelSplit[0] == "gDis") {
+					else if (singelSplit[0] == "gTot") {
 						gamesTotal[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 					else if (singelSplit[0] == "sWon") {
@@ -460,7 +460,7 @@ function Statistics() {
 					else if (singelSplit[0] == "sLos") {
 						secondsLost[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
-					else if (singelSplit[0] == "sDis") {
+					else if (singelSplit[0] == "sTot") {
 						secondsTotal[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 					else if (singelSplit[0] == "dWon") {
