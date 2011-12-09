@@ -12,7 +12,6 @@ function CookiePersister(){
 CookiePersister.saveStatistics = function(statistics){
 
 	var cookieContent = statistics.getPropertyString();
-	alert(cookieContent);
 	$.cookie("statistics", cookieContent);
 };
 
