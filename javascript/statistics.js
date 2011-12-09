@@ -445,78 +445,24 @@ function Statistics() {
 	 */
 	this.getPropertyString = function() {
 		
-		// Statistics ist ein JSON Array aus allen Daten der Statistic
+		// Erstellung ein leeres Arrays für GameDaten(Statistik)
+		var statistics = new Array();
 		
-		//SO HAB ICH DAS NICHT HINBEKOMMEN
-		/* 
-		var statistics = new Array({
-			"wonGamesEasy" 	: gamesWon[10],
-			"wonGamesMid" 	: gamesWon[20],
-			"wonGamesHar" 	: gamesWon[30],
-			"lostGamesEasy" : gamesLost[10],
-			"lostGamesMid" 	: gamesLost[20],
-			"lostGamesHar" 	: gamesLost[30],
-			"disGamesEasy" 	: this.getGames(10, this.state.discarded ),
-			"disGamesMid" 	: this.getGames(20, this.state.discarded ),
-			"disGamesHar" 	: this.getGames(30, this.state.discarded),
-			"secWonEasy"	: secondsWon[10],
-			"secWonMid"		: secondsWon[20],
-			"secWonHar"		: secondsWon[30],
-			"secLostEasy"	: secondsLost[10],
-			"secLostMid"	: secondsLost[20],
-			"secLostHar"	: secondsLost[30],
-			"secDisEasy"	: this.getSeconds(10, this.state.discarded),
-			"secDisMid"		: this.getSeconds(20, this.state.discarded),
-			"secDisHar"		: this.getSeconds(30, this.state.discarded),
-			"persWonEasy"	: discoveredPercentWon[10],
-			"persWonMid"	: discoveredPercentWon[20],
-			"persWonHar"	: discoveredPercentWon[30],
-			"persLostEasy"	: discoveredPercentLost[10],
-			"persLostMid"	: discoveredPercentLost[20],
-			"persLostHar"	: discoveredPercentLost[30],
-			"persDisEasy"	: discoveredPercentDiscarded[10],
-			"persDisMid"	: discoveredPercentDiscarded[20],
-			"persDisHar"	: discoveredPercentDiscarded[30]
-		});
-		*/
-		
-		// Erstellung eines Arrays mit den GameDaten für die Statistik
-		
-		var statistics = new Array(
-				this.getGames(10, this.state.win),
-				this.getGames(20, this.state.win),
-				this.getGames(30, this.state.win),
-				this.getGames(10, this.state.lose),
-				this.getGames(20, this.state.lose),
-				this.getGames(30, this.state.lose),
-				this.getGames(10, this.state.discarded),
-				this.getGames(20, this.state.discarded),
-				this.getGames(30, this.state.discarded),
-				this.getSeconds(10, this.state.win),
-				this.getSeconds(20, this.state.win),
-				this.getSeconds(30, this.state.win),
-				this.getSeconds(10, this.state.lose),
-				this.getSeconds(20, this.state.lose),
-				this.getSeconds(30, this.state.lose),
-				this.getSeconds(10, this.state.discarded),
-				this.getSeconds(20, this.state.discarded),
-				this.getSeconds(30, this.state.discarded),
-				this.getDiscoveredPercent(10, this.state.win),
-				this.getDiscoveredPercent(20, this.state.win),
-				this.getDiscoveredPercent(30, this.state.win),
-				this.getDiscoveredPercent(10, this.state.lose),
-				this.getDiscoveredPercent(20, this.state.lose),
-				this.getDiscoveredPercent(30, this.state.lose),
-				this.getDiscoveredPercent(10, this.state.discarded),
-				this.getDiscoveredPercent(20, this.state.discarded),
-				this.getDiscoveredPercent(30, this.state.discarded)
-		);
-	
+		// for-Schleife welche jede Schwierigkeit durch geht und den jeweiligen Wert rein schreibt :D
+		for(var i in difficulties) {
+				statistics.push("gWon-" + difficulties[i] + "-" + this.getGames(difficulties[i],this.state.win));
+				statistics.push("gLos-" + difficulties[i] + "-" + this.getGames(difficulties[i],this.state.lose));
+				statistics.push("gTot-" + difficulties[i] + "-" + this.getGames(difficulties[i],this.state.start));
+				statistics.push("sWon-" + difficulties[i] + "-" + this.getSeconds(difficulties[i], this.state.win));
+				statistics.push("sLos-" + difficulties[i] + "-" + this.getSeconds(difficulties[i], this.state.lose));
+				statistics.push("sTot-" + difficulties[i] + "-" + this.getSeconds(difficulties[i], this.state.start));
+				statistics.push("dWon-" + difficulties[i] + "-" + this.getDiscoveredPercent(difficulties[i], this.state.win));
+				statistics.push("dLos-" + difficulties[i] + "-" + this.getDiscoveredPercent(difficulties[i], this.state.lose));
+				statistics.push("dDis-" + difficulties[i] + "-" + this.getDiscoveredPercent(difficulties[i], this.state.discarded));
+				statistics.push("sBes-" + difficulties[i] + "-" + this.getBestSeconds(difficulties[i]));
+		}
 		// Aus dem Array statistics wird ein string mit einem (,) als delimiter und wird in statString geschrieben. 
 		var statString = statistics.join(",");
-		//Test ausgabe
-		alert(statString);
-		//Rückgabe des Arrays als String
 		return statString;
 	};
 	
@@ -526,6 +472,49 @@ function Statistics() {
 	 * @param string propertyString der PropertyString
 	 */
 	this.parsePropertyString = function(propertyString) {
-		// TODO property String parsen
+		//Hier wird der übergebene String unterteilt hierfür wird ein (;) als delimiter genutzt.
+		var statistics = propertyString.split(",");
+			for(i in statistics){
+				//Beim durchlaufen des statistics-Array spliten wir jeden Eintrag mit dem delimiter (-).
+				var singelSplit = statistics[i].split("-");
+				
+					/*
+					 * In diesen If-Blöcken prüfen wir auf die einzelnen Statistiken 
+					 * und 
+					 * schreiben ihre Werte in die KlassenVariablen.
+					 * 
+					 * Die Werte aus dem Array werden mit parseInt zu Integern.
+					*/
+					if (singelSplit[0] == "gWon") {
+						gamesWon[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+					}
+					else if (singelSplit[0] == "gLos") {
+						gamesLost[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+					}
+					else if (singelSplit[0] == "gTot") {
+						gamesTotal[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+					}
+					else if (singelSplit[0] == "sWon") {
+						secondsWon[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+					}
+					else if (singelSplit[0] == "sLos") {
+						secondsLost[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+					}
+					else if (singelSplit[0] == "sTot") {
+						secondsTotal[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+					}
+					else if (singelSplit[0] == "dWon") {
+						discoveredPercentWon[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+					}
+					else if (singelSplit[0] == "dLos") {
+						discoveredPercentLost[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+					}
+					else if (singelSplit[0] == "dDis") {
+						discoveredPercentDiscarded[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+					}
+					else if (singelSplit[0] == "sBes") {
+						secondsBest[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+					}
+			}
 	};
 }
