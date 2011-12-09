@@ -412,14 +412,14 @@ function Statistics() {
 		for(var i in difficulties) {
 				statistics.push("gWon-" + difficulties[i] + "-" + this.getGames(difficulties[i],this.state.win));
 				statistics.push("gLos-" + difficulties[i] + "-" + this.getGames(difficulties[i],this.state.lose));
-				statistics.push("gTot-" + difficulties[i] + "-" + this.getGames(difficulties[i],this.state.discarded));
+				statistics.push("gTot-" + difficulties[i] + "-" + this.getGames(difficulties[i],this.state.start));
 				statistics.push("sWon-" + difficulties[i] + "-" + this.getSeconds(difficulties[i], this.state.win));
-				statistics.push("sLos" + difficulties[i] + "-" + this.getSeconds(difficulties[i], this.state.lose));
-				statistics.push("sTot" + difficulties[i] + "-" + this.getSeconds(difficulties[i], this.state.discarded));
-				statistics.push("dWon" + difficulties[i] + "-" + this.getDiscoveredPercent(difficulties[i], this.state.win));
-				statistics.push("dLos" + difficulties[i] + "-" + this.getDiscoveredPercent(difficulties[i], this.state.lose));
-				statistics.push("dDis" + difficulties[i] + "-" + this.getDiscoveredPercent(difficulties[i], this.state.discarded));
-				statistics.push("sBes" + difficulties[i] + "-" + this.getBestSeconds(difficulties[i]));
+				statistics.push("sLos-" + difficulties[i] + "-" + this.getSeconds(difficulties[i], this.state.lose));
+				statistics.push("sTot-" + difficulties[i] + "-" + this.getSeconds(difficulties[i], this.state.start));
+				statistics.push("dWon-" + difficulties[i] + "-" + this.getDiscoveredPercent(difficulties[i], this.state.win));
+				statistics.push("dLos-" + difficulties[i] + "-" + this.getDiscoveredPercent(difficulties[i], this.state.lose));
+				statistics.push("dDis-" + difficulties[i] + "-" + this.getDiscoveredPercent(difficulties[i], this.state.discarded));
+				statistics.push("sBes-" + difficulties[i] + "-" + this.getBestSeconds(difficulties[i]));
 		}
 		// Aus dem Array statistics wird ein string mit einem (,) als delimiter und wird in statString geschrieben. 
 		var statString = statistics.join(",");
