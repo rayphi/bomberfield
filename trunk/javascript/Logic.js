@@ -600,7 +600,7 @@ function win() {
 			(best ? "Neue Bestzeit <br>" : "") +
 			"Schwierigkeit: " + $('#difficulty :selected').text()   + " <br>" +
 			"Benötigte Zeit: " + timeCalculator(seconds) + " <br>" +
-			"Aufgedeckte Felder: " + percCalculator(calculateDiscoveredPercent())) + "%";
+			"Aufgedeckte Felder: " + percCalculator(calculateDiscoveredPercent()) + "%");
 }
 
 
