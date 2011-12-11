@@ -69,6 +69,7 @@ $(document).ready(function() {
 		$('#Message').css({top:0, left:0, width:0, height:0});
 		// Das Messagefeld verstecken
 		$('#Message').addClass('displayed');
+		$('#clearMessage').addClass('displayed');
 		
 		// Wenn man noch am leben ist, ...
 		if(alive) {
@@ -88,6 +89,7 @@ $(document).ready(function() {
 		$('#Message').css({top:0, left:0, width:0, height:0});
 		// Entfernt beim klicken des NewGame buttons die alte Win|Lose Nachricht aus dem Messagefeld 
 		$('p').remove(".wlmessage");
+		$('#clearMessage').addClass('displayed');
 		
 		// Ein neues Spiel starten
 		newGame();
@@ -97,10 +99,14 @@ $(document).ready(function() {
 	$('#showField').click(function(e){
 		// Das Messagefeld  verstecken
 		$('#Message').addClass('displayed');
+		$('#clearMessage').addClass('displayed');
 	});
 	
 	//Wenn der Button clearStat gedr�ckt wird  soll eine abfrage auftauchen.
 	$("#clearStat").click(function(){
+		// Den Offset des canvas lesen
+		var offset = $('#canvas').offset();
+		// Den Offset des Messagefeldes setzen
 		$("#clearMessage").removeClass('displayed');
 	});
 	
