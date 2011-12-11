@@ -79,7 +79,6 @@
         	<div id="time">Zeit: <span id="timer">0</span> Sekunden</div><br />
         	<div id="total_mine_div"><span id="mines">0</span> Minen</div><br />
       	</div><br />
-
       	<div id="Message" class="displayed">
       		<div class="wlmessage"></div>
       		<div id="statistik">
@@ -95,12 +94,20 @@
       		<div id="buttons">  
       			<input id="showField" type="button" value="Feld bestaunen"/>
       			<input id="MessageNewGame" type="button" value="Neues Spiel" />
+      			<input id="clearStat" type="button" value="Statistik Loeschen"/>
       		</div>
       		
       	</div>
       	
       		
       	<canvas id="canvas" ></canvas>
+      	<div id="clearMessage" class="displayed">
+			<p>Wollen Sie wirklich Ihre Statistik loeschen ?</p>
+			<div id='buttonsAgree'>
+				<input id='agree' type='button' value='Ja'/> 
+				<input id='disagree' type='button' value='Nein'/>
+			</div>
+		</div>
       	<div id="like-bar"></g:plusone><div class="fb-like" data-href="https://chek-24.de" data-send="true" data-width="450" data-show-faces="false"></div><g:plusone size="medium" annotation="inline"></div>
       </div>
       </div>
