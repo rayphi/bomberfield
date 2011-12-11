@@ -99,21 +99,39 @@ $(document).ready(function() {
 		$('#Message').addClass('displayed');
 	});
 	
-	//Wenn der Button clearStat gedrückt wird  soll eine abfrage auftauchen.
+	//Wenn der Button clearStat gedrï¿½ckt wird  soll eine abfrage auftauchen.
 	$("#clearStat").click(function(){
 		$("#clearMessage").removeClass('displayed');
 	});
 	
-	//Nach dem klick auf den clearStat button wird nun auf den nächsten klick abgefragt
+	//Nach dem klick auf den clearStat button wird nun auf den nï¿½chsten klick abgefragt
 	$("#agree").click(function(){
-		PersistanceManager.clearCookie();
-		statistics = new Statistics();
+		PersistanceManager.resetStatistics();
 		$('#clearMessage').addClass('displayed');
 	});
 	
-	//Nach dem klick auf den clearStat button wird nun auf den nächsten klick abgefragt
+	//Nach dem klick auf den clearStat button wird nun auf den nï¿½chsten klick abgefragt
 	$('#disagree').click(function(){
 		$('#clearMessage').addClass('displayed');
+	});
+	
+	// Wen keine Datenbank zur VerfÃ¼gung steht, dann sll der Button versteckt werden
+	if (!DatabasePersister.isDatabaseAvailable()) {
+		$('#switchStatistics').hide();
+	}
+	
+	// Button zum switchen zwischen Server und eigenen Statistiken
+	$('#switchStatistics').click(function(){
+		if ($('#switchStatistics').attr('value') === "Eigene") {
+			$('#switchStatistics').attr('value', "Server");
+			statWriterOwn();
+		}
+		
+		else {
+			$('#switchStatistics').attr('value', "Eigene");
+			statWriterServer();
+		}
+
 	});
 	
 	
@@ -665,7 +683,7 @@ function message(text){
 	$('#Message').append('<p class="wlmessage">' + text + '</p>');
 	// Das Messagefeld anzeigen
 	$('#Message').removeClass('displayed');
-	statWritter();
+	statWriterOwn();
 }
 
 
@@ -674,7 +692,7 @@ function message(text){
  * sie beinhaltet sowohl Anzahl der Spiele als auch Spielzeit.
  *  
  */
-function statWritter(){
+function statWriterOwn(){
 	// Variable welche die Anzahl der Siege beinhaltet
 	var win = statistics.getGames($("#difficulty4statistics").val(), statistics.state.win);
 	// Schreibt in winTime die insgesamt gespielte zeit wodrauf ein Sieg folgte.
@@ -701,9 +719,69 @@ function statWritter(){
 	var bestTime = timeCalculator(statistics.getBestSeconds($("#difficulty4statistics").val()));
 	
 	// Entfernt beim klicken des NewGame buttons die alte Statistik aus dem Statistikfeld und fÃ¼gt aktuelle ein.
-	$("#allStatistics").html("<p> Gewonnen: " + win + " mal" + "<br> Zeit gesamt: " + winTime +"<br> Felder aufgedeckt: " + winPerc +"%<br> Bestzeit: " + bestTime + "</p>" + 
-	"<p> Verloren: " + lose + " mal" + "<br> Zeit gesamt: " + loseTime +"<br> Felder aufgedeckt: " + losePerc +"%</p>" + 
-	"<p> Abgebrochen: " + discard + " mal" + "<br> Zeit gesamt: " + discardTime + "<br> Felder aufgedeckt: " + discardPerc +"%</p>");
+	$("#allStatistics").html("<p> Gewonnen: " + win + " mal <br>" +
+								" Zeit gesamt: " + winTime +" <br>" +
+								" Felder aufgedeckt: " + winPerc +"% <br>" +
+								" Bestzeit: " + bestTime + " </p>" + 
+							"<p> Verloren: " + lose + " mal <br>" +
+								" Zeit gesamt: " + loseTime +" <br>" +
+								" Felder aufgedeckt: " + losePerc +"% </p>" + 
+							"<p> Abgebrochen: " + discard + " mal <br>" +
+								" Zeit gesamt: " + discardTime + " <br>" +
+								" Felder aufgedeckt: " + discardPerc +"% </p>");
+}
+
+
+
+
+
+
+/**
+ * Diese Funktion erstellt die Ausgabe fÃ¼r die Statistik,
+ * sie beinhaltet sowohl Anzahl der Spiele als auch Spielzeit.
+ *  
+ */
+function statWriterServer(){
+	/**
+	 * Die Serverweiten statistics aufbereiten
+	 */
+	var serverStats = PersistanceManager.loadOverallStatistics();
+	// Variable welche die Anzahl der Siege beinhaltet
+	var serverwin = serverStats.getGames($("#difficulty4statistics").val(), serverStats.state.win);
+	// Schreibt in winTime die insgesamt gespielte zeit wodrauf ein Sieg folgte.
+	var serverwinTime = timeCalculator(serverStats.getSeconds($("#difficulty4statistics").val(), serverStats.state.win));
+	// Schreibt in winPerc die insgesamt aufgedeckten Felder wodrauf ein Sieg folgte & teilt die % durch die Spiele.
+	var serverwinPerc = percCalculator(serverStats.getDiscoveredPercent($("#difficulty4statistics").val(), serverStats.state.win));
+	
+	
+	// Variable welche die Anzahl der Niederlagen beinhaltet
+	var serverlose = serverStats.getGames($("#difficulty4statistics").val(), serverStats.state.lose);
+	// Schreibt in loseTime die insgesamt gespielte zeit wodrauf eine Niederlage folgte.
+	var serverloseTime = timeCalculator(serverStats.getSeconds($("#difficulty4statistics").val(), serverStats.state.lose));
+	// Schreibt in winPerc die insgesamt aufgedeckten Felder wodrauf eine Niederlage folgte & teilt die % durch die Spiele.
+	var serverlosePerc = percCalculator(serverStats.getDiscoveredPercent($("#difficulty4statistics").val(), serverStats.state.lose));
+	
+	// Variable welche die Anzahl der Aufgaben beinhaltet
+	var serverdiscard = serverStats.getGames($("#difficulty4statistics").val(), serverStats.state.discarded);
+	// Schreibt in discardTime die insgesamt gespielte zeit wodrauf eine Aufgabe folgte.
+	var serverdiscardTime= timeCalculator(serverStats.getSeconds($("#difficulty4statistics").val(), serverStats.state.discarded));
+	// Schreibt in winPerc die insgesamt aufgedeckten Felder wodrauf eine Aufgabe folgte & teilt die % durch die Spiele.
+	var serverdiscardPerc = percCalculator(serverStats.getDiscoveredPercent($("#difficulty4statistics").val(), serverStats.state.discarded));
+	
+	// Die Bestzeit der gewÃ¤hlten Schwierigkeit auslesen
+	var serverbestTime = timeCalculator(serverStats.getBestSeconds($("#difficulty4statistics").val()));
+	
+	// Entfernt beim klicken des NewGame buttons die alte Statistik aus dem Statistikfeld und fÃ¼gt aktuelle ein.
+	$("#allStatistics").html("<p> Gewonnen: " + serverwin + " mal <br>" +
+								" Zeit gesamt: " + serverwinTime +" <br>" +
+								" Felder aufgedeckt: " + serverwinPerc +"% <br>" +
+								" Bestzeit: " + serverbestTime + " </p>" + 
+							"<p> Verloren: " + serverlose + " mal <br>" +
+								" Zeit gesamt: " + serverloseTime +" <br>" +
+								" Felder aufgedeckt: " + serverlosePerc +"% </p>" + 
+							"<p> Abgebrochen: " + serverdiscard + " mal <br>" +
+								" Zeit gesamt: " + serverdiscardTime + " <br>" +
+								" Felder aufgedeckt: " + serverdiscardPerc +"% </p>");
 }
 
 
@@ -784,7 +862,7 @@ function loadStatisticsDifficulty() {
  */
 function statisticsTrigger() {
 	$("#difficulty4statistics").change(function () {
-		statWritter();
+		statWriterOwn();
 	}).trigger('change');
 }
 
