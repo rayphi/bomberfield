@@ -38,6 +38,7 @@ CookiePersister.loadStatistics = function(){
 		return new Statistics();
 };
 
-CookiePersister.clearStatistics = function(){
+CookiePersister.clearCookie = function(){
 	$.cookie("statistics","");
+	statistics = new Statistics();
 };

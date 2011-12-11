@@ -5,7 +5,7 @@
  * um zu überprüfen, ob php und MySQL Datenbank überhaupt verwendet werden können
  */
 function DatabasePersister() {
-	
+
 };
 
 /**
@@ -16,7 +16,7 @@ function DatabasePersister() {
  */
 DatabasePersister.isDatabaseAvailable = function() {
 		// TODO prüfen, ob php und MySQL Server möglich sind
-		return false;
+		return true;
 };
 
 /**
@@ -37,8 +37,24 @@ DatabasePersister.updateStatistics = function(update) {
 	
 	// Daten asynchron als POST an die entsprechende php senden
 	xmlhttp.open("POST", "php/updateStatistics.php", true);
+	
+	{	// Dies ist debug code. Hier wird ein alert mit dem inhalt erzeugt, der an das php script gesendet werden konnte
+//		xmlhttp.onreadystatechange=function(){
+//			if (xmlhttp.readyState==4 && xmlhttp.status==200) {			
+//				alert(xmlhttp.responseText);
+//			}
+//		};
+	}
+	
+	{	// Den Request Header schreiben
+		xmlhttp.setRequestHeader("Pragma", "no-cache"); 
+		xmlhttp.setRequestHeader("Cache-Control", "must-revalidate"); 
+		xmlhttp.setRequestHeader("If-Modified-Since", document.lastModified); 
+		xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	}
+	
 	// Die Daten senden
-	xmlhttp.send(update);
+	xmlhttp.send("update="+update);
 };
 
 /**
@@ -60,6 +76,14 @@ DatabasePersister.loadStatistics = function() {
 	
 	// Daten synchron als POST an die entsprechende php senden
 	xmlhttp.open("GET", "php/loadStatistics.php", false);
+	
+	{	// Den Request Header schreiben
+		xmlhttp.setRequestHeader("Pragma", "no-cache"); 
+		xmlhttp.setRequestHeader("Cache-Control", "must-revalidate"); 
+		xmlhttp.setRequestHeader("If-Modified-Since", document.lastModified); 
+		xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	}
+	
 	// Die Daten senden
 	xmlhttp.send();
 	

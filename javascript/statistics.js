@@ -421,7 +421,7 @@ function Statistics() {
 		break;
 		
 		// Wenn es sich um ein abgebrochenes Spiel handelt, dann addiere die % auf den Zaehler der entsprechenden schwierigkeit
-		case this.state.discarded: {
+		case this.state.discard: {
 			if(!discoveredPercentDiscarded[difficulty]) {
 				discoveredPercentDiscarded[difficulty] =  discoveredPercent;
 			}

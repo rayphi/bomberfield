@@ -31,7 +31,7 @@ PersistanceManager.loadStatistics = function() {
 	 * TODO hier muss geklärt werden, welcher Persister unter welchen Vorraussetzungen
 	 * verwendet werden soll, um das Statistics Objekt auszulesen.
 	 */
-	
+
 	// Aktuell gibt es nur den CookiePersister, deswegen wird dieser einfach benutzt
 	return CookiePersister.loadStatistics(); 
 };
@@ -67,6 +67,6 @@ PersistanceManager.updateStatistics = function(update) {
 	}
 };
 
-PersistanceManager.clearCookie = function() {
-	CookiePersister.clearStatistics();
+PersistanceManager.resetStatistics = function() {
+	CookiePersister.clearCookie();
 };
