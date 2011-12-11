@@ -515,13 +515,13 @@ function Statistics() {
 						secondsTotal[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
 					}
 					else if (singelSplit[0] == arrayCodes.discoveredPercentWon) {
-						discoveredPercentWon[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+						discoveredPercentWon[parseInt(singelSplit[1])] = parseFloat(singelSplit[2]);
 					}
 					else if (singelSplit[0] == arrayCodes.discoveredPercentLost) {
-						discoveredPercentLost[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+						discoveredPercentLost[parseInt(singelSplit[1])] = parseFloat(singelSplit[2]);
 					}
 					else if (singelSplit[0] == arrayCodes.discoveredPercentDiscarded) {
-						discoveredPercentDiscarded[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
+						discoveredPercentDiscarded[parseInt(singelSplit[1])] = parseFloat(singelSplit[2]);
 					}
 					else if (singelSplit[0] == arrayCodes.secondsBest) {
 						secondsBest[parseInt(singelSplit[1])] = parseInt(singelSplit[2]);
