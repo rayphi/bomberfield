@@ -99,6 +99,24 @@ $(document).ready(function() {
 		$('#Message').addClass('displayed');
 	});
 	
+	//Wenn der Button clearStat gedrückt wird  soll eine abfrage auftauchen.
+	$("#clearStat").click(function(){
+		$("#clearMessage").removeClass('displayed');
+	});
+	
+	//Nach dem klick auf den clearStat button wird nun auf den nächsten klick abgefragt
+	$("#agree").click(function(){
+		PersistanceManager.clearCookie();
+		statistics = new Statistics();
+		$('#clearMessage').addClass('displayed');
+	});
+	
+	//Nach dem klick auf den clearStat button wird nun auf den nächsten klick abgefragt
+	$('#disagree').click(function(){
+		$('#clearMessage').addClass('displayed');
+	});
+	
+	
 	// Wenn ein Mousebutton gedrÃ¼ckt wurde
 	$('#canvas').mousedown(function(e) {
 		// Die aktuelle Position ermitteln
@@ -649,10 +667,6 @@ function message(text){
 	$('#Message').removeClass('displayed');
 	statWritter();
 }
-
-
-
-
 
 
 /**

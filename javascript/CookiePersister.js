@@ -12,7 +12,7 @@ function CookiePersister(){
 CookiePersister.saveStatistics = function(statistics){
 
 	var cookieContent = statistics.getPropertyString();
-	$.cookie("statistics", cookieContent);
+	$.cookie("statistics", cookieContent, { expires: 999});
 };
 
 /**
@@ -36,4 +36,8 @@ CookiePersister.loadStatistics = function(){
 		 return stat;
 	}
 		return new Statistics();
+};
+
+CookiePersister.clearStatistics = function(){
+	$.cookie("statistics","");
 };

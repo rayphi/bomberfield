@@ -66,3 +66,7 @@ PersistanceManager.updateStatistics = function(update) {
 		DatabasePersister.updateStatistics(update);
 	}
 };
+
+PersistanceManager.clearCookie = function() {
+	CookiePersister.clearStatistics();
+};

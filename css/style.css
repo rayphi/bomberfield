@@ -111,6 +111,41 @@ body#game {
 	width:730px;
 }
 
+#buttons #clearStat{
+	margin-left: 405px;
+}
+
+#clearMessage{
+	background-color:#699be0;
+	width: 200px;
+	height: 111px;
+	position: absolute;
+	top: 50%;
+	left: 40%;
+	border-radius: 20px;	
+}
+
+#clearMessage p{
+	margin-top: 10px;
+	width: 150px;
+	margin-left: 30px;
+}
+
+#clearMessage #agree{
+	width:50px;
+}
+
+#clearMessage #disagree{
+	width:50px;
+}
+
+#buttonsAgree{
+	margin-top: 37px;
+	margin-left: 50px;
+}
+
+
+
 div.wlmessage{
 	margin:30px 0 0 40px;
 }
