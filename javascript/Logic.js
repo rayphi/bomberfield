@@ -286,8 +286,8 @@ $(document).ready(function() {
 		vOldDimension = new Vector(cellWidth, cellHeight);
 		
 		{ // minimale Dimension eines Hexatile berechnen
-			minWidth = (canvasWidth / cellsInLine > 10 ? canvasWidth / cellsInLine : 20);
-			minHeight = (canvasHeight / cellsInLine > 10 ? canvasHeight / cellsInLine : 20);
+			minWidth = (canvasWidth / cellsInLine > 30 ? canvasWidth / cellsInLine : 30);
+			minHeight = (canvasHeight / cellsInColumn > 30 ? canvasHeight / cellsInColumn : 30);
 			if (minWidth > minHeight)
 				minHeight = minWidth;
 			else minWidth = minHeight;
@@ -396,11 +396,11 @@ var canvasHeight = 425;
 /**
  * Die Anzahl der Hexatiles in einer visuellen Zeile des Spielfeldes
  */
-var cellsInLine = 50;
+var cellsInLine = 30;
 /**
  * Die Anzahl der Hexatiles in einer visuellen Spalte des Spielfeldes
  */
-var cellsInColumn = 50;
+var cellsInColumn = 30;
 
 /** 
  * Die Ausdehnung der Matrix (solange diese noch quadratisch ist)
@@ -416,7 +416,7 @@ var gameField;
 /**
  * Hier werden alle möglichen Schwierigkeitsgrade als enum gespeichert
  */
-var difficulties = {"easy" : 10, "medium" : 20, "hard" : 30, "debug" : 2, "test" : 1};
+var difficulties = {"easy" : 8, "medium" : 14, "hard" : 20};
 
 /**
  * Der Schwierigkeitsgrad
@@ -494,7 +494,8 @@ var mousewheelDelta = 2;
 
 
 /**
- * TODO Doku
+ * Diese Funktion prüft, ob der Browser den canvas Tag supported
+ * 
  * @returns {Boolean}
  */
 function isCanvasSupported() {
