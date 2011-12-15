@@ -114,6 +114,8 @@ $(document).ready(function() {
 	$("#agree").click(function(){
 		PersistanceManager.resetStatistics();
 		$('#clearMessage').addClass('displayed');
+		// Die Statistiken direkt neu zeichnen
+		statWriterOwn();
 	});
 	
 	//Nach dem klick auf den clearStat button wird nun auf den n�chsten klick abgefragt
@@ -130,11 +132,13 @@ $(document).ready(function() {
 	$('#switchStatistics').click(function(){
 		if ($('#switchStatistics').attr('value') === "Eigene") {
 			$('#switchStatistics').attr('value', "Server");
+			$('#clearStat').show();
 			statWriterOwn();
 		}
 		
 		else {
 			$('#switchStatistics').attr('value', "Eigene");
+			$('#clearStat').hide();
 			statWriterServer();
 		}
 
