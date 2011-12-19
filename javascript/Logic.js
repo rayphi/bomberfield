@@ -873,7 +873,14 @@ function loadStatisticsDifficulty() {
  */
 function statisticsTrigger() {
 	$("#difficulty4statistics").change(function () {
-		statWriterOwn();
+		// Wenn gerade die Server statistiken angezeicgt werden sollen, dann diese zeichnen...
+		if ($('#switchStatistics').attr('value') === "Eigene") { // Wenn auf dem Button steht "Eigene" dann sind gerade die Serverstatistiken aktiv
+			statWriterServer();
+		}
+		// ... sonst die eigenen Statistiken zeichnen
+		else {
+			statWriterOwn();
+		}
 	}).trigger('change');
 }
 
