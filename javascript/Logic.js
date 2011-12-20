@@ -290,8 +290,8 @@ $(document).ready(function() {
 		vOldDimension = new Vector(cellWidth, cellHeight);
 		
 		{ // minimale Dimension eines Hexatile berechnen
-			minWidth = (canvasWidth / cellsInLine > 30 ? canvasWidth / cellsInLine : 30);
-			minHeight = (canvasHeight / cellsInColumn > 30 ? canvasHeight / cellsInColumn : 30);
+			minWidth = (canvasWidth / (cellsInLine - 2) > 20 ? canvasWidth / (cellsInLine - 2) : 20);
+			minHeight = (canvasHeight / cellsInColumn > 20 ? canvasHeight / cellsInColumn : 20);
 			if (minWidth > minHeight)
 				minHeight = minWidth;
 			else minWidth = minHeight;

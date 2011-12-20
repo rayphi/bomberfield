@@ -126,7 +126,6 @@ Hexatile.prototype.draw = function(ctx) {
 		// Hier wird das Hexatile mit einer Zahl versehen, sollte es aufgedeckt sein, keine 
 		// Mine enthalten und mindestens eine Mine als Nachbarn habn.
 		else if(this.isOpen && (!this.isMine) && this.surroundingMines > 0) {
-			// TODO schöner machen
 			ctx.fillStyle = fsText;
 			ctx.font = '8pt Helvetica';
 			ctx.textBaseline = "middle";
